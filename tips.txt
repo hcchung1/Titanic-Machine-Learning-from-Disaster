@@ -1,0 +1,7 @@
+podman run -dt \
+  --name iml5 \
+  --gpus all \
+  -v ./:/workspace/ \
+  --shm-size=40g \
+  iml5 \
+  bash
