@@ -14,7 +14,8 @@ import torch # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import torch.nn as nn # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import torch.optim as optim # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from loguru import logger # pyright: ignore[reportMissingModuleSource, reportMissingImports]
-from sklearn.metrics import classification_report, confusion_matrix # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.ensemble import RandomForestClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.model_selection import train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -94,6 +95,63 @@ def submit_to_kaggle(file_path: str, competition: str, message: str):
         )
 
 
+def train_random_forest(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    rf = RandomForestClassifier(
+        n_estimators=1000,
+        max_depth=None,
+        min_samples_split=2,
+        min_samples_leaf=1,
+        max_features='sqrt',
+        class_weight='balanced_subsample',
+        random_state=cfg.seed,
+        n_jobs=-1
+    )
+    logger.info('Training RandomForestClassifier...')
+    rf.fit(X_train, y_train)
+
+    val_preds = rf.predict(X_val)
+    val_acc = accuracy_score(y_val, val_preds) * 100.0
+    report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
+    logger.info(f'RandomForest validation accuracy: {val_acc:.2f}%')
+    logger.info('Validation report:\n' + report)
+    plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
+
+    test_preds = rf.predict(test_features)
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(f'RandomForest submission saved to {submission_path}')
+
+    model_path = os.path.join(output_dir, f'{log_name}_random_forest_{today}.joblib')
+    try:
+        import joblib # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+        joblib.dump(rf, model_path)
+        logger.info(f'RandomForest model serialized to {model_path}')
+    except ImportError:
+        logger.warning('joblib not installed; skipping model serialization')
+
+    return val_acc
+
+
 def main():
     cfg = TrainingConfig()
     set_global_seed(cfg.seed)
@@ -127,6 +185,25 @@ def main():
     test_csv = os.path.join(data_dir, 'test.csv')
     train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(train_csv, test_csv)
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
+
+    if CUR_MODEL.lower() == 'randomforest':
+        val_acc = train_random_forest(
+            train_features,
+            train_labels,
+            test_features,
+            passenger_ids,
+            cfg,
+            output_dir,
+            log_name,
+            today,
+            cm_name,
+            submission_path
+        )
+
+        if KAGGLE_SUBMIT:
+            message = f'RandomForest on {today} (val {val_acc:.2f}%)'
+            submit_to_kaggle(submission_path, 'titanic', message)
+        return
 
     X_train, X_val, y_train, y_val = train_test_split(
         train_features,

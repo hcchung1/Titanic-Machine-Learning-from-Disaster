@@ -13,7 +13,7 @@ from torch.utils.data import Dataset # pyright: ignore[reportMissingModuleSource
 # ========== Global Configurations ==========
 CLASS_NAMES = ['Did Not Survive', 'Survived']
 
-CUR_MODEL = 'TitanicMLP'
+CUR_MODEL = 'RandomForest'  # Options: 'LogisticRegression', 'RandomForest', 'XGBoost', 'MLP'
 KAGGLE_SUBMIT = False
 EARLY_STOPPING = True
 NUM_WORKERS = 0
