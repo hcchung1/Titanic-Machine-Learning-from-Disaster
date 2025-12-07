@@ -14,7 +14,7 @@ import torch # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import torch.nn as nn # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import torch.optim as optim # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from loguru import logger # pyright: ignore[reportMissingModuleSource, reportMissingImports]
-from sklearn.ensemble import RandomForestClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.model_selection import train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -152,6 +152,62 @@ def train_random_forest(
     return val_acc
 
 
+def train_gradient_boosting(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    gb = GradientBoostingClassifier(
+        n_estimators=600,
+        learning_rate=0.02,
+        max_depth=3,
+        min_samples_split=4,
+        min_samples_leaf=2,
+        subsample=0.9,
+        random_state=cfg.seed
+    )
+    logger.info('Training GradientBoostingClassifier...')
+    gb.fit(X_train, y_train)
+
+    val_preds = gb.predict(X_val)
+    val_acc = accuracy_score(y_val, val_preds) * 100.0
+    report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
+    logger.info(f'GradientBoosting validation accuracy: {val_acc:.2f}%')
+    logger.info('Validation report:\n' + report)
+    plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
+
+    test_preds = gb.predict(test_features)
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(f'GradientBoosting submission saved to {submission_path}')
+
+    model_path = os.path.join(output_dir, f'{log_name}_gradient_boosting_{today}.joblib')
+    try:
+        import joblib # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+        joblib.dump(gb, model_path)
+        logger.info(f'GradientBoosting model serialized to {model_path}')
+    except ImportError:
+        logger.warning('joblib not installed; skipping model serialization')
+
+    return val_acc
+
+
 def main():
     cfg = TrainingConfig()
     set_global_seed(cfg.seed)
@@ -186,7 +242,8 @@ def main():
     train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(train_csv, test_csv)
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
-    if CUR_MODEL.lower() == 'randomforest':
+    model_name = CUR_MODEL.lower()
+    if model_name == 'randomforest':
         val_acc = train_random_forest(
             train_features,
             train_labels,
@@ -202,6 +259,25 @@ def main():
 
         if KAGGLE_SUBMIT:
             message = f'RandomForest on {today} (val {val_acc:.2f}%)'
+            submit_to_kaggle(submission_path, 'titanic', message)
+        return
+
+    if model_name == 'gradientboosting':
+        val_acc = train_gradient_boosting(
+            train_features,
+            train_labels,
+            test_features,
+            passenger_ids,
+            cfg,
+            output_dir,
+            log_name,
+            today,
+            cm_name,
+            submission_path
+        )
+
+        if KAGGLE_SUBMIT:
+            message = f'GradientBoosting on {today} (val {val_acc:.2f}%)'
             submit_to_kaggle(submission_path, 'titanic', message)
         return
 
