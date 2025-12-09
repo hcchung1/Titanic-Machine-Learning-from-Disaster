@@ -260,13 +260,14 @@ def train_gradient_boosting(
 
     gb_base = GradientBoostingClassifier(random_state=cfg.seed)
     param_grid = {
-        'n_estimators': [200, 400, 600],
-        'learning_rate': [0.02, 0.05, 0.1],
-        'max_depth': [2, 3, 4],
+        'n_estimators': [300, 500, 800],
+        'learning_rate': [0.01, 0.02, 0.05],
+        'max_depth': [3, 4, 5],
         'min_samples_split': [2, 4],
         'min_samples_leaf': [1, 2],
-        'subsample': [0.8, 1.0],
+        'subsample': [0.85, 0.9, 1.0]
     }
+
 
     """
     n_estimators: 400,600,800
