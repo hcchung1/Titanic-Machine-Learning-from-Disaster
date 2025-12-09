@@ -120,16 +120,24 @@ def train_random_forest(
         stratify=train_labels
     )
 
-    rf = RandomForestClassifier(
-        n_estimators=1000,
-        max_depth=None,
-        min_samples_split=2,
-        min_samples_leaf=1,
-        max_features='sqrt',
-        class_weight='balanced_subsample',
-        random_state=cfg.seed,
-        n_jobs=-1
-    )
+    # rf = RandomForestClassifier(
+    #     n_estimators=1000,
+    #     max_depth=None,
+    #     min_samples_split=2,
+    #     min_samples_leaf=1,
+    #     max_features='sqrt',
+    #     class_weight='balanced_subsample',
+    #     random_state=cfg.seed,
+    #     n_jobs=-1
+    # )
+
+    rf = RandomForestClassifier(criterion='gini', 
+                             n_estimators=1000,
+                             min_samples_split=12,
+                             min_samples_leaf=1,
+                             oob_score=True,
+                             random_state=1,
+                             n_jobs=-1) 
     logger.info('Training RandomForestClassifier...')
     rf.fit(X_train, y_train)
 
