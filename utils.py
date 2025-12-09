@@ -13,7 +13,7 @@ from torch.utils.data import Dataset # pyright: ignore[reportMissingModuleSource
 # ========== Global Configurations ==========
 CLASS_NAMES = ['Did Not Survive', 'Survived']
 
-CUR_MODEL = 'TitanicMLP'
+CUR_MODEL = 'RandomForest'  # Options: 'RandomForest', 'gradientboosting', 'logisticregression', 'svm', 'knn', 'MLP'
 KAGGLE_SUBMIT = False
 EARLY_STOPPING = True
 NUM_WORKERS = 0
@@ -86,6 +86,20 @@ def _engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
     processed['Age'] = processed.groupby(['Title', 'Pclass'])['Age'].transform(lambda col: col.fillna(col.median()))
     processed['Age'] = processed['Age'].fillna(processed['Age'].median())
+    processed['AgeBin'] = pd.cut(
+        processed['Age'],
+        bins=[0, 12, 20, 40, 60, 80],
+        labels=False,
+        include_lowest=True
+    ).astype('Int64').fillna(2)
+
+    fare_bins = [-1, 8, 15, 31, 100, np.inf]
+    processed['FareBin'] = pd.cut(
+        processed['Fare'],
+        bins=fare_bins,
+        labels=False,
+        include_lowest=True
+    ).astype('Int64').fillna(2)
 
     drop_cols = ['PassengerId', 'Name', 'Ticket', 'Cabin']
     features = processed.drop(columns=drop_cols, errors='ignore')
