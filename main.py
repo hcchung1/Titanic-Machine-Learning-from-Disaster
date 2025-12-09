@@ -15,7 +15,7 @@ import torch.nn as nn # pyright: ignore[reportMissingModuleSource, reportMissing
 import torch.optim as optim # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from loguru import logger # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.model_selection import train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -208,68 +208,6 @@ def train_gradient_boosting(
     return val_acc
 
 
-def evaluate_submission(submission_path, gender_csv, raw_test_csv, output_dir):
-    if not os.path.exists(submission_path):
-        logger.warning(f'Submission file not found at {submission_path}; skipping evaluation')
-        return
-    if not os.path.exists(gender_csv):
-        logger.warning('Ground-truth file gender_submission.csv not found; skipping evaluation')
-        return
-    if not os.path.exists(raw_test_csv):
-        logger.warning('Raw test CSV not found; skipping FN/TN exports')
-        return
-
-    submission_df = pd.read_csv(submission_path)
-    pred_df = submission_df.rename(columns={'Survived': 'Pred'})
-    actual_df = pd.read_csv(gender_csv).rename(columns={'Survived': 'Actual'})
-    merged = pred_df.merge(actual_df, on='PassengerId', how='left')
-    missing_actual = merged['Actual'].isna().sum()
-    if missing_actual:
-        logger.warning(f'Missing ground-truth labels for {missing_actual} passengers; excluding them from metrics')
-        merged = merged.dropna(subset=['Actual'])
-
-    merged['Actual'] = merged['Actual'].astype(int)
-    merged['Pred'] = merged['Pred'].astype(int)
-
-    accuracy = accuracy_score(merged['Actual'], merged['Pred']) * 100.0
-    f1 = f1_score(merged['Actual'], merged['Pred'])
-    cm = confusion_matrix(merged['Actual'], merged['Pred'], labels=[0, 1])
-    if cm.shape == (2, 2):
-        tn, fp, fn, tp = cm.ravel()
-    else:
-        tn = fp = fn = tp = 0
-        logger.warning('Confusion matrix shape unexpected; defaulting counts to zero')
-
-    logger.info(
-        f"Submission metrics — Accuracy: {accuracy:.2f}%, F1: {f1:.4f}, TN: {tn}, FP: {fp}, FN: {fn}, TP: {tp}"
-    )
-
-    test_df = pd.read_csv(raw_test_csv)
-    detail_cols = ['PassengerId', 'Actual', 'Pred'] + [c for c in test_df.columns if c != 'PassengerId']
-    detailed = merged.merge(test_df, on='PassengerId', how='left')
-    available_cols = [c for c in detail_cols if c in detailed.columns]
-    detailed = detailed[available_cols]
-
-    base_name = os.path.splitext(os.path.basename(submission_path))[0]
-    fn_path = os.path.join(output_dir, f'{base_name}_fn.csv')
-    tn_path = os.path.join(output_dir, f'{base_name}_tn.csv')
-    metrics_path = os.path.join(output_dir, f'{base_name}_metrics.txt')
-
-    fn_detail = detailed[(detailed['Actual'] == 1) & (detailed['Pred'] == 0)]
-    tn_detail = detailed[(detailed['Actual'] == 0) & (detailed['Pred'] == 0)]
-    fn_detail.to_csv(fn_path, index=False)
-    tn_detail.to_csv(tn_path, index=False)
-
-    with open(metrics_path, 'w', encoding='utf-8') as f:
-        f.write(f'Accuracy: {accuracy:.4f}\n')
-        f.write(f'F1 Score: {f1:.4f}\n')
-        f.write(f'TN: {tn}\nFP: {fp}\nFN: {fn}\nTP: {tp}\n')
-
-    logger.info(f'False negatives exported to {fn_path}')
-    logger.info(f'True negatives exported to {tn_path}')
-    logger.info(f'Metric summary written to {metrics_path}')
-
-
 def main():
     cfg = TrainingConfig()
     set_global_seed(cfg.seed)
@@ -301,7 +239,6 @@ def main():
 
     train_csv = os.path.join(data_dir, 'train.csv')
     test_csv = os.path.join(data_dir, 'test.csv')
-    gender_csv = os.path.join(data_dir, 'gender_submission.csv')
     train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(train_csv, test_csv)
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
@@ -319,8 +256,6 @@ def main():
             cm_name,
             submission_path
         )
-
-        evaluate_submission(submission_path, gender_csv, test_csv, output_dir)
 
         if KAGGLE_SUBMIT:
             message = f'RandomForest on {today} (val {val_acc:.2f}%)'
@@ -340,8 +275,6 @@ def main():
             cm_name,
             submission_path
         )
-
-        evaluate_submission(submission_path, gender_csv, test_csv, output_dir)
 
         if KAGGLE_SUBMIT:
             message = f'GradientBoosting on {today} (val {val_acc:.2f}%)'
@@ -448,8 +381,6 @@ def main():
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'Submission saved to {submission_path}')
-
-    evaluate_submission(submission_path, gender_csv, test_csv, output_dir)
 
     if KAGGLE_SUBMIT:
         message = f'{CUR_MODEL} on {today} (val {best_val:.2f}%)'
