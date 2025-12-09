@@ -21,7 +21,7 @@ from sklearn.linear_model import LogisticRegression # pyright: ignore[reportMiss
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.neighbors import KNeighborsClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.svm import SVC # pyright: ignore[reportMissingModuleSource, reportMissingImports]
-from sklearn.model_selection import train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.model_selection import GridSearchCV, train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import csv
@@ -256,34 +256,62 @@ def train_gradient_boosting(
         stratify=train_labels
     )
 
-    gb = GradientBoostingClassifier(
-        n_estimators=600,
-        learning_rate=0.02,
-        max_depth=3,
-        min_samples_split=4,
-        min_samples_leaf=2,
-        subsample=0.9,
-        random_state=cfg.seed
+    gb_base = GradientBoostingClassifier(random_state=cfg.seed)
+    param_grid = {
+        'n_estimators': [200, 400, 600],
+        'learning_rate': [0.02, 0.05, 0.1],
+        'max_depth': [2, 3, 4],
+        'min_samples_split': [2, 4],
+        'min_samples_leaf': [1, 2],
+        'subsample': [0.8, 1.0],
+    }
+
+    """
+    n_estimators: 400,600,800
+
+    learning_rate: 0.01,0.02,0.05
+
+    max_depth: 2,3,4
+
+    min_samples_split: 2,4,6
+
+    min_samples_leaf: 1,2,4
+
+    subsample: 0.8,0.9,1.0
+    """
+
+    logger.info('Running GridSearchCV for GradientBoostingClassifier...')
+    grid = GridSearchCV(
+        gb_base,
+        param_grid=param_grid,
+        scoring='accuracy',
+        cv=3,
+        n_jobs=-1,
+        verbose=0,
+    )
+    grid.fit(X_train, y_train)
+
+    best_model: GradientBoostingClassifier = grid.best_estimator_
+    logger.info(
+        f'Best GradientBoosting params: {grid.best_params_} '
+        f'(cv accuracy {grid.best_score_:.4f})'
     )
 
-    logger.info('Training GradientBoostingClassifier...')
-    gb.fit(X_train, y_train)
-
-    val_preds = gb.predict(X_val)
+    val_preds = best_model.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
     logger.info(f'GradientBoosting validation accuracy: {val_acc:.2f}%')
     logger.info('Validation report:\n' + report)
     plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
 
-    test_preds = gb.predict(test_features)
+    test_preds = best_model.predict(test_features)
     submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'GradientBoosting submission saved to {submission_path}')
 
     model_path = os.path.join(output_dir, f'{log_name}_gradient_boosting_{today}.pth')
-    torch.save(gb, model_path)
+    torch.save(best_model, model_path)
     logger.info(f'GradientBoosting model serialized to {model_path}')
 
     return val_acc, submission_path, model_path
