@@ -26,7 +26,9 @@ from sklearn.svm import SVC # pyright: ignore[reportMissingModuleSource, reportM
 from sklearn.model_selection import GridSearchCV, train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+import xgboost
 from xgboost import XGBClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from xgboost.callback import EarlyStopping
 import csv
 from typing import Iterable, List, Tuple
 from network import TitanicMLP, evaluate, test, train_epoch
@@ -360,11 +362,16 @@ def train_xgboost(
     logger.info('Training XGBoostClassifier...')
     # xgb.fit(X_train, y_train)
     xgb.fit(
-        X_train,
-        y_train,
-        eval_set=[(X_val, y_val)],   # 有些版本叫 evals，但 sklearn wrapper 通常是 eval_set
+        X_train, y_train,
+        eval_set=[(X_val, y_val)],
         eval_metric='logloss',
-        early_stopping_rounds=50
+        callbacks=[
+            EarlyStopping(
+                rounds=50,              # 等多少輪沒進步就停
+                save_best=True,         # 用最佳 iteration 的 model
+                maximize=False          # logloss 是要越小越好
+            )
+        ]
     )
 
     val_preds = xgb.predict(X_val)
