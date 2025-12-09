@@ -358,7 +358,13 @@ def train_xgboost(
     )
 
     logger.info('Training XGBoostClassifier...')
-    xgb.fit(X_train, y_train)
+    # xgb.fit(X_train, y_train)
+    xgb.fit(
+        X_train, y_train,
+        eval_set=[(X_val, y_val)],
+        early_stopping_rounds=50,
+        verbose=False
+    )
 
     val_preds = xgb.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
