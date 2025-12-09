@@ -360,10 +360,11 @@ def train_xgboost(
     logger.info('Training XGBoostClassifier...')
     # xgb.fit(X_train, y_train)
     xgb.fit(
-        X_train, y_train,
-        eval_set=[(X_val, y_val)],
-        early_stopping_rounds=50,
-        verbose=False
+        X_train,
+        y_train,
+        eval_set=[(X_val, y_val)],   # 有些版本叫 evals，但 sklearn wrapper 通常是 eval_set
+        eval_metric='logloss',
+        early_stopping_rounds=50
     )
 
     val_preds = xgb.predict(X_val)
