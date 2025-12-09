@@ -36,9 +36,9 @@ from utils import (
     CLASS_NAMES,
     CUR_MODEL,
     EARLY_STOPPING,
-    IMMFEATURE,
     KAGGLE_SUBMIT,
     NUM_WORKERS,
+    FEATURE,
     TrainingConfig,
     TitanicDataset,
     prepare_titanic_data,
@@ -347,8 +347,8 @@ def train_xgboost(
     
     xgb = XGBClassifier(
         n_estimators=600,
-        learning_rate=0.05,
-        max_depth=4,
+        learning_rate=0.03,
+        max_depth=3,
         subsample=0.9,
         colsample_bytree=0.8,
         reg_lambda=1.0,
@@ -570,7 +570,7 @@ def main():
     train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(
         train_csv,
         test_csv,
-        immfeature=IMMFEATURE
+        feature=FEATURE
     )
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
