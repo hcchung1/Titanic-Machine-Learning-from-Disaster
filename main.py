@@ -6,6 +6,7 @@ import sys # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import warnings # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from datetime import datetime
 from dataclasses import replace
+from pathlib import Path
 
 import matplotlib.pyplot as plt # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import numpy as np # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -24,6 +25,7 @@ from sklearn.model_selection import train_test_split # pyright: ignore[reportMis
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 
+from answer_fetching import compute_accuracy, load_labels
 from network import TitanicMLP, evaluate, test, train_epoch
 from utils import (
     CLASS_NAMES,
@@ -40,6 +42,15 @@ from utils import (
 
 
 warnings.filterwarnings('ignore', category=FutureWarning)
+
+
+def score_submission(submission_path: Path, ground_truth_path: Path):
+    """Compute accuracy of a submission CSV against ground truth."""
+
+    ground_truth = load_labels(ground_truth_path)
+    predictions = load_labels(submission_path)
+    accuracy, matches, total = compute_accuracy(ground_truth, predictions)
+    return accuracy, matches, total
 
 
 def plot_training_history(train_losses, train_accs, val_losses, val_accs, save_path):
@@ -181,25 +192,16 @@ def train_gradient_boosting(
         stratify=train_labels
     )
 
-    # gb = GradientBoostingClassifier(
-    #     n_estimators=600,
-    #     learning_rate=0.02,
-    #     max_depth=3,
-    #     min_samples_split=4,
-    #     min_samples_leaf=2,
-    #     subsample=0.9,
-    #     random_state=cfg.seed
-    # )
     gb = GradientBoostingClassifier(
-        n_estimators=1500,       # 增加樹的數量
-        learning_rate=0.01,      # 降低學習率 (原本 0.02 -> 0.01)，讓模型學得更細緻
-        max_depth=4,             # 稍微加深一點 (3 -> 4)
-        min_samples_split=10,    # 防止過度切分
-        min_samples_leaf=3,      # 增加泛化
-        subsample=0.8,           # 隨機選 80% 資料來建樹，增加隨機性防止 Overfitting
-        max_features='sqrt',     # 類似 RF，強迫樹去看不同特徵
+        n_estimators=600,
+        learning_rate=0.02,
+        max_depth=3,
+        min_samples_split=4,
+        min_samples_leaf=2,
+        subsample=0.9,
         random_state=cfg.seed
     )
+
     logger.info('Training GradientBoostingClassifier...')
     gb.fit(X_train, y_train)
 
@@ -381,6 +383,8 @@ def main():
     data_dir = os.path.join(current_dir, 'data')
     output_dir = os.path.join(current_dir, 'output')
     os.makedirs(output_dir, exist_ok=True)
+
+    ground_truth_path = Path(data_dir) / 'submission_corrected.csv'
 
     log_name = f'{CUR_MODEL}'
     if EARLY_STOPPING:
@@ -603,6 +607,14 @@ def main():
                 val_acc = max(best_val, final_val_acc)
                 submission = submission_path
                 model_path = best_model_path
+
+            submission_accuracy, matches, total = score_submission(
+                Path(submission), ground_truth_path
+            )
+            logger.info(
+                f'Submission accuracy vs corrected ground truth: '
+                f'{submission_accuracy:.4f} ({matches}/{total})'
+            )
         finally:
             logger.remove(file_sink)
 
