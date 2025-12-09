@@ -29,6 +29,7 @@ from utils import (
     CLASS_NAMES,
     CUR_MODEL,
     EARLY_STOPPING,
+    IMMFEATURE,
     KAGGLE_SUBMIT,
     NUM_WORKERS,
     TrainingConfig,
@@ -381,7 +382,11 @@ def main():
 
     train_csv = os.path.join(data_dir, 'train.csv')
     test_csv = os.path.join(data_dir, 'test.csv')
-    train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(train_csv, test_csv)
+    train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(
+        train_csv,
+        test_csv,
+        immfeature=IMMFEATURE
+    )
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
     model_name = CUR_MODEL.lower()
