@@ -5,6 +5,7 @@ import subprocess # pyright: ignore[reportMissingModuleSource, reportMissingImpo
 import sys # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import warnings # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from datetime import datetime
+from dataclasses import replace
 
 import matplotlib.pyplot as plt # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import numpy as np # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -148,7 +149,7 @@ def train_random_forest(
     torch.save(rf, model_path)
     logger.info(f'RandomForest model serialized to {model_path}')
 
-    return val_acc
+    return val_acc, submission_path, model_path
 
 
 def train_gradient_boosting(
@@ -200,7 +201,7 @@ def train_gradient_boosting(
     torch.save(gb, model_path)
     logger.info(f'GradientBoosting model serialized to {model_path}')
 
-    return val_acc
+    return val_acc, submission_path, model_path
 
 
 def train_logistic_regression(
@@ -250,7 +251,7 @@ def train_logistic_regression(
     torch.save(lr, model_path)
     logger.info(f'LogisticRegression model serialized to {model_path}')
 
-    return val_acc
+    return val_acc, submission_path, model_path
 
 
 def train_svm(
@@ -300,7 +301,7 @@ def train_svm(
     torch.save(svm, model_path)
     logger.info(f'SVM model serialized to {model_path}')
 
-    return val_acc
+    return val_acc, submission_path, model_path
 
 
 def train_knn(
@@ -350,12 +351,12 @@ def train_knn(
     torch.save(knn, model_path)
     logger.info(f'KNN model serialized to {model_path}')
 
-    return val_acc
+    return val_acc, submission_path, model_path
 
 
 def main():
-    cfg = TrainingConfig()
-    set_global_seed(cfg.seed)
+    base_cfg = TrainingConfig()
+    seed_list = getattr(base_cfg, 'seeds', (base_cfg.seed,)) or (base_cfg.seed,)
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(current_dir, 'data')
@@ -366,15 +367,11 @@ def main():
     if EARLY_STOPPING:
         log_name += '_ES'
     today = datetime.now().strftime('%Y-%m-%d')
-    plot_name = os.path.join(output_dir, f'{log_name}_training_{today}.png')
-    cm_name = os.path.join(output_dir, f'{log_name}_cm_{today}.png')
-    best_model_path = os.path.join(output_dir, f'best_{log_name}_{today}.pth')
-    submission_path = os.path.join(output_dir, f'{log_name}_submission.csv')
 
     logger.remove()
     logger.add(sys.stderr, format='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <level>{message}</level>')
     logger.add(
-        os.path.join(output_dir, f'{log_name}_{today}.log'),
+        os.path.join(output_dir, f'{log_name}_all_seeds_{today}.log'),
         format='{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}',
         colorize=False
     )
@@ -388,205 +385,220 @@ def main():
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
     model_name = CUR_MODEL.lower()
-    if model_name == 'randomforest':
-        val_acc = train_random_forest(
-            train_features,
-            train_labels,
-            test_features,
-            passenger_ids,
-            cfg,
-            output_dir,
-            log_name,
-            today,
-            cm_name,
-            submission_path
+    best_result = {
+        'val_acc': -1.0,
+        'seed': None,
+        'submission': None,
+        'model_path': None
+    }
+
+    for seed in seed_list:
+        cfg = replace(base_cfg, seed=seed)
+        set_global_seed(seed)
+
+        seed_log_name = f'{log_name}_seed{seed}'
+        plot_name = os.path.join(output_dir, f'{seed_log_name}_training_{today}.png')
+        cm_name = os.path.join(output_dir, f'{seed_log_name}_cm_{today}.png')
+        best_model_path = os.path.join(output_dir, f'best_{seed_log_name}_{today}.pth')
+        submission_path = os.path.join(output_dir, f'{seed_log_name}_submission.csv')
+        seed_log_path = os.path.join(output_dir, f'{seed_log_name}_{today}.log')
+
+        file_sink = logger.add(
+            seed_log_path,
+            format='{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}',
+            colorize=False
         )
 
-        if KAGGLE_SUBMIT:
-            message = f'RandomForest on {today} (val {val_acc:.2f}%)'
-            submit_to_kaggle(submission_path, 'titanic', message)
-        return
+        try:
+            if model_name == 'randomforest':
+                val_acc, submission, model_path = train_random_forest(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            elif model_name == 'gradientboosting':
+                val_acc, submission, model_path = train_gradient_boosting(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            elif model_name == 'logisticregression':
+                val_acc, submission, model_path = train_logistic_regression(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            elif model_name == 'svm':
+                val_acc, submission, model_path = train_svm(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            elif model_name == 'knn':
+                val_acc, submission, model_path = train_knn(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            else:
+                X_train, X_val, y_train, y_val = train_test_split(
+                    train_features,
+                    train_labels,
+                    test_size=cfg.val_ratio,
+                    random_state=cfg.seed,
+                    stratify=train_labels
+                )
 
-    if model_name == 'gradientboosting':
-        val_acc = train_gradient_boosting(
-            train_features,
-            train_labels,
-            test_features,
-            passenger_ids,
-            cfg,
-            output_dir,
-            log_name,
-            today,
-            cm_name,
-            submission_path
-        )
+                train_loader = DataLoader(
+                    TitanicDataset(X_train, y_train),
+                    batch_size=cfg.batch_size,
+                    shuffle=True,
+                    num_workers=NUM_WORKERS
+                )
+                val_loader = DataLoader(
+                    TitanicDataset(X_val, y_val),
+                    batch_size=cfg.batch_size,
+                    shuffle=False,
+                    num_workers=NUM_WORKERS
+                )
+                test_loader = DataLoader(
+                    TitanicDataset(test_features, ids=passenger_ids),
+                    batch_size=cfg.batch_size,
+                    shuffle=False,
+                    num_workers=NUM_WORKERS
+                )
 
-        if KAGGLE_SUBMIT:
-            message = f'GradientBoosting on {today} (val {val_acc:.2f}%)'
-            submit_to_kaggle(submission_path, 'titanic', message)
-        return
+                model = TitanicMLP(input_dim=train_features.shape[1], hidden_dims=(256, 128, 64), dropout=0.35).to(device)
+                criterion = nn.CrossEntropyLoss()
+                optimizer = optim.AdamW(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+                scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=6)
+                logger.info(f'Model: {model.__class__.__name__}')
+                logger.info(f'Optimizer: {optimizer.__class__.__name__}')
 
-    if model_name == 'logisticregression':
-        val_acc = train_logistic_regression(
-            train_features,
-            train_labels,
-            test_features,
-            passenger_ids,
-            cfg,
-            output_dir,
-            log_name,
-            today,
-            cm_name,
-            submission_path
-        )
+                train_losses, val_losses, train_accs, val_accs = [], [], [], []
+                best_val = 0.0
+                epochs_without_improve = 0
 
-        if KAGGLE_SUBMIT:
-            message = f'LogisticRegression on {today} (val {val_acc:.2f}%)'
-            submit_to_kaggle(submission_path, 'titanic', message)
-        return
+                for epoch in range(cfg.num_epochs):
+                    train_loss, train_acc = train_epoch(
+                        model,
+                        tqdm(train_loader, desc=f'Train {epoch+1}/{cfg.num_epochs}', leave=False),
+                        criterion,
+                        optimizer,
+                        device
+                    )
+                    val_loss, epoch_val_acc = evaluate(
+                        model,
+                        tqdm(val_loader, desc=f'Val {epoch+1}/{cfg.num_epochs}', leave=False),
+                        criterion,
+                        device
+                    )
 
-    if model_name == 'svm':
-        val_acc = train_svm(
-            train_features,
-            train_labels,
-            test_features,
-            passenger_ids,
-            cfg,
-            output_dir,
-            log_name,
-            today,
-            cm_name,
-            submission_path
-        )
+                    scheduler.step(epoch_val_acc)
 
-        if KAGGLE_SUBMIT:
-            message = f'SVM on {today} (val {val_acc:.2f}%)'
-            submit_to_kaggle(submission_path, 'titanic', message)
-        return
+                    train_losses.append(train_loss)
+                    val_losses.append(val_loss)
+                    train_accs.append(train_acc)
+                    val_accs.append(epoch_val_acc)
 
-    if model_name == 'knn':
-        val_acc = train_knn(
-            train_features,
-            train_labels,
-            test_features,
-            passenger_ids,
-            cfg,
-            output_dir,
-            log_name,
-            today,
-            cm_name,
-            submission_path
-        )
+                    logger.info(
+                        f'Epoch {epoch+1}/{cfg.num_epochs} | '
+                        f'Train Loss {train_loss:.4f}, Train Acc {train_acc:.2f}% | '
+                        f'Val Loss {val_loss:.4f}, Val Acc {epoch_val_acc:.2f}%'
+                    )
 
-        if KAGGLE_SUBMIT:
-            message = f'KNN on {today} (val {val_acc:.2f}%)'
-            submit_to_kaggle(submission_path, 'titanic', message)
-        return
+                    if epoch_val_acc > best_val:
+                        best_val = epoch_val_acc
+                        epochs_without_improve = 0
+                        torch.save(model.state_dict(), best_model_path)
+                        logger.info(f'New best model saved with validation accuracy {epoch_val_acc:.2f}%')
+                    else:
+                        epochs_without_improve += 1
+                        if EARLY_STOPPING and epochs_without_improve >= cfg.patience:
+                            logger.info('Early stopping triggered')
+                            break
 
-    X_train, X_val, y_train, y_val = train_test_split(
-        train_features,
-        train_labels,
-        test_size=cfg.val_ratio,
-        random_state=cfg.seed,
-        stratify=train_labels
-    )
+                plot_training_history(train_losses, train_accs, val_losses, val_accs, plot_name)
 
-    train_loader = DataLoader(
-        TitanicDataset(X_train, y_train),
-        batch_size=cfg.batch_size,
-        shuffle=True,
-        num_workers=NUM_WORKERS
-    )
-    val_loader = DataLoader(
-        TitanicDataset(X_val, y_val),
-        batch_size=cfg.batch_size,
-        shuffle=False,
-        num_workers=NUM_WORKERS
-    )
-    test_loader = DataLoader(
-        TitanicDataset(test_features, ids=passenger_ids),
-        batch_size=cfg.batch_size,
-        shuffle=False,
-        num_workers=NUM_WORKERS
-    )
+                if os.path.exists(best_model_path):
+                    state_dict = torch.load(best_model_path, map_location=device)
+                    model.load_state_dict(state_dict)
 
-    model = TitanicMLP(input_dim=train_features.shape[1], hidden_dims=(256, 128, 64), dropout=0.35).to(device)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=6)
-    logger.info(f'Model: {model.__class__.__name__}')
-    logger.info(f'Optimizer: {optimizer.__class__.__name__}')
+                val_loss, final_val_acc, val_labels, val_preds = evaluate(
+                    model,
+                    tqdm(val_loader, desc='Val (final)', leave=False),
+                    criterion,
+                    device,
+                    return_predictions=True
+                )
+                logger.info(f'Final validation accuracy: {final_val_acc:.2f}% (loss {val_loss:.4f})')
+                report = classification_report(val_labels, val_preds, target_names=CLASS_NAMES, digits=4)
+                logger.info('Validation report:\n' + report)
+                plot_confusion_matrix(val_labels, val_preds, CLASS_NAMES, cm_name)
 
-    train_losses, val_losses, train_accs, val_accs = [], [], [], []
-    best_val = 0.0
-    epochs_without_improve = 0
+                test_predictions = test(model, tqdm(test_loader, desc='Test', leave=False), device)
+                submission_df = pd.DataFrame(test_predictions, columns=['PassengerId', 'Survived'])
+                submission_df = submission_df.sort_values('PassengerId')
+                submission_df.to_csv(submission_path, index=False)
+                logger.info(f'Submission saved to {submission_path}')
 
-    for epoch in range(cfg.num_epochs):
-        train_loss, train_acc = train_epoch(
-            model,
-            tqdm(train_loader, desc=f'Train {epoch+1}/{cfg.num_epochs}', leave=False),
-            criterion,
-            optimizer,
-            device
-        )
-        val_loss, val_acc = evaluate(
-            model,
-            tqdm(val_loader, desc=f'Val {epoch+1}/{cfg.num_epochs}', leave=False),
-            criterion,
-            device
-        )
+                val_acc = max(best_val, final_val_acc)
+                submission = submission_path
+                model_path = best_model_path
+        finally:
+            logger.remove(file_sink)
 
-        scheduler.step(val_acc)
+        if val_acc > best_result['val_acc']:
+            best_result = {
+                'val_acc': val_acc,
+                'seed': seed,
+                'submission': submission,
+                'model_path': model_path
+            }
 
-        train_losses.append(train_loss)
-        val_losses.append(val_loss)
-        train_accs.append(train_acc)
-        val_accs.append(val_acc)
-
+    if best_result['submission']:
         logger.info(
-            f'Epoch {epoch+1}/{cfg.num_epochs} | '
-            f'Train Loss {train_loss:.4f}, Train Acc {train_acc:.2f}% | '
-            f'Val Loss {val_loss:.4f}, Val Acc {val_acc:.2f}%'
+            f'Best seed {best_result["seed"]} achieved validation accuracy {best_result["val_acc"]:.2f}% '
+            f'with submission {best_result["submission"]}'
         )
-
-        if val_acc > best_val:
-            best_val = val_acc
-            epochs_without_improve = 0
-            torch.save(model.state_dict(), best_model_path)
-            logger.info(f'New best model saved with validation accuracy {val_acc:.2f}%')
-        else:
-            epochs_without_improve += 1
-            if EARLY_STOPPING and epochs_without_improve >= cfg.patience:
-                logger.info('Early stopping triggered')
-                break
-
-    plot_training_history(train_losses, train_accs, val_losses, val_accs, plot_name)
-
-    if os.path.exists(best_model_path):
-        state_dict = torch.load(best_model_path, map_location=device)
-        model.load_state_dict(state_dict)
-
-    val_loss, val_acc, val_labels, val_preds = evaluate(
-        model,
-        tqdm(val_loader, desc='Val (final)', leave=False),
-        criterion,
-        device,
-        return_predictions=True
-    )
-    logger.info(f'Final validation accuracy: {val_acc:.2f}% (loss {val_loss:.4f})')
-    report = classification_report(val_labels, val_preds, target_names=CLASS_NAMES, digits=4)
-    logger.info('Validation report:\n' + report)
-    plot_confusion_matrix(val_labels, val_preds, CLASS_NAMES, cm_name)
-
-    test_predictions = test(model, tqdm(test_loader, desc='Test', leave=False), device)
-    submission_df = pd.DataFrame(test_predictions, columns=['PassengerId', 'Survived'])
-    submission_df = submission_df.sort_values('PassengerId')
-    submission_df.to_csv(submission_path, index=False)
-    logger.info(f'Submission saved to {submission_path}')
-
-    if KAGGLE_SUBMIT:
-        message = f'{CUR_MODEL} on {today} (val {best_val:.2f}%)'
-        submit_to_kaggle(submission_path, 'titanic', message)
+        if KAGGLE_SUBMIT:
+            message = f'{CUR_MODEL} best seed {best_result["seed"]} on {today} (val {best_result["val_acc"]:.2f}%)'
+            submit_to_kaggle(best_result['submission'], 'titanic', message)
 
 
 if __name__ == '__main__':

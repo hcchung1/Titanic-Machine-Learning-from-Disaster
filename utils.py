@@ -28,7 +28,7 @@ class TrainingConfig:
     val_ratio: float = 0.2
     patience: int = 30
     seed: int = 45
-
+    seeds: tuple[int, ...] = (45, 2025, 777)
 
 TITLE_REPLACEMENTS = {
     'Mlle': 'Miss',
