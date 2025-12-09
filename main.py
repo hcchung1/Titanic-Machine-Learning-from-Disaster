@@ -24,8 +24,8 @@ from sklearn.svm import SVC # pyright: ignore[reportMissingModuleSource, reportM
 from sklearn.model_selection import train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
-
-from answer_fetching import compute_accuracy, load_labels
+import csv
+from typing import Iterable, List, Tuple
 from network import TitanicMLP, evaluate, test, train_epoch
 from utils import (
     CLASS_NAMES,
@@ -42,6 +42,70 @@ from utils import (
 
 
 warnings.filterwarnings('ignore', category=FutureWarning)
+
+def load_labels(path: Path) -> List[Tuple[int, int]]:
+	"""Load (PassengerId, Survived) rows from a CSV file."""
+	if not path.exists():
+		raise FileNotFoundError(f"CSV not found: {path}")
+
+	rows: List[Tuple[int, int]] = []
+	with path.open(newline="", encoding="utf-8-sig") as handle:
+		reader = csv.DictReader(handle)
+		required = {"PassengerId", "Survived"}
+		if not required.issubset(reader.fieldnames or set()):
+			raise ValueError(
+				f"CSV must contain headers {required}, found: {reader.fieldnames}"
+			)
+
+		for line_number, row in enumerate(reader, start=2):
+			try:
+				pid = int(row["PassengerId"])
+				survived = int(row["Survived"])
+			except (TypeError, ValueError) as exc:
+				raise ValueError(
+					f"Invalid data at line {line_number} in {path}: {row}"
+				) from exc
+			rows.append((pid, survived))
+
+	if not rows:
+		raise ValueError(f"No data rows found in {path}")
+
+	return rows
+
+
+def compute_accuracy(
+	ground_truth: Iterable[Tuple[int, int]], predictions: Iterable[Tuple[int, int]]
+) -> Tuple[float, int, int]:
+	"""Return (accuracy, matches, total) after strict ID alignment."""
+
+	gt_list = list(ground_truth)
+	pred_list = list(predictions)
+
+	if len(gt_list) != len(pred_list):
+		raise ValueError(
+			f"Row count mismatch: ground truth has {len(gt_list)}, "
+			f"predictions have {len(pred_list)}"
+		)
+
+	mismatched_ids = [
+		(idx + 1, gt_id, pred_id)
+		for idx, ((gt_id, _), (pred_id, _)) in enumerate(zip(gt_list, pred_list))
+		if gt_id != pred_id
+	]
+	if mismatched_ids:
+		first = mismatched_ids[0]
+		raise ValueError(
+			"PassengerId mismatch at aligned rows; first difference "
+			f"at row {first[0]}: ground truth {first[1]} vs predictions {first[2]}"
+		)
+
+	matches = sum(
+		1 for (_, gt_survived), (_, pred_survived) in zip(gt_list, pred_list)
+		if gt_survived == pred_survived
+	)
+	total = len(gt_list)
+	accuracy = matches / total if total else 0.0
+	return accuracy, matches, total
 
 
 def score_submission(submission_path: Path, ground_truth_path: Path):
