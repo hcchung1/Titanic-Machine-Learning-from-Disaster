@@ -42,17 +42,17 @@
 ### Current Best Model: **Random Forest**
 1. **MLP**: `0.77751`
 
-2. **RandomForest**: `0.7967`
+2. **RandomForest**: `0.7967` (RF)
 
-3. **GradientBoosting**: `0.7751`
+3. **GradientBoosting**: `0.7751`(RF)
 
-4. **XGBoost**: `0.7895`
+4. **XGBoost**: `0.7895` (RF)
 
-5. **LogisticRegression**: `0.7464`
+5. **LogisticRegression**: `0.7464`(RF)
 
-6. **svm**: `0.6627`
+6. **svm**: `0.6770` (XGB Feature)
 
-7. **knn**: `0.6627`
+7. **knn**: `0.6627` (RF)
 
 8. **Emsembling Models**:
     - MLP
