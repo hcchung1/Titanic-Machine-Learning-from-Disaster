@@ -160,15 +160,19 @@ def _engineer_features_rf(df: pd.DataFrame) -> pd.DataFrame:
 def _engineer_features_xgb(df: pd.DataFrame) -> pd.DataFrame:
     processed = df.copy()
 
-    processed['Embarked'] = processed['Embarked'].fillna('S')
+    # Fill Embarked by cabin class majority if available, otherwise fall back to global mode -> 'S'
+    embarked_mode = processed.groupby('Pclass')['Embarked'].transform(lambda s: s.mode().iloc[0] if not s.mode().empty else np.nan)
+    processed['Embarked'] = processed['Embarked'].fillna(embarked_mode)
+    processed['Embarked'] = processed['Embarked'].fillna(processed['Embarked'].mode().iloc[0] if not processed['Embarked'].mode().empty else 'S')
+
     processed['Fare'] = processed['Fare'].fillna(processed['Fare'].mean())
 
     title1 = processed['Name'].str.split(', ', expand=True)[1]
     processed['Title1'] = title1.str.split('.', expand=True)[0]
-    processed['Title2'] = processed['Title1'].replace(
-        ['Mlle', 'Mme', 'Ms', 'Dr', 'Major', 'Lady', 'the Countess', 'Jonkheer', 'Col', 'Rev', 'Capt', 'Sir', 'Don', 'Dona'],
-        ['Miss', 'Mrs', 'Miss', 'Mr', 'Mr', 'Mrs', 'Mrs', 'Mr', 'Mr', 'Mr', 'Mr', 'Mr', 'Mr', 'Mrs']
-    )
+    processed['Title2'] = processed['Title1']
+    processed['Title2'] = processed['Title2'].replace(['Mlle', 'Ms'], 'Miss').replace(['Mme'], 'Mrs')
+    rare_titles = ['Dr', 'Major', 'Lady', 'the Countess', 'Jonkheer', 'Col', 'Rev', 'Capt', 'Sir', 'Don', 'Dona']
+    processed['Title2'] = processed['Title2'].replace(rare_titles, 'Rare')
 
     processed['Ticket_info'] = processed['Ticket'].apply(
         lambda x: x.replace('.', '').replace('/', '').strip().split(' ')[0] if not str(x).isdigit() else 'X'
@@ -178,13 +182,19 @@ def _engineer_features_xgb(df: pd.DataFrame) -> pd.DataFrame:
     processed['Family_Size'] = processed['Parch'] + processed['SibSp'] + 1
     processed['IsAlone'] = (processed['Family_Size'] == 1).astype(int)
 
-    categorical_cols = ['Sex', 'Embarked', 'Title1', 'Title2', 'Cabin', 'Ticket_info']
+    processed['Pclass'] = processed['Pclass'].fillna(processed['Pclass'].mode().iloc[0])
+
+    # Frequency encoding for high-cardinality categories
+    ticket_freq = processed['Ticket_info'].value_counts()
+    cabin_freq = processed['Cabin'].value_counts()
+    processed['Ticket_info_freq'] = processed['Ticket_info'].map(ticket_freq).fillna(0).astype(float)
+    processed['Cabin_freq'] = processed['Cabin'].map(cabin_freq).fillna(0).astype(float)
+
+    categorical_cols = ['Sex', 'Embarked', 'Title2']
     for col in categorical_cols:
         processed[col] = processed[col].astype('category').cat.codes
 
-    processed['Pclass'] = processed['Pclass'].fillna(processed['Pclass'].mode().iloc[0])
-
-    age_columns = ['Embarked', 'Fare', 'Pclass', 'Sex', 'Family_Size', 'IsAlone', 'Title1', 'Title2', 'Cabin', 'Ticket_info']
+    age_columns = ['Embarked', 'Fare', 'Pclass', 'Sex', 'Family_Size', 'IsAlone', 'Title2', 'Ticket_info_freq', 'Cabin_freq']
     data_age_null = processed[processed['Age'].isnull()]
     data_age_not_null = processed[processed['Age'].notnull()]
     if not data_age_null.empty and not data_age_not_null.empty:
@@ -197,15 +207,22 @@ def _engineer_features_xgb(df: pd.DataFrame) -> pd.DataFrame:
         rf_model_age.fit(age_train[age_columns], age_train['Age'])
         processed.loc[data_age_null.index, 'Age'] = rf_model_age.predict(data_age_null[age_columns])
 
-    processed['FareBin'] = pd.qcut(processed['Fare'], q=5, labels=False, duplicates='drop')
+    processed['FareBin'] = pd.qcut(processed['Fare'], q=4, labels=False, duplicates='drop')
     processed['FareBin'] = processed['FareBin'].astype('Int64').fillna(processed['FareBin'].median())
 
     processed['Age'] = processed['Age'].fillna(processed['Age'].median())
-    processed['AgeBin'] = pd.qcut(processed['Age'], q=4, labels=False, duplicates='drop')
+    processed['AgeBin'] = pd.cut(processed['Age'], bins=5, labels=False, include_lowest=True)
     processed['AgeBin'] = processed['AgeBin'].astype('Int64').fillna(processed['AgeBin'].median())
 
+    processed['Sex_Pclass'] = processed['Sex'] * processed['Pclass']
+    processed['Pclass_AgeBin'] = processed['Pclass'] * processed['AgeBin']
+
     features = processed[
-        ['Age', 'AgeBin', 'Embarked', 'Fare', 'FareBin', 'Pclass', 'Sex', 'Family_Size', 'IsAlone', 'Title2', 'Ticket_info', 'Cabin']
+        [
+            'Age', 'AgeBin', 'Embarked', 'Fare', 'FareBin', 'Pclass', 'Sex',
+            'Family_Size', 'IsAlone', 'Title2', 'Ticket_info_freq', 'Cabin_freq',
+            'Sex_Pclass', 'Pclass_AgeBin'
+        ]
     ].copy()
     features = features.fillna(0.0)
     return features
