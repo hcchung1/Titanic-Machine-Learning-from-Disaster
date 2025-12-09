@@ -362,16 +362,10 @@ def train_xgboost(
     logger.info('Training XGBoostClassifier...')
     # xgb.fit(X_train, y_train)
     xgb.fit(
-        X_train, y_train,
+        X_train,
+        y_train,
         eval_set=[(X_val, y_val)],
-        eval_metric='logloss',
-        callbacks=[
-            EarlyStopping(
-                rounds=50,              # 等多少輪沒進步就停
-                save_best=True,         # 用最佳 iteration 的 model
-                maximize=False          # logloss 是要越小越好
-            )
-        ]
+        callbacks=[ EarlyStopping(rounds=50, save_best=True, maximize=False) ]
     )
 
     val_preds = xgb.predict(X_val)
