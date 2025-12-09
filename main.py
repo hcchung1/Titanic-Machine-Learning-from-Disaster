@@ -181,13 +181,23 @@ def train_gradient_boosting(
         stratify=train_labels
     )
 
+    # gb = GradientBoostingClassifier(
+    #     n_estimators=600,
+    #     learning_rate=0.02,
+    #     max_depth=3,
+    #     min_samples_split=4,
+    #     min_samples_leaf=2,
+    #     subsample=0.9,
+    #     random_state=cfg.seed
+    # )
     gb = GradientBoostingClassifier(
-        n_estimators=600,
-        learning_rate=0.02,
-        max_depth=3,
-        min_samples_split=4,
-        min_samples_leaf=2,
-        subsample=0.9,
+        n_estimators=1500,       # 增加樹的數量
+        learning_rate=0.01,      # 降低學習率 (原本 0.02 -> 0.01)，讓模型學得更細緻
+        max_depth=4,             # 稍微加深一點 (3 -> 4)
+        min_samples_split=10,    # 防止過度切分
+        min_samples_leaf=3,      # 增加泛化
+        subsample=0.8,           # 隨機選 80% 資料來建樹，增加隨機性防止 Overfitting
+        max_features='sqrt',     # 類似 RF，強迫樹去看不同特徵
         random_state=cfg.seed
     )
     logger.info('Training GradientBoostingClassifier...')
