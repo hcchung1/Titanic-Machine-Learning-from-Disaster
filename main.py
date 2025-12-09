@@ -344,6 +344,7 @@ def train_xgboost(
     )
 
     cpu_count = os.cpu_count() or 1
+    
     xgb = XGBClassifier(
         n_estimators=600,
         learning_rate=0.05,
@@ -356,18 +357,17 @@ def train_xgboost(
         objective='binary:logistic',
         eval_metric='logloss',
         random_state=cfg.seed,
-        n_jobs=max(1, cpu_count - 1)
+        n_jobs=max(1, cpu_count - 1),
+        early_stopping_rounds=50,  # 放在這裡
     )
-
     logger.info('Training XGBoostClassifier...')
-    # xgb.fit(X_train, y_train)
     xgb.fit(
         X_train,
         y_train,
         eval_set=[(X_val, y_val)],
-        callbacks=[ EarlyStopping(rounds=50, save_best=True, maximize=False) ]
+        verbose=False,
     )
-
+    # xgb.fit(X_train, y_train)
     val_preds = xgb.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
