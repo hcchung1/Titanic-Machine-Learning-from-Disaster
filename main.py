@@ -8,7 +8,9 @@ from datetime import datetime
 from dataclasses import replace
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+matplotlib.use('Agg')
 import numpy as np # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import pandas as pd # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import seaborn as sns # pyright: ignore[reportMissingModuleSource, reportMissingImports]
