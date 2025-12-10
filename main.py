@@ -24,6 +24,8 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.neighbors import KNeighborsClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.svm import SVC # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.model_selection import GridSearchCV, train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import xgboost
@@ -458,31 +460,46 @@ def train_svm(
         stratify=train_labels
     )
 
-    svm = SVC(
-        C=2.0,
-        kernel='rbf',
-        gamma='scale',
-        class_weight='balanced',
-        probability=False
+    svm_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('svc', SVC(kernel='rbf', class_weight='balanced', probability=False)),
+    ])
+    svm_param_grid = {
+        'svc__C': [0.5, 1.0, 2.0, 5.0],
+        'svc__gamma': ['scale', 0.05, 0.1],
+    }
+    logger.info('Running GridSearchCV for SVM (RBF kernel) with scaling...')
+    svm_grid = GridSearchCV(
+        svm_pipeline,
+        param_grid=svm_param_grid,
+        scoring='accuracy',
+        cv=3,
+        n_jobs=-1,
+        verbose=0,
     )
-    logger.info('Training SVM (RBF kernel)...')
-    svm.fit(X_train, y_train)
+    svm_grid.fit(X_train, y_train)
 
-    val_preds = svm.predict(X_val)
+    best_model: Pipeline = svm_grid.best_estimator_
+    logger.info(
+        f'Best SVM params: {svm_grid.best_params_} '
+        f'(cv accuracy {svm_grid.best_score_:.4f})'
+    )
+
+    val_preds = best_model.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
     logger.info(f'SVM validation accuracy: {val_acc:.2f}%')
     logger.info('Validation report:\n' + report)
     plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
 
-    test_preds = svm.predict(test_features)
+    test_preds = best_model.predict(test_features)
     submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'SVM submission saved to {submission_path}')
 
     model_path = os.path.join(output_dir, f'{log_name}_svm_{today}.pth')
-    torch.save(svm, model_path)
+    torch.save(best_model, model_path)
     logger.info(f'SVM model serialized to {model_path}')
 
     return val_acc, submission_path, model_path
@@ -508,31 +525,47 @@ def train_knn(
         stratify=train_labels
     )
 
-    knn = KNeighborsClassifier(
-        n_neighbors=15,
-        weights='distance',
-        metric='minkowski',
-        p=2,
-        n_jobs=-1
+    knn_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('knn', KNeighborsClassifier(metric='minkowski', n_jobs=-1)),
+    ])
+    knn_param_grid = {
+        'knn__n_neighbors': [7, 11, 15, 21],
+        'knn__weights': ['uniform', 'distance'],
+        'knn__p': [1, 2],
+    }
+    logger.info('Running GridSearchCV for KNeighborsClassifier with scaling...')
+    knn_grid = GridSearchCV(
+        knn_pipeline,
+        param_grid=knn_param_grid,
+        scoring='accuracy',
+        cv=3,
+        n_jobs=-1,
+        verbose=0,
     )
-    logger.info('Training KNeighborsClassifier...')
-    knn.fit(X_train, y_train)
+    knn_grid.fit(X_train, y_train)
 
-    val_preds = knn.predict(X_val)
+    best_model: Pipeline = knn_grid.best_estimator_
+    logger.info(
+        f'Best KNN params: {knn_grid.best_params_} '
+        f'(cv accuracy {knn_grid.best_score_:.4f})'
+    )
+
+    val_preds = best_model.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
     logger.info(f'KNN validation accuracy: {val_acc:.2f}%')
     logger.info('Validation report:\n' + report)
     plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
 
-    test_preds = knn.predict(test_features)
+    test_preds = best_model.predict(test_features)
     submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'KNN submission saved to {submission_path}')
 
     model_path = os.path.join(output_dir, f'{log_name}_knn_{today}.pth')
-    torch.save(knn, model_path)
+    torch.save(best_model, model_path)
     logger.info(f'KNN model serialized to {model_path}')
 
     return val_acc, submission_path, model_path
