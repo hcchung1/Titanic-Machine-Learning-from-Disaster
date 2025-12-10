@@ -240,7 +240,7 @@ def train_random_forest(
     torch.save(rf, model_path)
     logger.info(f'RandomForest model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, rf
 
 
 def train_gradient_boosting(
@@ -322,7 +322,7 @@ def train_gradient_boosting(
     torch.save(best_model, model_path)
     logger.info(f'GradientBoosting model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
 
 
 def train_xgboost(
@@ -387,7 +387,7 @@ def train_xgboost(
     torch.save(xgb, model_path)
     logger.info(f'XGBoost model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, xgb
 
 
 def train_logistic_regression(
@@ -437,7 +437,7 @@ def train_logistic_regression(
     torch.save(lr, model_path)
     logger.info(f'LogisticRegression model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, lr
 
 
 def train_svm(
@@ -462,7 +462,7 @@ def train_svm(
 
     svm_pipeline = Pipeline([
         ('scaler', StandardScaler()),
-        ('svc', SVC(kernel='rbf', class_weight='balanced', probability=False)),
+        ('svc', SVC(kernel='rbf', class_weight='balanced', probability=True)),
     ])
     svm_param_grid = {
         'svc__C': [0.5, 1.0, 2.0, 5.0],
@@ -502,7 +502,7 @@ def train_svm(
     torch.save(best_model, model_path)
     logger.info(f'SVM model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
 
 
 def train_knn(
@@ -568,7 +568,94 @@ def train_knn(
     torch.save(best_model, model_path)
     logger.info(f'KNN model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
+
+
+def train_ensemble(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    """Train all base models, pick top-3 by validation accuracy, then soft-vote."""
+
+    base_trainers = [
+        ('randomforest', train_random_forest),
+        ('gradientboosting', train_gradient_boosting),
+        ('logisticregression', train_logistic_regression),
+        ('svm', train_svm),
+        ('knn', train_knn),
+        ('xgboost', train_xgboost),
+    ]
+
+    results = []
+    for name, trainer in base_trainers:
+        model_log_name = f'{log_name}_{name}'
+        model_submission_path = os.path.join(output_dir, f'{model_log_name}_submission.csv')
+        model_cm_name = os.path.join(output_dir, f'{model_log_name}_cm_{today}.png')
+        val_acc, sub_path, model_path, model_obj = trainer(
+            train_features,
+            train_labels,
+            test_features,
+            passenger_ids,
+            cfg,
+            output_dir,
+            model_log_name,
+            today,
+            model_cm_name,
+            model_submission_path
+        )
+        results.append({
+            'name': name,
+            'val_acc': val_acc,
+            'submission': sub_path,
+            'model_path': model_path,
+            'model': model_obj,
+        })
+
+    if not results:
+        raise RuntimeError('No base models were trained for ensemble.')
+
+    results_sorted = sorted(results, key=lambda x: x['val_acc'], reverse=True)
+    top3 = results_sorted[:3]
+    logger.info('Top-3 models for ensemble (val acc): ' + ', '.join(
+        f"{r['name']}={r['val_acc']:.2f}%" for r in top3
+    ))
+
+    probas = []
+    for item in top3:
+        model = item['model']
+        if hasattr(model, 'predict_proba'):
+            probas.append(model.predict_proba(test_features))
+        else:
+            logger.warning(f"Model {item['name']} lacks predict_proba; skipping in soft vote")
+
+    if not probas:
+        raise RuntimeError('No models provided probabilities for ensemble voting.')
+
+    avg_proba = np.mean(np.stack(probas, axis=0), axis=0)
+    final_preds = np.argmax(avg_proba, axis=1)
+
+    ensemble_submission_path = os.path.join(output_dir, f'{log_name}_ensemble_submission.csv')
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': final_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(ensemble_submission_path, index=False)
+    logger.info(f'Ensemble submission saved to {ensemble_submission_path}')
+
+    ensemble_summary_path = os.path.join(output_dir, f'{log_name}_ensemble_top3_{today}.txt')
+    with open(ensemble_summary_path, 'w', encoding='utf-8') as handle:
+        handle.write('Top-3 models by validation accuracy\n')
+        for item in top3:
+            handle.write(f"{item['name']}: {item['val_acc']:.4f}, model={item['model_path']}\n")
+
+    ensemble_val_acc = float(np.mean([item['val_acc'] for item in top3]))
+    return ensemble_val_acc, ensemble_submission_path, ensemble_summary_path, top3
 
 
 def main():
@@ -634,7 +721,7 @@ def main():
 
         try:
             if model_name == 'randomforest':
-                val_acc, submission, model_path = train_random_forest(
+                val_acc, submission, model_path, _model_obj = train_random_forest(
                     train_features,
                     train_labels,
                     test_features,
@@ -647,7 +734,7 @@ def main():
                     submission_path
                 )
             elif model_name == 'gradientboosting':
-                val_acc, submission, model_path = train_gradient_boosting(
+                val_acc, submission, model_path, _model_obj = train_gradient_boosting(
                     train_features,
                     train_labels,
                     test_features,
@@ -660,7 +747,7 @@ def main():
                     submission_path
                 )
             elif model_name == 'logisticregression':
-                val_acc, submission, model_path = train_logistic_regression(
+                val_acc, submission, model_path, _model_obj = train_logistic_regression(
                     train_features,
                     train_labels,
                     test_features,
@@ -673,7 +760,7 @@ def main():
                     submission_path
                 )
             elif model_name == 'svm':
-                val_acc, submission, model_path = train_svm(
+                val_acc, submission, model_path, _model_obj = train_svm(
                     train_features,
                     train_labels,
                     test_features,
@@ -686,7 +773,7 @@ def main():
                     submission_path
                 )
             elif model_name == 'knn':
-                val_acc, submission, model_path = train_knn(
+                val_acc, submission, model_path, _model_obj = train_knn(
                     train_features,
                     train_labels,
                     test_features,
@@ -699,7 +786,7 @@ def main():
                     submission_path
                 )
             elif model_name == 'xgboost':
-                val_acc, submission, model_path = train_xgboost(
+                val_acc, submission, model_path, _model_obj = train_xgboost(
                     train_features,
                     train_labels,
                     test_features,
@@ -711,7 +798,20 @@ def main():
                     cm_name,
                     submission_path
                 )
-            else:
+            elif model_name == 'esemble':
+                val_acc, submission, model_path, _model_obj = train_ensemble(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            else: # MLP Training
                 X_train, X_val, y_train, y_val = train_test_split(
                     train_features,
                     train_labels,
@@ -816,6 +916,7 @@ def main():
                 val_acc = max(best_val, final_val_acc)
                 submission = submission_path
                 model_path = best_model_path
+                _model_obj = model
 
             submission_accuracy, matches, total = score_submission(
                 Path(submission), ground_truth_path

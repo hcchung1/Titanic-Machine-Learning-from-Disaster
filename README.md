@@ -50,9 +50,9 @@
 
 5. **LogisticRegression**: `0.7464`(RF)
 
-6. **svm**: `0.6770` (XGB Feature)
+6. **svm**: `0.7727` (RF)
 
-7. **knn**: `0.6627` (RF)
+7. **knn**: `0.7895` (RF)
 
 8. **Emsembling Models**:
     - MLP
