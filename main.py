@@ -390,6 +390,92 @@ def train_xgboost(
     return val_acc, submission_path, model_path, xgb
 
 
+def train_rfxgb(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    """Train RF and XGB on the same split and soft-vote their probabilities."""
+
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    rf = RandomForestClassifier(
+        criterion='gini',
+        n_estimators=1000,
+        min_samples_split=12,
+        min_samples_leaf=1,
+        oob_score=True,
+        random_state=cfg.seed,
+        n_jobs=-1
+    )
+    logger.info('Training RandomForestClassifier (RFXGB ensemble part)...')
+    rf.fit(X_train, y_train)
+
+    cpu_count = os.cpu_count() or 1
+    xgb = XGBClassifier(
+        n_estimators=600,
+        learning_rate=0.03,
+        max_depth=3,
+        subsample=0.9,
+        colsample_bytree=0.8,
+        reg_lambda=1.0,
+        reg_alpha=0.0,
+        min_child_weight=1.0,
+        objective='binary:logistic',
+        eval_metric='logloss',
+        random_state=cfg.seed,
+        n_jobs=max(1, cpu_count - 1),
+        early_stopping_rounds=50,
+    )
+    logger.info('Training XGBoostClassifier (RFXGB ensemble part)...')
+    xgb.fit(
+        X_train,
+        y_train,
+        eval_set=[(X_val, y_val)],
+        verbose=False,
+    )
+
+    rf_val_proba = rf.predict_proba(X_val)
+    xgb_val_proba = xgb.predict_proba(X_val)
+    avg_val_proba = (rf_val_proba + xgb_val_proba) / 2.0
+    val_preds = np.argmax(avg_val_proba, axis=1)
+
+    val_acc = accuracy_score(y_val, val_preds) * 100.0
+    report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
+    logger.info(f'RFXGB validation accuracy: {val_acc:.2f}%')
+    logger.info('Validation report:\n' + report)
+    plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
+
+    rf_test_proba = rf.predict_proba(test_features)
+    xgb_test_proba = xgb.predict_proba(test_features)
+    avg_test_proba = (rf_test_proba + xgb_test_proba) / 2.0
+    test_preds = np.argmax(avg_test_proba, axis=1)
+
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(f'RFXGB submission saved to {submission_path}')
+
+    model_path = os.path.join(output_dir, f'{log_name}_rfxgb_{today}.pth')
+    torch.save({'rf': rf, 'xgb': xgb}, model_path)
+    logger.info(f'RFXGB models serialized to {model_path}')
+
+    return val_acc, submission_path, model_path, {'rf': rf, 'xgb': xgb}
+
+
 def train_logistic_regression(
     train_features,
     train_labels,
@@ -787,6 +873,19 @@ def main():
                 )
             elif model_name == 'xgboost':
                 val_acc, submission, model_path, _model_obj = train_xgboost(
+                    train_features,
+                    train_labels,
+                    test_features,
+                    passenger_ids,
+                    cfg,
+                    output_dir,
+                    seed_log_name,
+                    today,
+                    cm_name,
+                    submission_path
+                )
+            elif model_name == 'rfxgb':
+                val_acc, submission, model_path, _model_obj = train_rfxgb(
                     train_features,
                     train_labels,
                     test_features,
