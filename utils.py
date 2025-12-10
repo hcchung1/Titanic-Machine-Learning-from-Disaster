@@ -14,7 +14,7 @@ from torch.utils.data import Dataset # pyright: ignore[reportMissingModuleSource
 # ========== Global Configurations ==========
 CLASS_NAMES = ['Did Not Survive', 'Survived']
 
-CUR_MODEL = 'xgboost'  # Options: 'RandomForest', 'gradientboosting', 'logisticregression', 'svm', 'knn', 'xgboost', 'MLP'
+CUR_MODEL = 'xgboost'  # Options: 'RandomForest', 'gradientboosting', 'logisticregression', 'svm', 'knn', 'xgboost', 'MLP', 'ensemble'
 KAGGLE_SUBMIT = False
 EARLY_STOPPING = True
 NUM_WORKERS = 0

@@ -798,7 +798,7 @@ def main():
                     cm_name,
                     submission_path
                 )
-            elif model_name == 'esemble':
+            elif model_name == 'ensemble':
                 val_acc, submission, model_path, _model_obj = train_ensemble(
                     train_features,
                     train_labels,
