@@ -1,5 +1,5 @@
 # Titanic from Kaggle using machine learning techiniche
-### Feature Engineering
+## Feature Engineering
 1. **Title Extraction**
     - Extract titles from Name (e.g., Mr, Mrs, Miss, Master)
     - Combine rare titles:
@@ -35,3 +35,25 @@
 7. **Scaling**
     - Apply StandardScaler to all features
     - Fit and transform separately on train and test sets to prevent data leakage
+
+---
+
+## Result Accuracy
+### Current Best Model: **Random Forest**
+1. **MLP**: `0.77751`
+
+2. **RandomForest**: `0.7967` (RF)
+
+3. **GradientBoosting**: `0.7751`(RF)
+
+4. **XGBoost**: `0.7895` (RF)
+
+5. **LogisticRegression**: `0.7464`(RF)
+
+6. **svm**: `0.7727` (RF)
+
+7. **knn**: `0.7895` (RF)
+
+8. **Emsembling Models**:
+    - MLP
+    - RandomForest...
