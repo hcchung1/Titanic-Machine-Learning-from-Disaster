@@ -491,7 +491,10 @@ def main():
         colorize=False
     )
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if torch.cuda.is_available():
+        device = torch.device(f'cuda:{torch.cuda.device_count() - 1}')
+    else:
+        device = torch.device('cpu')
     logger.info(f'Using device: {device}')
 
     train_csv = os.path.join(data_dir, 'train.csv')

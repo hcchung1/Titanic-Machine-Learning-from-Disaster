@@ -14,11 +14,11 @@ from torch.utils.data import Dataset # pyright: ignore[reportMissingModuleSource
 # ========== Global Configurations ==========
 CLASS_NAMES = ['Did Not Survive', 'Survived']
 
-CUR_MODEL = 'RandomForest'  # Options: 'RandomForest', 'gradientboosting', 'logisticregression', 'svm', 'knn', 'MLP'
+CUR_MODEL = 'gradientboosting'  # Options: 'RandomForest', 'gradientboosting', 'logisticregression', 'svm', 'knn', 'MLP'
 KAGGLE_SUBMIT = False
 EARLY_STOPPING = True
 NUM_WORKERS = 0
-IMMFEATURE = False  # When True, use notebook-style feature engineering
+IMMFEATURE = True  # When True, use notebook-style feature engineering
 
 
 @dataclass(frozen=True)
