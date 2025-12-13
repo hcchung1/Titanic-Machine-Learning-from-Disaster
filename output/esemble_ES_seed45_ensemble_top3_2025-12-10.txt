@@ -1,0 +1,4 @@
+Top-3 models by validation accuracy
+randomforest: 84.3575, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_randomforest_random_forest_2025-12-10.pth
+svm: 83.7989, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_svm_svm_2025-12-10.pth
+xgboost: 83.7989, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_xgboost_xgboost_2025-12-10.pth

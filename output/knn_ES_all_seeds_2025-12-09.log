@@ -1,0 +1,102 @@
+2025-12-09 21:28:28.766 | INFO | Using device: cuda
+2025-12-09 21:28:32.908 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 21:28:32.917 | INFO | Training KNeighborsClassifier...
+2025-12-09 21:28:33.042 | INFO | KNN validation accuracy: 69.83%
+2025-12-09 21:28:33.042 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7373    0.7909    0.7632       110
+       Survived     0.6230    0.5507    0.5846        69
+
+       accuracy                         0.6983       179
+      macro avg     0.6801    0.6708    0.6739       179
+   weighted avg     0.6932    0.6983    0.6943       179
+
+2025-12-09 21:28:33.207 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-09.png
+2025-12-09 21:28:33.247 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-09 21:28:33.254 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-09.pth
+2025-12-09 21:28:33.258 | INFO | Submission accuracy vs corrected ground truth: 0.6340 (265/418)
+2025-12-09 21:28:33.261 | INFO | Training KNeighborsClassifier...
+2025-12-09 21:28:33.294 | INFO | KNN validation accuracy: 69.83%
+2025-12-09 21:28:33.295 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7295    0.8091    0.7672       110
+       Survived     0.6316    0.5217    0.5714        69
+
+       accuracy                         0.6983       179
+      macro avg     0.6805    0.6654    0.6693       179
+   weighted avg     0.6918    0.6983    0.6918       179
+
+2025-12-09 21:28:33.420 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_cm_2025-12-09.png
+2025-12-09 21:28:33.447 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_submission.csv
+2025-12-09 21:28:33.449 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_knn_2025-12-09.pth
+2025-12-09 21:28:33.452 | INFO | Submission accuracy vs corrected ground truth: 0.6364 (266/418)
+2025-12-09 21:28:33.455 | INFO | Training KNeighborsClassifier...
+2025-12-09 21:28:33.498 | INFO | KNN validation accuracy: 75.98%
+2025-12-09 21:28:33.499 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7597    0.8909    0.8201       110
+       Survived     0.7600    0.5507    0.6387        69
+
+       accuracy                         0.7598       179
+      macro avg     0.7598    0.7208    0.7294       179
+   weighted avg     0.7598    0.7598    0.7501       179
+
+2025-12-09 21:28:33.630 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_cm_2025-12-09.png
+2025-12-09 21:28:33.666 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-09 21:28:33.668 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_knn_2025-12-09.pth
+2025-12-09 21:28:33.671 | INFO | Submission accuracy vs corrected ground truth: 0.6627 (277/418)
+2025-12-09 21:28:33.671 | INFO | Best seed 777 achieved validation accuracy 75.98% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-09 23:21:54.006 | INFO | Using device: cuda
+2025-12-09 23:21:58.056 | INFO | Loaded 891 training samples with 14 features
+2025-12-09 23:21:58.066 | INFO | Training KNeighborsClassifier...
+2025-12-09 23:21:58.114 | INFO | KNN validation accuracy: 75.42%
+2025-12-09 23:21:58.115 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7946    0.8091    0.8018       110
+       Survived     0.6866    0.6667    0.6765        69
+
+       accuracy                         0.7542       179
+      macro avg     0.7406    0.7379    0.7391       179
+   weighted avg     0.7530    0.7542    0.7535       179
+
+2025-12-09 23:21:58.278 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-09.png
+2025-12-09 23:21:58.310 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-09 23:21:58.317 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-09.pth
+2025-12-09 23:21:58.321 | INFO | Submission accuracy vs corrected ground truth: 0.6316 (264/418)
+2025-12-09 23:21:58.327 | INFO | Training KNeighborsClassifier...
+2025-12-09 23:21:58.376 | INFO | KNN validation accuracy: 74.30%
+2025-12-09 23:21:58.376 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7581    0.8545    0.8034       110
+       Survived     0.7091    0.5652    0.6290        69
+
+       accuracy                         0.7430       179
+      macro avg     0.7336    0.7099    0.7162       179
+   weighted avg     0.7392    0.7430    0.7362       179
+
+2025-12-09 23:21:58.505 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_cm_2025-12-09.png
+2025-12-09 23:21:58.543 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_submission.csv
+2025-12-09 23:21:58.545 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_knn_2025-12-09.pth
+2025-12-09 23:21:58.548 | INFO | Submission accuracy vs corrected ground truth: 0.6459 (270/418)
+2025-12-09 23:21:58.552 | INFO | Training KNeighborsClassifier...
+2025-12-09 23:21:58.596 | INFO | KNN validation accuracy: 73.74%
+2025-12-09 23:21:58.596 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7561    0.8455    0.7983       110
+       Survived     0.6964    0.5652    0.6240        69
+
+       accuracy                         0.7374       179
+      macro avg     0.7263    0.7053    0.7111       179
+   weighted avg     0.7331    0.7374    0.7311       179
+
+2025-12-09 23:21:58.726 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_cm_2025-12-09.png
+2025-12-09 23:21:58.759 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-09 23:21:58.761 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_knn_2025-12-09.pth
+2025-12-09 23:21:58.765 | INFO | Submission accuracy vs corrected ground truth: 0.6364 (266/418)
+2025-12-09 23:21:58.765 | INFO | Best seed 45 achieved validation accuracy 75.42% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv

@@ -1,0 +1,34 @@
+2025-12-10 13:50:38.572 | INFO | Running GridSearchCV for SVM (RBF kernel) with scaling...
+2025-12-10 13:50:46.181 | INFO | Best SVM params: {'svc__C': 5.0, 'svc__gamma': 0.05} (cv accuracy 0.8161)
+2025-12-10 13:50:46.193 | INFO | SVM validation accuracy: 83.80%
+2025-12-10 13:50:46.193 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8716    0.8636    0.8676       110
+       Survived     0.7857    0.7971    0.7914        69
+
+       accuracy                         0.8380       179
+      macro avg     0.8286    0.8304    0.8295       179
+   weighted avg     0.8385    0.8380    0.8382       179
+
+2025-12-10 13:50:46.391 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_cm_2025-12-10.png
+2025-12-10 13:50:46.404 | INFO | SVM submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_submission.csv
+2025-12-10 13:50:46.409 | INFO | SVM model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_svm_2025-12-10.pth
+2025-12-10 13:50:46.413 | INFO | Submission accuracy vs corrected ground truth: 0.7608 (318/418)
+2025-12-10 13:52:36.861 | INFO | Running GridSearchCV for SVM (RBF kernel) with scaling...
+2025-12-10 13:52:44.410 | INFO | Best SVM params: {'svc__C': 2.0, 'svc__gamma': 0.05} (cv accuracy 0.8161)
+2025-12-10 13:52:44.432 | INFO | SVM validation accuracy: 82.12%
+2025-12-10 13:52:44.432 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8679    0.8364    0.8519       110
+       Survived     0.7534    0.7971    0.7746        69
+
+       accuracy                         0.8212       179
+      macro avg     0.8107    0.8167    0.8132       179
+   weighted avg     0.8238    0.8212    0.8221       179
+
+2025-12-10 13:52:44.613 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_cm_2025-12-10.png
+2025-12-10 13:52:44.625 | INFO | SVM submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_submission.csv
+2025-12-10 13:52:44.629 | INFO | SVM model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed45_svm_2025-12-10.pth
+2025-12-10 13:52:44.632 | INFO | Submission accuracy vs corrected ground truth: 0.7440 (311/418)

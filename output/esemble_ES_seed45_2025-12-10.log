@@ -1,0 +1,96 @@
+2025-12-10 14:16:19.564 | INFO | Training RandomForestClassifier...
+2025-12-10 14:16:21.263 | INFO | RandomForest validation accuracy: 84.36%
+2025-12-10 14:16:21.263 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8475    0.9091    0.8772       110
+       Survived     0.8361    0.7391    0.7846        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8418    0.8241    0.8309       179
+   weighted avg     0.8431    0.8436    0.8415       179
+
+2025-12-10 14:16:21.429 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_randomforest_cm_2025-12-10.png
+2025-12-10 14:16:21.744 | INFO | RandomForest submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_randomforest_submission.csv
+2025-12-10 14:16:21.865 | INFO | RandomForest model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_randomforest_random_forest_2025-12-10.pth
+2025-12-10 14:16:21.867 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-10 14:17:57.375 | INFO | Best GradientBoosting params: {'learning_rate': 0.01, 'max_depth': 5, 'min_samples_leaf': 1, 'min_samples_split': 4, 'n_estimators': 300, 'subsample': 0.9} (cv accuracy 0.8399)
+2025-12-10 14:17:57.382 | INFO | GradientBoosting validation accuracy: 82.68%
+2025-12-10 14:17:57.383 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8435    0.8818    0.8622       110
+       Survived     0.7969    0.7391    0.7669        69
+
+       accuracy                         0.8268       179
+      macro avg     0.8202    0.8105    0.8146       179
+   weighted avg     0.8255    0.8268    0.8255       179
+
+2025-12-10 14:17:57.507 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_gradientboosting_cm_2025-12-10.png
+2025-12-10 14:17:57.511 | INFO | GradientBoosting submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_gradientboosting_submission.csv
+2025-12-10 14:17:57.534 | INFO | GradientBoosting model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_gradientboosting_gradient_boosting_2025-12-10.pth
+2025-12-10 14:17:57.536 | INFO | Training LogisticRegression...
+2025-12-10 14:17:57.549 | INFO | LogisticRegression validation accuracy: 77.65%
+2025-12-10 14:17:57.549 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7966    0.8545    0.8246       110
+       Survived     0.7377    0.6522    0.6923        69
+
+       accuracy                         0.7765       179
+      macro avg     0.7672    0.7534    0.7584       179
+   weighted avg     0.7739    0.7765    0.7736       179
+
+2025-12-10 14:17:57.675 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_logisticregression_cm_2025-12-10.png
+2025-12-10 14:17:57.679 | INFO | LogisticRegression submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_logisticregression_submission.csv
+2025-12-10 14:17:57.680 | INFO | LogisticRegression model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_logisticregression_logistic_regression_2025-12-10.pth
+2025-12-10 14:17:57.682 | INFO | Running GridSearchCV for SVM (RBF kernel) with scaling...
+2025-12-10 14:17:57.970 | INFO | Best SVM params: {'svc__C': 5.0, 'svc__gamma': 0.05} (cv accuracy 0.8161)
+2025-12-10 14:17:57.980 | INFO | SVM validation accuracy: 83.80%
+2025-12-10 14:17:57.981 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8716    0.8636    0.8676       110
+       Survived     0.7857    0.7971    0.7914        69
+
+       accuracy                         0.8380       179
+      macro avg     0.8286    0.8304    0.8295       179
+   weighted avg     0.8385    0.8380    0.8382       179
+
+2025-12-10 14:17:58.109 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_svm_cm_2025-12-10.png
+2025-12-10 14:17:58.119 | INFO | SVM submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_svm_submission.csv
+2025-12-10 14:17:58.121 | INFO | SVM model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_svm_svm_2025-12-10.pth
+2025-12-10 14:17:58.122 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 14:17:58.337 | INFO | Best KNN params: {'knn__n_neighbors': 11, 'knn__p': 1, 'knn__weights': 'distance'} (cv accuracy 0.8147)
+2025-12-10 14:17:58.374 | INFO | KNN validation accuracy: 78.21%
+2025-12-10 14:17:58.374 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8034    0.8545    0.8282       110
+       Survived     0.7419    0.6667    0.7023        69
+
+       accuracy                         0.7821       179
+      macro avg     0.7727    0.7606    0.7652       179
+   weighted avg     0.7797    0.7821    0.7797       179
+
+2025-12-10 14:17:58.510 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_knn_cm_2025-12-10.png
+2025-12-10 14:17:58.623 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_knn_submission.csv
+2025-12-10 14:17:58.624 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_knn_knn_2025-12-10.pth
+2025-12-10 14:17:58.626 | INFO | Training XGBoostClassifier...
+2025-12-10 14:17:58.909 | INFO | XGBoost validation accuracy: 83.80%
+2025-12-10 14:17:58.909 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8462    0.9000    0.8722       110
+       Survived     0.8226    0.7391    0.7786        69
+
+       accuracy                         0.8380       179
+      macro avg     0.8344    0.8196    0.8254       179
+   weighted avg     0.8371    0.8380    0.8362       179
+
+2025-12-10 14:17:59.043 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_xgboost_cm_2025-12-10.png
+2025-12-10 14:17:59.046 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_xgboost_submission.csv
+2025-12-10 14:17:59.051 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_xgboost_xgboost_2025-12-10.pth
+2025-12-10 14:17:59.052 | INFO | Top-3 models for ensemble (val acc): randomforest=84.36%, svm=83.80%, xgboost=83.80%
+2025-12-10 14:17:59.297 | INFO | Ensemble submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed45_ensemble_submission.csv
+2025-12-10 14:17:59.302 | INFO | Submission accuracy vs corrected ground truth: 0.7703 (322/418)

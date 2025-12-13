@@ -1,0 +1,4 @@
+Top-3 models by validation accuracy
+gradientboosting: 86.5922, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed777_gradientboosting_gradient_boosting_2025-12-10.pth
+xgboost: 86.5922, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed777_xgboost_xgboost_2025-12-10.pth
+svm: 86.0335, model=E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\esemble_ES_seed777_svm_svm_2025-12-10.pth

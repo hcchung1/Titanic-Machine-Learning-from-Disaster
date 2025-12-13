@@ -1,0 +1,2 @@
+Best RF seed: 777, val_acc=86.0335
+Best XGB seed: 777, val_acc=86.5922

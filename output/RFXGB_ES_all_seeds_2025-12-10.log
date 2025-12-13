@@ -1,0 +1,63 @@
+2025-12-10 14:54:52.036 | INFO | Using device: cuda
+2025-12-10 14:54:56.251 | INFO | Loaded 891 training samples with 9 features
+2025-12-10 14:54:56.261 | INFO | Training RandomForestClassifier (RFXGB ensemble part)...
+2025-12-10 14:54:57.814 | INFO | Training XGBoostClassifier (RFXGB ensemble part)...
+2025-12-10 14:54:58.226 | INFO | RFXGB validation accuracy: 84.92%
+2025-12-10 14:54:58.226 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8547    0.9091    0.8811       110
+       Survived     0.8387    0.7536    0.7939        69
+
+       accuracy                         0.8492       179
+      macro avg     0.8467    0.8314    0.8375       179
+   weighted avg     0.8485    0.8492    0.8475       179
+
+2025-12-10 14:54:58.414 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed45_cm_2025-12-10.png
+2025-12-10 14:54:58.635 | INFO | RFXGB submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed45_submission.csv
+2025-12-10 14:54:58.814 | INFO | RFXGB models serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed45_rfxgb_2025-12-10.pth
+2025-12-10 14:54:58.818 | INFO | Submission accuracy vs corrected ground truth: 0.7727 (323/418)
+2025-12-10 14:54:58.823 | INFO | Training RandomForestClassifier (RFXGB ensemble part)...
+2025-12-10 14:55:00.581 | INFO | Training XGBoostClassifier (RFXGB ensemble part)...
+2025-12-10 14:55:00.918 | INFO | RFXGB validation accuracy: 81.01%
+2025-12-10 14:55:00.919 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8115    0.9000    0.8534       110
+       Survived     0.8070    0.6667    0.7302        69
+
+       accuracy                         0.8101       179
+      macro avg     0.8092    0.7833    0.7918       179
+   weighted avg     0.8098    0.8101    0.8059       179
+
+2025-12-10 14:55:01.052 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed2025_cm_2025-12-10.png
+2025-12-10 14:55:01.249 | INFO | RFXGB submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed2025_submission.csv
+2025-12-10 14:55:01.401 | INFO | RFXGB models serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed2025_rfxgb_2025-12-10.pth
+2025-12-10 14:55:01.406 | INFO | Submission accuracy vs corrected ground truth: 0.7919 (331/418)
+2025-12-10 14:55:01.410 | INFO | Training RandomForestClassifier (RFXGB ensemble part)...
+2025-12-10 14:55:03.002 | INFO | Training XGBoostClassifier (RFXGB ensemble part)...
+2025-12-10 14:55:03.427 | INFO | RFXGB validation accuracy: 86.03%
+2025-12-10 14:55:03.427 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8571    0.9273    0.8908       110
+       Survived     0.8667    0.7536    0.8062        69
+
+       accuracy                         0.8603       179
+      macro avg     0.8619    0.8404    0.8485       179
+   weighted avg     0.8608    0.8603    0.8582       179
+
+2025-12-10 14:55:03.560 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed777_cm_2025-12-10.png
+2025-12-10 14:55:03.764 | INFO | RFXGB submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed777_submission.csv
+2025-12-10 14:55:03.916 | INFO | RFXGB models serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed777_rfxgb_2025-12-10.pth
+2025-12-10 14:55:03.921 | INFO | Submission accuracy vs corrected ground truth: 0.7823 (327/418)
+2025-12-10 14:55:03.921 | INFO | Best seed 777 achieved validation accuracy 86.03% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_seed777_submission.csv
+2025-12-10 15:02:03.941 | INFO | Using device: cuda
+2025-12-10 15:02:08.093 | INFO | Loaded 891 training samples with 9 features
+2025-12-10 15:02:10.083 | INFO | RFXGB seed 45: RF val 84.92%, XGB val 83.80%
+2025-12-10 15:02:11.939 | INFO | RFXGB seed 2025: RF val 81.56%, XGB val 81.56%
+2025-12-10 15:02:13.891 | INFO | RFXGB seed 777: RF val 86.03%, XGB val 86.59%
+2025-12-10 15:02:14.092 | INFO | RFXGB (best seeds) submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_best_rfxgb_submission.csv; best RF seed 777 (86.03%), best XGB seed 777 (86.59%)
+2025-12-10 15:02:14.231 | INFO | Best RFXGB models serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_best_rfxgb_2025-12-10.pth
+2025-12-10 15:02:14.234 | INFO | RFXGB best-seed submission accuracy vs corrected ground truth: 0.7823 (327/418)
+2025-12-10 15:02:14.235 | INFO | Best seed best_rf_xgb achieved validation accuracy 86.31% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\RFXGB_ES_best_rfxgb_submission.csv
