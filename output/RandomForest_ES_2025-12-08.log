@@ -1,0 +1,21 @@
+2025-12-08 01:00:08.742 | INFO | Using device: cuda
+2025-12-08 01:00:08.793 | INFO | Loaded 891 training samples with 27 features
+2025-12-08 01:00:08.795 | INFO | Training RandomForestClassifier...
+2025-12-08 01:00:12.318 | INFO | RandomForest validation accuracy: 82.12%
+2025-12-08 01:00:12.318 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8362    0.8818    0.8584       110
+       Survived     0.7937    0.7246    0.7576        69
+
+       accuracy                         0.8212       179
+      macro avg     0.8149    0.8032    0.8080       179
+   weighted avg     0.8198    0.8212    0.8195       179
+
+2025-12-08 01:00:12.522 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_cm_2025-12-08.png
+2025-12-08 01:00:12.785 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_submission.csv
+2025-12-08 01:00:13.179 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_random_forest_2025-12-08.joblib
+2025-12-08 01:00:13.223 | INFO | Submission metrics — Accuracy: 80.14%, F1: 0.7331, TN: 221, FP: 45, FN: 38, TP: 114
+2025-12-08 01:00:13.235 | INFO | False negatives exported to /workspace/output/RandomForest_ES_submission_fn.csv
+2025-12-08 01:00:13.235 | INFO | True negatives exported to /workspace/output/RandomForest_ES_submission_tn.csv
+2025-12-08 01:00:13.235 | INFO | Metric summary written to /workspace/output/RandomForest_ES_submission_metrics.txt

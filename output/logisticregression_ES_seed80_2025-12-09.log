@@ -1,0 +1,15 @@
+2025-12-09 14:28:56.894 | INFO | Training LogisticRegression...
+2025-12-09 14:28:56.908 | INFO | LogisticRegression validation accuracy: 76.54%
+2025-12-09 14:28:56.908 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7982    0.8273    0.8125       110
+       Survived     0.7077    0.6667    0.6866        69
+
+       accuracy                         0.7654       179
+      macro avg     0.7530    0.7470    0.7495       179
+   weighted avg     0.7633    0.7654    0.7640       179
+
+2025-12-09 14:28:57.108 | INFO | Confusion matrix saved to /workspace/output/logisticregression_ES_seed80_cm_2025-12-09.png
+2025-12-09 14:28:57.110 | INFO | LogisticRegression submission saved to /workspace/output/logisticregression_ES_seed80_submission.csv
+2025-12-09 14:28:57.111 | INFO | LogisticRegression model serialized to /workspace/output/logisticregression_ES_seed80_logistic_regression_2025-12-09.pth

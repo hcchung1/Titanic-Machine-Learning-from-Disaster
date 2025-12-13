@@ -1,0 +1,30 @@
+2025-12-09 14:28:05.869 | INFO | Training LogisticRegression...
+2025-12-09 14:28:05.883 | INFO | LogisticRegression validation accuracy: 79.89%
+2025-12-09 14:28:05.884 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8304    0.8455    0.8378       110
+       Survived     0.7463    0.7246    0.7353        69
+
+       accuracy                         0.7989       179
+      macro avg     0.7883    0.7850    0.7866       179
+   weighted avg     0.7979    0.7989    0.7983       179
+
+2025-12-09 14:28:06.086 | INFO | Confusion matrix saved to /workspace/output/logisticregression_ES_seed710_cm_2025-12-09.png
+2025-12-09 14:28:06.088 | INFO | LogisticRegression submission saved to /workspace/output/logisticregression_ES_seed710_submission.csv
+2025-12-09 14:28:06.089 | INFO | LogisticRegression model serialized to /workspace/output/logisticregression_ES_seed710_logistic_regression_2025-12-09.pth
+2025-12-09 14:28:56.216 | INFO | Training LogisticRegression...
+2025-12-09 14:28:56.230 | INFO | LogisticRegression validation accuracy: 79.89%
+2025-12-09 14:28:56.231 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8304    0.8455    0.8378       110
+       Survived     0.7463    0.7246    0.7353        69
+
+       accuracy                         0.7989       179
+      macro avg     0.7883    0.7850    0.7866       179
+   weighted avg     0.7979    0.7989    0.7983       179
+
+2025-12-09 14:28:56.429 | INFO | Confusion matrix saved to /workspace/output/logisticregression_ES_seed710_cm_2025-12-09.png
+2025-12-09 14:28:56.432 | INFO | LogisticRegression submission saved to /workspace/output/logisticregression_ES_seed710_submission.csv
+2025-12-09 14:28:56.433 | INFO | LogisticRegression model serialized to /workspace/output/logisticregression_ES_seed710_logistic_regression_2025-12-09.pth

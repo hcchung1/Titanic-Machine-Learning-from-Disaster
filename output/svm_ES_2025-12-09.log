@@ -1,0 +1,35 @@
+2025-12-09 11:52:53.118 | INFO | Using device: cuda
+2025-12-09 11:52:53.289 | INFO | Loaded 891 training samples with 27 features
+2025-12-09 11:52:53.291 | INFO | Training SVM (RBF kernel)...
+2025-12-09 11:52:53.326 | INFO | SVM validation accuracy: 84.36%
+2025-12-09 11:52:53.326 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8727    0.8727    0.8727       110
+       Survived     0.7971    0.7971    0.7971        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8349    0.8349    0.8349       179
+   weighted avg     0.8436    0.8436    0.8436       179
+
+2025-12-09 11:52:53.839 | INFO | Confusion matrix saved to /workspace/output/svm_ES_cm_2025-12-09.png
+2025-12-09 11:52:53.856 | INFO | SVM submission saved to /workspace/output/svm_ES_submission.csv
+2025-12-09 11:52:53.859 | INFO | SVM model serialized to /workspace/output/svm_ES_svm_2025-12-09.pth
+2025-12-09 11:53:25.814 | INFO | Using device: cuda
+2025-12-09 11:53:25.859 | INFO | Loaded 891 training samples with 27 features
+2025-12-09 11:53:25.860 | INFO | Training SVM (RBF kernel)...
+2025-12-09 11:53:25.894 | INFO | SVM validation accuracy: 84.36%
+2025-12-09 11:53:25.894 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8727    0.8727    0.8727       110
+       Survived     0.7971    0.7971    0.7971        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8349    0.8349    0.8349       179
+   weighted avg     0.8436    0.8436    0.8436       179
+
+2025-12-09 11:53:26.169 | INFO | Confusion matrix saved to /workspace/output/svm_ES_cm_2025-12-09.png
+2025-12-09 11:53:26.182 | INFO | SVM submission saved to /workspace/output/svm_ES_submission.csv
+2025-12-09 11:53:26.185 | INFO | SVM model serialized to /workspace/output/svm_ES_svm_2025-12-09.pth
+2025-12-09 11:53:27.073 | INFO | Submitting '/workspace/output/svm_ES_submission.csv' to Kaggle competition 'titanic'

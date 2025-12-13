@@ -1,0 +1,259 @@
+2025-12-09 14:29:35.164 | INFO | Using device: cuda
+2025-12-09 14:29:41.605 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 14:29:41.616 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:41.653 | INFO | SVM validation accuracy: 72.63%
+2025-12-09 14:29:41.654 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7798    0.7727    0.7763       110
+       Survived     0.6429    0.6522    0.6475        69
+
+       accuracy                         0.7263       179
+      macro avg     0.7113    0.7125    0.7119       179
+   weighted avg     0.7270    0.7263    0.7266       179
+
+2025-12-09 14:29:41.860 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed45_cm_2025-12-09.png
+2025-12-09 14:29:41.875 | INFO | SVM submission saved to /workspace/output/svm_ES_seed45_submission.csv
+2025-12-09 14:29:41.878 | INFO | SVM model serialized to /workspace/output/svm_ES_seed45_svm_2025-12-09.pth
+2025-12-09 14:29:41.887 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:41.919 | INFO | SVM validation accuracy: 67.60%
+2025-12-09 14:29:41.919 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7281    0.7545    0.7411       110
+       Survived     0.5846    0.5507    0.5672        69
+
+       accuracy                         0.6760       179
+      macro avg     0.6563    0.6526    0.6541       179
+   weighted avg     0.6728    0.6760    0.6740       179
+
+2025-12-09 14:29:42.093 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed777_cm_2025-12-09.png
+2025-12-09 14:29:42.107 | INFO | SVM submission saved to /workspace/output/svm_ES_seed777_submission.csv
+2025-12-09 14:29:42.109 | INFO | SVM model serialized to /workspace/output/svm_ES_seed777_svm_2025-12-09.pth
+2025-12-09 14:29:42.119 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:42.152 | INFO | SVM validation accuracy: 68.72%
+2025-12-09 14:29:42.152 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7143    0.8182    0.7627       110
+       Survived     0.6226    0.4783    0.5410        69
+
+       accuracy                         0.6872       179
+      macro avg     0.6685    0.6482    0.6518       179
+   weighted avg     0.6790    0.6872    0.6772       179
+
+2025-12-09 14:29:42.345 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed1_cm_2025-12-09.png
+2025-12-09 14:29:42.359 | INFO | SVM submission saved to /workspace/output/svm_ES_seed1_submission.csv
+2025-12-09 14:29:42.362 | INFO | SVM model serialized to /workspace/output/svm_ES_seed1_svm_2025-12-09.pth
+2025-12-09 14:29:42.371 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:42.407 | INFO | SVM validation accuracy: 69.27%
+2025-12-09 14:29:42.407 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7273    0.8000    0.7619       110
+       Survived     0.6207    0.5217    0.5669        69
+
+       accuracy                         0.6927       179
+      macro avg     0.6740    0.6609    0.6644       179
+   weighted avg     0.6862    0.6927    0.6867       179
+
+2025-12-09 14:29:42.593 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed2_cm_2025-12-09.png
+2025-12-09 14:29:42.608 | INFO | SVM submission saved to /workspace/output/svm_ES_seed2_submission.csv
+2025-12-09 14:29:42.610 | INFO | SVM model serialized to /workspace/output/svm_ES_seed2_svm_2025-12-09.pth
+2025-12-09 14:29:42.619 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:42.655 | INFO | SVM validation accuracy: 71.51%
+2025-12-09 14:29:42.656 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7611    0.7818    0.7713       110
+       Survived     0.6364    0.6087    0.6222        69
+
+       accuracy                         0.7151       179
+      macro avg     0.6987    0.6953    0.6968       179
+   weighted avg     0.7130    0.7151    0.7138       179
+
+2025-12-09 14:29:42.843 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed3_cm_2025-12-09.png
+2025-12-09 14:29:42.858 | INFO | SVM submission saved to /workspace/output/svm_ES_seed3_submission.csv
+2025-12-09 14:29:42.860 | INFO | SVM model serialized to /workspace/output/svm_ES_seed3_svm_2025-12-09.pth
+2025-12-09 14:29:42.869 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:42.905 | INFO | SVM validation accuracy: 67.04%
+2025-12-09 14:29:42.905 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7257    0.7455    0.7354       110
+       Survived     0.5758    0.5507    0.5630        69
+
+       accuracy                         0.6704       179
+      macro avg     0.6507    0.6481    0.6492       179
+   weighted avg     0.6679    0.6704    0.6689       179
+
+2025-12-09 14:29:43.091 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed4_cm_2025-12-09.png
+2025-12-09 14:29:43.105 | INFO | SVM submission saved to /workspace/output/svm_ES_seed4_submission.csv
+2025-12-09 14:29:43.107 | INFO | SVM model serialized to /workspace/output/svm_ES_seed4_svm_2025-12-09.pth
+2025-12-09 14:29:43.117 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:43.152 | INFO | SVM validation accuracy: 69.27%
+2025-12-09 14:29:43.152 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7350    0.7818    0.7577       110
+       Survived     0.6129    0.5507    0.5802        69
+
+       accuracy                         0.6927       179
+      macro avg     0.6740    0.6663    0.6689       179
+   weighted avg     0.6880    0.6927    0.6893       179
+
+2025-12-09 14:29:43.337 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed5_cm_2025-12-09.png
+2025-12-09 14:29:43.351 | INFO | SVM submission saved to /workspace/output/svm_ES_seed5_submission.csv
+2025-12-09 14:29:43.353 | INFO | SVM model serialized to /workspace/output/svm_ES_seed5_svm_2025-12-09.pth
+2025-12-09 14:29:43.363 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:43.399 | INFO | SVM validation accuracy: 68.72%
+2025-12-09 14:29:43.399 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7411    0.7545    0.7477       110
+       Survived     0.5970    0.5797    0.5882        69
+
+       accuracy                         0.6872       179
+      macro avg     0.6690    0.6671    0.6680       179
+   weighted avg     0.6855    0.6872    0.6863       179
+
+2025-12-09 14:29:43.584 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed6_cm_2025-12-09.png
+2025-12-09 14:29:43.598 | INFO | SVM submission saved to /workspace/output/svm_ES_seed6_submission.csv
+2025-12-09 14:29:43.600 | INFO | SVM model serialized to /workspace/output/svm_ES_seed6_svm_2025-12-09.pth
+2025-12-09 14:29:43.609 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:43.643 | INFO | SVM validation accuracy: 71.51%
+2025-12-09 14:29:43.643 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7565    0.7909    0.7733       110
+       Survived     0.6406    0.5942    0.6165        69
+
+       accuracy                         0.7151       179
+      macro avg     0.6986    0.6926    0.6949       179
+   weighted avg     0.7118    0.7151    0.7129       179
+
+2025-12-09 14:29:43.825 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed7_cm_2025-12-09.png
+2025-12-09 14:29:43.839 | INFO | SVM submission saved to /workspace/output/svm_ES_seed7_submission.csv
+2025-12-09 14:29:43.841 | INFO | SVM model serialized to /workspace/output/svm_ES_seed7_svm_2025-12-09.pth
+2025-12-09 14:29:43.851 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:43.891 | INFO | SVM validation accuracy: 75.98%
+2025-12-09 14:29:43.891 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8073    0.8000    0.8037       110
+       Survived     0.6857    0.6957    0.6906        69
+
+       accuracy                         0.7598       179
+      macro avg     0.7465    0.7478    0.7472       179
+   weighted avg     0.7605    0.7598    0.7601       179
+
+2025-12-09 14:29:44.075 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed8_cm_2025-12-09.png
+2025-12-09 14:29:44.090 | INFO | SVM submission saved to /workspace/output/svm_ES_seed8_submission.csv
+2025-12-09 14:29:44.092 | INFO | SVM model serialized to /workspace/output/svm_ES_seed8_svm_2025-12-09.pth
+2025-12-09 14:29:44.102 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:44.139 | INFO | SVM validation accuracy: 67.60%
+2025-12-09 14:29:44.139 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7364    0.7364    0.7364       110
+       Survived     0.5797    0.5797    0.5797        69
+
+       accuracy                         0.6760       179
+      macro avg     0.6580    0.6580    0.6580       179
+   weighted avg     0.6760    0.6760    0.6760       179
+
+2025-12-09 14:29:44.327 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed9_cm_2025-12-09.png
+2025-12-09 14:29:44.342 | INFO | SVM submission saved to /workspace/output/svm_ES_seed9_submission.csv
+2025-12-09 14:29:44.344 | INFO | SVM model serialized to /workspace/output/svm_ES_seed9_svm_2025-12-09.pth
+2025-12-09 14:29:44.353 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:44.389 | INFO | SVM validation accuracy: 68.72%
+2025-12-09 14:29:44.389 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7368    0.7636    0.7500       110
+       Survived     0.6000    0.5652    0.5821        69
+
+       accuracy                         0.6872       179
+      macro avg     0.6684    0.6644    0.6660       179
+   weighted avg     0.6841    0.6872    0.6853       179
+
+2025-12-09 14:29:44.575 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed101_cm_2025-12-09.png
+2025-12-09 14:29:44.589 | INFO | SVM submission saved to /workspace/output/svm_ES_seed101_submission.csv
+2025-12-09 14:29:44.591 | INFO | SVM model serialized to /workspace/output/svm_ES_seed101_svm_2025-12-09.pth
+2025-12-09 14:29:44.600 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:44.634 | INFO | SVM validation accuracy: 67.04%
+2025-12-09 14:29:44.635 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7297    0.7364    0.7330       110
+       Survived     0.5735    0.5652    0.5693        69
+
+       accuracy                         0.6704       179
+      macro avg     0.6516    0.6508    0.6512       179
+   weighted avg     0.6695    0.6704    0.6699       179
+
+2025-12-09 14:29:44.819 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed710_cm_2025-12-09.png
+2025-12-09 14:29:44.833 | INFO | SVM submission saved to /workspace/output/svm_ES_seed710_submission.csv
+2025-12-09 14:29:44.835 | INFO | SVM model serialized to /workspace/output/svm_ES_seed710_svm_2025-12-09.pth
+2025-12-09 14:29:44.844 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:44.879 | INFO | SVM validation accuracy: 66.48%
+2025-12-09 14:29:44.879 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7119    0.7636    0.7368       110
+       Survived     0.5738    0.5072    0.5385        69
+
+       accuracy                         0.6648       179
+      macro avg     0.6428    0.6354    0.6377       179
+   weighted avg     0.6586    0.6648    0.6604       179
+
+2025-12-09 14:29:45.060 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed1121_cm_2025-12-09.png
+2025-12-09 14:29:45.074 | INFO | SVM submission saved to /workspace/output/svm_ES_seed1121_submission.csv
+2025-12-09 14:29:45.076 | INFO | SVM model serialized to /workspace/output/svm_ES_seed1121_svm_2025-12-09.pth
+2025-12-09 14:29:45.085 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:45.120 | INFO | SVM validation accuracy: 72.07%
+2025-12-09 14:29:45.121 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7727    0.7727    0.7727       110
+       Survived     0.6377    0.6377    0.6377        69
+
+       accuracy                         0.7207       179
+      macro avg     0.7052    0.7052    0.7052       179
+   weighted avg     0.7207    0.7207    0.7207       179
+
+2025-12-09 14:29:45.303 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed1213_cm_2025-12-09.png
+2025-12-09 14:29:45.319 | INFO | SVM submission saved to /workspace/output/svm_ES_seed1213_submission.csv
+2025-12-09 14:29:45.321 | INFO | SVM model serialized to /workspace/output/svm_ES_seed1213_svm_2025-12-09.pth
+2025-12-09 14:29:45.331 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:45.369 | INFO | SVM validation accuracy: 73.18%
+2025-12-09 14:29:45.369 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7627    0.8182    0.7895       110
+       Survived     0.6721    0.5942    0.6308        69
+
+       accuracy                         0.7318       179
+      macro avg     0.7174    0.7062    0.7101       179
+   weighted avg     0.7278    0.7318    0.7283       179
+
+2025-12-09 14:29:45.576 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed80_cm_2025-12-09.png
+2025-12-09 14:29:45.592 | INFO | SVM submission saved to /workspace/output/svm_ES_seed80_submission.csv
+2025-12-09 14:29:45.594 | INFO | SVM model serialized to /workspace/output/svm_ES_seed80_svm_2025-12-09.pth
+2025-12-09 14:29:45.603 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:45.639 | INFO | SVM validation accuracy: 69.83%
+2025-12-09 14:29:45.639 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7333    0.8000    0.7652       110
+       Survived     0.6271    0.5362    0.5781        69
+
+       accuracy                         0.6983       179
+      macro avg     0.6802    0.6681    0.6717       179
+   weighted avg     0.6924    0.6983    0.6931       179
+
+2025-12-09 14:29:45.824 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed7777_cm_2025-12-09.png
+2025-12-09 14:29:45.838 | INFO | SVM submission saved to /workspace/output/svm_ES_seed7777_submission.csv
+2025-12-09 14:29:45.840 | INFO | SVM model serialized to /workspace/output/svm_ES_seed7777_svm_2025-12-09.pth
+2025-12-09 14:29:45.840 | INFO | Best seed 8 achieved validation accuracy 75.98% with submission /workspace/output/svm_ES_seed8_submission.csv
+2025-12-09 14:29:46.215 | INFO | Submitting '/workspace/output/svm_ES_seed8_submission.csv' to Kaggle competition 'titanic'

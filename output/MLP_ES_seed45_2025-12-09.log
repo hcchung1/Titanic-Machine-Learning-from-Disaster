@@ -1,0 +1,284 @@
+2025-12-09 14:22:24.017 | INFO | Model: TitanicMLP
+2025-12-09 14:22:24.017 | INFO | Optimizer: AdamW
+2025-12-09 14:22:25.857 | INFO | Epoch 1/250 | Train Loss 0.6913, Train Acc 59.69% | Val Loss 0.6231, Val Acc 68.72%
+2025-12-09 14:22:25.864 | INFO | New best model saved with validation accuracy 68.72%
+2025-12-09 14:22:25.976 | INFO | Epoch 2/250 | Train Loss 0.6281, Train Acc 65.31% | Val Loss 0.5924, Val Acc 68.16%
+2025-12-09 14:22:26.062 | INFO | Epoch 3/250 | Train Loss 0.6225, Train Acc 67.13% | Val Loss 0.5732, Val Acc 69.27%
+2025-12-09 14:22:26.182 | INFO | New best model saved with validation accuracy 69.27%
+2025-12-09 14:22:26.283 | INFO | Epoch 4/250 | Train Loss 0.6098, Train Acc 68.12% | Val Loss 0.5527, Val Acc 70.95%
+2025-12-09 14:22:26.302 | INFO | New best model saved with validation accuracy 70.95%
+2025-12-09 14:22:26.403 | INFO | Epoch 5/250 | Train Loss 0.6168, Train Acc 67.56% | Val Loss 0.5404, Val Acc 72.07%
+2025-12-09 14:22:26.409 | INFO | New best model saved with validation accuracy 72.07%
+2025-12-09 14:22:26.513 | INFO | Epoch 6/250 | Train Loss 0.6057, Train Acc 67.98% | Val Loss 0.5309, Val Acc 71.51%
+2025-12-09 14:22:26.576 | INFO | Epoch 7/250 | Train Loss 0.6080, Train Acc 67.70% | Val Loss 0.5326, Val Acc 73.74%
+2025-12-09 14:22:26.591 | INFO | New best model saved with validation accuracy 73.74%
+2025-12-09 14:22:26.705 | INFO | Epoch 8/250 | Train Loss 0.6040, Train Acc 68.54% | Val Loss 0.5308, Val Acc 74.86%
+2025-12-09 14:22:26.712 | INFO | New best model saved with validation accuracy 74.86%
+2025-12-09 14:22:26.767 | INFO | Epoch 9/250 | Train Loss 0.6166, Train Acc 67.98% | Val Loss 0.5260, Val Acc 75.42%
+2025-12-09 14:22:26.774 | INFO | New best model saved with validation accuracy 75.42%
+2025-12-09 14:22:26.876 | INFO | Epoch 10/250 | Train Loss 0.6030, Train Acc 70.65% | Val Loss 0.5283, Val Acc 75.42%
+2025-12-09 14:22:26.969 | INFO | Epoch 11/250 | Train Loss 0.5977, Train Acc 69.10% | Val Loss 0.5267, Val Acc 73.74%
+2025-12-09 14:22:27.041 | INFO | Epoch 12/250 | Train Loss 0.5902, Train Acc 69.66% | Val Loss 0.5266, Val Acc 74.86%
+2025-12-09 14:22:27.159 | INFO | Epoch 13/250 | Train Loss 0.5906, Train Acc 69.10% | Val Loss 0.5273, Val Acc 73.74%
+2025-12-09 14:22:27.229 | INFO | Epoch 14/250 | Train Loss 0.5988, Train Acc 68.82% | Val Loss 0.5272, Val Acc 75.42%
+2025-12-09 14:22:27.330 | INFO | Epoch 15/250 | Train Loss 0.5806, Train Acc 69.80% | Val Loss 0.5276, Val Acc 74.30%
+2025-12-09 14:22:27.429 | INFO | Epoch 16/250 | Train Loss 0.5903, Train Acc 69.24% | Val Loss 0.5300, Val Acc 73.74%
+2025-12-09 14:22:27.496 | INFO | Epoch 17/250 | Train Loss 0.5669, Train Acc 71.63% | Val Loss 0.5269, Val Acc 73.74%
+2025-12-09 14:22:27.607 | INFO | Epoch 18/250 | Train Loss 0.5582, Train Acc 73.88% | Val Loss 0.5215, Val Acc 73.74%
+2025-12-09 14:22:27.677 | INFO | Epoch 19/250 | Train Loss 0.5365, Train Acc 75.00% | Val Loss 0.5193, Val Acc 73.74%
+2025-12-09 14:22:27.771 | INFO | Epoch 20/250 | Train Loss 0.5529, Train Acc 73.17% | Val Loss 0.5206, Val Acc 75.42%
+2025-12-09 14:22:27.877 | INFO | Epoch 21/250 | Train Loss 0.5545, Train Acc 70.65% | Val Loss 0.5151, Val Acc 76.54%
+2025-12-09 14:22:27.884 | INFO | New best model saved with validation accuracy 76.54%
+2025-12-09 14:22:27.951 | INFO | Epoch 22/250 | Train Loss 0.5429, Train Acc 74.44% | Val Loss 0.5041, Val Acc 77.09%
+2025-12-09 14:22:27.959 | INFO | New best model saved with validation accuracy 77.09%
+2025-12-09 14:22:28.070 | INFO | Epoch 23/250 | Train Loss 0.5444, Train Acc 73.74% | Val Loss 0.4907, Val Acc 77.09%
+2025-12-09 14:22:28.136 | INFO | Epoch 24/250 | Train Loss 0.5574, Train Acc 70.93% | Val Loss 0.4844, Val Acc 77.09%
+2025-12-09 14:22:28.237 | INFO | Epoch 25/250 | Train Loss 0.5465, Train Acc 72.89% | Val Loss 0.4874, Val Acc 77.09%
+2025-12-09 14:22:28.339 | INFO | Epoch 26/250 | Train Loss 0.5403, Train Acc 71.49% | Val Loss 0.4835, Val Acc 77.09%
+2025-12-09 14:22:28.399 | INFO | Epoch 27/250 | Train Loss 0.5366, Train Acc 74.86% | Val Loss 0.4764, Val Acc 77.09%
+2025-12-09 14:22:28.506 | INFO | Epoch 28/250 | Train Loss 0.5437, Train Acc 74.02% | Val Loss 0.4758, Val Acc 77.65%
+2025-12-09 14:22:28.570 | INFO | New best model saved with validation accuracy 77.65%
+2025-12-09 14:22:28.631 | INFO | Epoch 29/250 | Train Loss 0.5406, Train Acc 74.02% | Val Loss 0.4701, Val Acc 78.21%
+2025-12-09 14:22:28.637 | INFO | New best model saved with validation accuracy 78.21%
+2025-12-09 14:22:28.742 | INFO | Epoch 30/250 | Train Loss 0.5295, Train Acc 74.86% | Val Loss 0.4718, Val Acc 78.77%
+2025-12-09 14:22:28.750 | INFO | New best model saved with validation accuracy 78.77%
+2025-12-09 14:22:28.814 | INFO | Epoch 31/250 | Train Loss 0.5491, Train Acc 72.75% | Val Loss 0.4712, Val Acc 78.77%
+2025-12-09 14:22:28.901 | INFO | Epoch 32/250 | Train Loss 0.4964, Train Acc 76.54% | Val Loss 0.4668, Val Acc 79.33%
+2025-12-09 14:22:28.919 | INFO | New best model saved with validation accuracy 79.33%
+2025-12-09 14:22:29.022 | INFO | Epoch 33/250 | Train Loss 0.5112, Train Acc 75.42% | Val Loss 0.4623, Val Acc 78.21%
+2025-12-09 14:22:29.099 | INFO | Epoch 34/250 | Train Loss 0.5099, Train Acc 76.69% | Val Loss 0.4548, Val Acc 79.33%
+2025-12-09 14:22:29.218 | INFO | Epoch 35/250 | Train Loss 0.5131, Train Acc 77.25% | Val Loss 0.4538, Val Acc 78.21%
+2025-12-09 14:22:29.279 | INFO | Epoch 36/250 | Train Loss 0.5092, Train Acc 76.40% | Val Loss 0.4543, Val Acc 79.33%
+2025-12-09 14:22:29.371 | INFO | Epoch 37/250 | Train Loss 0.5313, Train Acc 73.74% | Val Loss 0.4596, Val Acc 80.45%
+2025-12-09 14:22:29.378 | INFO | New best model saved with validation accuracy 80.45%
+2025-12-09 14:22:29.478 | INFO | Epoch 38/250 | Train Loss 0.4980, Train Acc 75.42% | Val Loss 0.4562, Val Acc 79.33%
+2025-12-09 14:22:29.566 | INFO | Epoch 39/250 | Train Loss 0.5100, Train Acc 77.11% | Val Loss 0.4582, Val Acc 81.56%
+2025-12-09 14:22:29.573 | INFO | New best model saved with validation accuracy 81.56%
+2025-12-09 14:22:29.687 | INFO | Epoch 40/250 | Train Loss 0.5144, Train Acc 75.98% | Val Loss 0.4560, Val Acc 81.01%
+2025-12-09 14:22:29.735 | INFO | Epoch 41/250 | Train Loss 0.4988, Train Acc 77.39% | Val Loss 0.4522, Val Acc 80.45%
+2025-12-09 14:22:29.826 | INFO | Epoch 42/250 | Train Loss 0.4993, Train Acc 76.40% | Val Loss 0.4498, Val Acc 80.45%
+2025-12-09 14:22:29.937 | INFO | Epoch 43/250 | Train Loss 0.5066, Train Acc 78.37% | Val Loss 0.4480, Val Acc 79.89%
+2025-12-09 14:22:29.990 | INFO | Epoch 44/250 | Train Loss 0.5059, Train Acc 78.51% | Val Loss 0.4497, Val Acc 79.89%
+2025-12-09 14:22:30.110 | INFO | Epoch 45/250 | Train Loss 0.5035, Train Acc 76.26% | Val Loss 0.4502, Val Acc 81.01%
+2025-12-09 14:22:30.188 | INFO | Epoch 46/250 | Train Loss 0.5003, Train Acc 75.98% | Val Loss 0.4536, Val Acc 81.01%
+2025-12-09 14:22:30.274 | INFO | Epoch 47/250 | Train Loss 0.4923, Train Acc 77.95% | Val Loss 0.4548, Val Acc 81.56%
+2025-12-09 14:22:30.371 | INFO | Epoch 48/250 | Train Loss 0.4911, Train Acc 77.11% | Val Loss 0.4521, Val Acc 80.45%
+2025-12-09 14:22:30.447 | INFO | Epoch 49/250 | Train Loss 0.5006, Train Acc 76.54% | Val Loss 0.4545, Val Acc 82.12%
+2025-12-09 14:22:30.455 | INFO | New best model saved with validation accuracy 82.12%
+2025-12-09 14:22:30.547 | INFO | Epoch 50/250 | Train Loss 0.5035, Train Acc 75.98% | Val Loss 0.4517, Val Acc 82.12%
+2025-12-09 14:22:30.661 | INFO | Epoch 51/250 | Train Loss 0.4948, Train Acc 78.51% | Val Loss 0.4514, Val Acc 82.12%
+2025-12-09 14:22:30.720 | INFO | Epoch 52/250 | Train Loss 0.4710, Train Acc 76.69% | Val Loss 0.4504, Val Acc 81.56%
+2025-12-09 14:22:30.779 | INFO | Epoch 53/250 | Train Loss 0.5032, Train Acc 76.26% | Val Loss 0.4469, Val Acc 80.45%
+2025-12-09 14:22:30.881 | INFO | Epoch 54/250 | Train Loss 0.4691, Train Acc 78.09% | Val Loss 0.4421, Val Acc 79.89%
+2025-12-09 14:22:30.970 | INFO | Epoch 55/250 | Train Loss 0.4818, Train Acc 78.09% | Val Loss 0.4419, Val Acc 79.33%
+2025-12-09 14:22:31.025 | INFO | Epoch 56/250 | Train Loss 0.4738, Train Acc 79.07% | Val Loss 0.4418, Val Acc 80.45%
+2025-12-09 14:22:31.127 | INFO | Epoch 57/250 | Train Loss 0.4835, Train Acc 78.65% | Val Loss 0.4428, Val Acc 79.89%
+2025-12-09 14:22:31.224 | INFO | Epoch 58/250 | Train Loss 0.4745, Train Acc 78.65% | Val Loss 0.4443, Val Acc 79.33%
+2025-12-09 14:22:31.289 | INFO | Epoch 59/250 | Train Loss 0.4644, Train Acc 79.49% | Val Loss 0.4470, Val Acc 79.89%
+2025-12-09 14:22:31.390 | INFO | Epoch 60/250 | Train Loss 0.4873, Train Acc 77.95% | Val Loss 0.4459, Val Acc 79.89%
+2025-12-09 14:22:31.478 | INFO | Epoch 61/250 | Train Loss 0.5090, Train Acc 77.81% | Val Loss 0.4455, Val Acc 81.01%
+2025-12-09 14:22:31.517 | INFO | Epoch 62/250 | Train Loss 0.4912, Train Acc 77.39% | Val Loss 0.4453, Val Acc 81.01%
+2025-12-09 14:22:31.621 | INFO | Epoch 63/250 | Train Loss 0.4766, Train Acc 78.51% | Val Loss 0.4420, Val Acc 81.56%
+2025-12-09 14:22:31.718 | INFO | Epoch 64/250 | Train Loss 0.5050, Train Acc 76.83% | Val Loss 0.4386, Val Acc 81.01%
+2025-12-09 14:22:31.762 | INFO | Epoch 65/250 | Train Loss 0.4837, Train Acc 78.09% | Val Loss 0.4374, Val Acc 80.45%
+2025-12-09 14:22:31.869 | INFO | Epoch 66/250 | Train Loss 0.5097, Train Acc 75.56% | Val Loss 0.4375, Val Acc 80.45%
+2025-12-09 14:22:31.963 | INFO | Epoch 67/250 | Train Loss 0.4977, Train Acc 75.84% | Val Loss 0.4387, Val Acc 81.01%
+2025-12-09 14:22:32.003 | INFO | Epoch 68/250 | Train Loss 0.4885, Train Acc 77.67% | Val Loss 0.4375, Val Acc 81.01%
+2025-12-09 14:22:32.105 | INFO | Epoch 69/250 | Train Loss 0.4925, Train Acc 77.81% | Val Loss 0.4378, Val Acc 81.01%
+2025-12-09 14:22:32.201 | INFO | Epoch 70/250 | Train Loss 0.4937, Train Acc 79.07% | Val Loss 0.4386, Val Acc 81.01%
+2025-12-09 14:22:32.238 | INFO | Epoch 71/250 | Train Loss 0.4814, Train Acc 78.65% | Val Loss 0.4382, Val Acc 80.45%
+2025-12-09 14:22:32.339 | INFO | Epoch 72/250 | Train Loss 0.4968, Train Acc 76.83% | Val Loss 0.4380, Val Acc 79.33%
+2025-12-09 14:22:32.434 | INFO | Epoch 73/250 | Train Loss 0.4711, Train Acc 80.76% | Val Loss 0.4366, Val Acc 81.01%
+2025-12-09 14:22:32.474 | INFO | Epoch 74/250 | Train Loss 0.4925, Train Acc 77.67% | Val Loss 0.4361, Val Acc 81.01%
+2025-12-09 14:22:32.573 | INFO | Epoch 75/250 | Train Loss 0.4958, Train Acc 78.09% | Val Loss 0.4357, Val Acc 81.56%
+2025-12-09 14:22:32.665 | INFO | Epoch 76/250 | Train Loss 0.5008, Train Acc 79.07% | Val Loss 0.4368, Val Acc 80.45%
+2025-12-09 14:22:32.704 | INFO | Epoch 77/250 | Train Loss 0.4657, Train Acc 79.63% | Val Loss 0.4380, Val Acc 80.45%
+2025-12-09 14:22:32.805 | INFO | Epoch 78/250 | Train Loss 0.4640, Train Acc 78.79% | Val Loss 0.4367, Val Acc 80.45%
+2025-12-09 14:22:32.902 | INFO | Epoch 79/250 | Train Loss 0.5016, Train Acc 76.69% | Val Loss 0.4377, Val Acc 79.89%
+2025-12-09 14:22:32.902 | INFO | Early stopping triggered
+2025-12-09 14:22:33.336 | INFO | Training history plot saved to /workspace/output/MLP_ES_seed45_training_2025-12-09.png
+2025-12-09 14:22:33.352 | INFO | Final validation accuracy: 82.12% (loss 0.4545)
+2025-12-09 14:22:33.363 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8362    0.8818    0.8584       110
+       Survived     0.7937    0.7246    0.7576        69
+
+       accuracy                         0.8212       179
+      macro avg     0.8149    0.8032    0.8080       179
+   weighted avg     0.8198    0.8212    0.8195       179
+
+2025-12-09 14:22:33.561 | INFO | Confusion matrix saved to /workspace/output/MLP_ES_seed45_cm_2025-12-09.png
+2025-12-09 14:22:33.622 | INFO | Submission saved to /workspace/output/MLP_ES_seed45_submission.csv
+2025-12-09 14:23:26.753 | INFO | Model: TitanicMLP
+2025-12-09 14:23:26.754 | INFO | Optimizer: AdamW
+2025-12-09 14:23:27.038 | INFO | Epoch 1/250 | Train Loss 0.6448, Train Acc 64.19% | Val Loss 0.6385, Val Acc 75.98%
+2025-12-09 14:23:27.045 | INFO | New best model saved with validation accuracy 75.98%
+2025-12-09 14:23:27.138 | INFO | Epoch 2/250 | Train Loss 0.4955, Train Acc 76.40% | Val Loss 0.5390, Val Acc 75.98%
+2025-12-09 14:23:27.236 | INFO | Epoch 3/250 | Train Loss 0.4704, Train Acc 80.48% | Val Loss 0.4658, Val Acc 79.33%
+2025-12-09 14:23:27.244 | INFO | New best model saved with validation accuracy 79.33%
+2025-12-09 14:23:27.300 | INFO | Epoch 4/250 | Train Loss 0.4433, Train Acc 80.62% | Val Loss 0.4198, Val Acc 80.45%
+2025-12-09 14:23:27.308 | INFO | New best model saved with validation accuracy 80.45%
+2025-12-09 14:23:27.427 | INFO | Epoch 5/250 | Train Loss 0.4328, Train Acc 81.18% | Val Loss 0.3934, Val Acc 82.68%
+2025-12-09 14:23:27.435 | INFO | New best model saved with validation accuracy 82.68%
+2025-12-09 14:23:27.494 | INFO | Epoch 6/250 | Train Loss 0.4349, Train Acc 81.32% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:23:27.588 | INFO | Epoch 7/250 | Train Loss 0.4195, Train Acc 82.30% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:23:27.697 | INFO | Epoch 8/250 | Train Loss 0.3979, Train Acc 83.57% | Val Loss 0.3806, Val Acc 83.80%
+2025-12-09 14:23:27.704 | INFO | New best model saved with validation accuracy 83.80%
+2025-12-09 14:23:27.752 | INFO | Epoch 9/250 | Train Loss 0.4078, Train Acc 83.29% | Val Loss 0.3728, Val Acc 84.36%
+2025-12-09 14:23:28.339 | INFO | New best model saved with validation accuracy 84.36%
+2025-12-09 14:23:28.413 | INFO | Epoch 10/250 | Train Loss 0.3809, Train Acc 83.43% | Val Loss 0.3677, Val Acc 85.47%
+2025-12-09 14:23:28.421 | INFO | New best model saved with validation accuracy 85.47%
+2025-12-09 14:23:28.515 | INFO | Epoch 11/250 | Train Loss 0.3990, Train Acc 83.57% | Val Loss 0.3695, Val Acc 85.47%
+2025-12-09 14:23:28.615 | INFO | Epoch 12/250 | Train Loss 0.3742, Train Acc 84.27% | Val Loss 0.3705, Val Acc 85.47%
+2025-12-09 14:23:28.675 | INFO | Epoch 13/250 | Train Loss 0.3839, Train Acc 85.39% | Val Loss 0.3753, Val Acc 84.92%
+2025-12-09 14:23:28.763 | INFO | Epoch 14/250 | Train Loss 0.4056, Train Acc 83.29% | Val Loss 0.3778, Val Acc 83.80%
+2025-12-09 14:23:28.862 | INFO | Epoch 15/250 | Train Loss 0.3813, Train Acc 85.25% | Val Loss 0.3793, Val Acc 84.92%
+2025-12-09 14:23:28.922 | INFO | Epoch 16/250 | Train Loss 0.3716, Train Acc 84.41% | Val Loss 0.3748, Val Acc 85.47%
+2025-12-09 14:23:29.005 | INFO | Epoch 17/250 | Train Loss 0.3894, Train Acc 84.27% | Val Loss 0.3747, Val Acc 85.47%
+2025-12-09 14:23:29.105 | INFO | Epoch 18/250 | Train Loss 0.3745, Train Acc 85.53% | Val Loss 0.3752, Val Acc 84.92%
+2025-12-09 14:23:29.172 | INFO | Epoch 19/250 | Train Loss 0.3622, Train Acc 85.39% | Val Loss 0.3794, Val Acc 83.80%
+2025-12-09 14:23:29.255 | INFO | Epoch 20/250 | Train Loss 0.3713, Train Acc 84.41% | Val Loss 0.3810, Val Acc 83.80%
+2025-12-09 14:23:29.353 | INFO | Epoch 21/250 | Train Loss 0.3771, Train Acc 85.25% | Val Loss 0.3878, Val Acc 83.24%
+2025-12-09 14:23:29.414 | INFO | Epoch 22/250 | Train Loss 0.3922, Train Acc 85.96% | Val Loss 0.3898, Val Acc 83.80%
+2025-12-09 14:23:29.500 | INFO | Epoch 23/250 | Train Loss 0.3764, Train Acc 84.55% | Val Loss 0.3905, Val Acc 83.80%
+2025-12-09 14:23:29.599 | INFO | Epoch 24/250 | Train Loss 0.3657, Train Acc 85.11% | Val Loss 0.3872, Val Acc 83.80%
+2025-12-09 14:23:29.662 | INFO | Epoch 25/250 | Train Loss 0.3703, Train Acc 85.81% | Val Loss 0.3855, Val Acc 83.80%
+2025-12-09 14:23:29.760 | INFO | Epoch 26/250 | Train Loss 0.3618, Train Acc 85.39% | Val Loss 0.3822, Val Acc 83.80%
+2025-12-09 14:23:29.861 | INFO | Epoch 27/250 | Train Loss 0.3717, Train Acc 85.39% | Val Loss 0.3812, Val Acc 83.80%
+2025-12-09 14:23:29.905 | INFO | Epoch 28/250 | Train Loss 0.3776, Train Acc 85.39% | Val Loss 0.3817, Val Acc 84.36%
+2025-12-09 14:23:30.010 | INFO | Epoch 29/250 | Train Loss 0.3632, Train Acc 85.96% | Val Loss 0.3839, Val Acc 84.36%
+2025-12-09 14:23:30.103 | INFO | Epoch 30/250 | Train Loss 0.3682, Train Acc 85.11% | Val Loss 0.3851, Val Acc 83.80%
+2025-12-09 14:23:30.142 | INFO | Epoch 31/250 | Train Loss 0.3667, Train Acc 85.81% | Val Loss 0.3866, Val Acc 84.36%
+2025-12-09 14:23:30.247 | INFO | Epoch 32/250 | Train Loss 0.3500, Train Acc 85.11% | Val Loss 0.3867, Val Acc 83.80%
+2025-12-09 14:23:30.339 | INFO | Epoch 33/250 | Train Loss 0.3645, Train Acc 85.25% | Val Loss 0.3881, Val Acc 83.80%
+2025-12-09 14:23:30.397 | INFO | Epoch 34/250 | Train Loss 0.3362, Train Acc 87.22% | Val Loss 0.3889, Val Acc 82.68%
+2025-12-09 14:23:30.500 | INFO | Epoch 35/250 | Train Loss 0.3450, Train Acc 86.10% | Val Loss 0.3895, Val Acc 83.80%
+2025-12-09 14:23:30.586 | INFO | Epoch 36/250 | Train Loss 0.3650, Train Acc 84.83% | Val Loss 0.3893, Val Acc 83.80%
+2025-12-09 14:23:30.632 | INFO | Epoch 37/250 | Train Loss 0.3447, Train Acc 85.53% | Val Loss 0.3896, Val Acc 82.68%
+2025-12-09 14:23:30.735 | INFO | Epoch 38/250 | Train Loss 0.3747, Train Acc 86.38% | Val Loss 0.3906, Val Acc 82.68%
+2025-12-09 14:23:30.829 | INFO | Epoch 39/250 | Train Loss 0.3533, Train Acc 86.10% | Val Loss 0.3894, Val Acc 82.68%
+2025-12-09 14:23:30.891 | INFO | Epoch 40/250 | Train Loss 0.3585, Train Acc 85.67% | Val Loss 0.3903, Val Acc 82.68%
+2025-12-09 14:23:30.891 | INFO | Early stopping triggered
+2025-12-09 14:23:31.384 | INFO | Training history plot saved to /workspace/output/MLP_ES_seed45_training_2025-12-09.png
+2025-12-09 14:23:31.452 | INFO | Final validation accuracy: 85.47% (loss 0.3677)
+2025-12-09 14:23:31.471 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8750    0.8909    0.8829       110
+       Survived     0.8209    0.7971    0.8088        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8479    0.8440    0.8459       179
+   weighted avg     0.8541    0.8547    0.8543       179
+
+2025-12-09 14:23:31.694 | INFO | Confusion matrix saved to /workspace/output/MLP_ES_seed45_cm_2025-12-09.png
+2025-12-09 14:23:31.717 | INFO | Submission saved to /workspace/output/MLP_ES_seed45_submission.csv
+2025-12-09 14:25:52.615 | INFO | Model: TitanicMLP
+2025-12-09 14:25:52.616 | INFO | Optimizer: AdamW
+2025-12-09 14:25:52.952 | INFO | Epoch 1/250 | Train Loss 0.6448, Train Acc 64.19% | Val Loss 0.6385, Val Acc 75.98%
+2025-12-09 14:25:52.961 | INFO | New best model saved with validation accuracy 75.98%
+2025-12-09 14:25:53.026 | INFO | Epoch 2/250 | Train Loss 0.4955, Train Acc 76.40% | Val Loss 0.5390, Val Acc 75.98%
+2025-12-09 14:25:53.128 | INFO | Epoch 3/250 | Train Loss 0.4704, Train Acc 80.48% | Val Loss 0.4658, Val Acc 79.33%
+2025-12-09 14:25:53.134 | INFO | New best model saved with validation accuracy 79.33%
+2025-12-09 14:25:53.198 | INFO | Epoch 4/250 | Train Loss 0.4433, Train Acc 80.62% | Val Loss 0.4198, Val Acc 80.45%
+2025-12-09 14:25:53.205 | INFO | New best model saved with validation accuracy 80.45%
+2025-12-09 14:25:53.303 | INFO | Epoch 5/250 | Train Loss 0.4328, Train Acc 81.18% | Val Loss 0.3934, Val Acc 82.68%
+2025-12-09 14:25:53.309 | INFO | New best model saved with validation accuracy 82.68%
+2025-12-09 14:25:53.401 | INFO | Epoch 6/250 | Train Loss 0.4349, Train Acc 81.32% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:25:53.438 | INFO | Epoch 7/250 | Train Loss 0.4195, Train Acc 82.30% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:25:53.531 | INFO | Epoch 8/250 | Train Loss 0.3979, Train Acc 83.57% | Val Loss 0.3806, Val Acc 83.80%
+2025-12-09 14:25:53.538 | INFO | New best model saved with validation accuracy 83.80%
+2025-12-09 14:25:53.630 | INFO | Epoch 9/250 | Train Loss 0.4078, Train Acc 83.29% | Val Loss 0.3728, Val Acc 84.36%
+2025-12-09 14:25:53.637 | INFO | New best model saved with validation accuracy 84.36%
+2025-12-09 14:25:53.680 | INFO | Epoch 10/250 | Train Loss 0.3809, Train Acc 83.43% | Val Loss 0.3677, Val Acc 85.47%
+2025-12-09 14:25:53.687 | INFO | New best model saved with validation accuracy 85.47%
+2025-12-09 14:25:53.787 | INFO | Epoch 11/250 | Train Loss 0.3990, Train Acc 83.57% | Val Loss 0.3695, Val Acc 85.47%
+2025-12-09 14:25:53.869 | INFO | Epoch 12/250 | Train Loss 0.3742, Train Acc 84.27% | Val Loss 0.3705, Val Acc 85.47%
+2025-12-09 14:25:53.908 | INFO | Epoch 13/250 | Train Loss 0.3839, Train Acc 85.39% | Val Loss 0.3753, Val Acc 84.92%
+2025-12-09 14:25:54.011 | INFO | Epoch 14/250 | Train Loss 0.4056, Train Acc 83.29% | Val Loss 0.3778, Val Acc 83.80%
+2025-12-09 14:25:54.101 | INFO | Epoch 15/250 | Train Loss 0.3813, Train Acc 85.25% | Val Loss 0.3793, Val Acc 84.92%
+2025-12-09 14:25:54.153 | INFO | Epoch 16/250 | Train Loss 0.3716, Train Acc 84.41% | Val Loss 0.3748, Val Acc 85.47%
+2025-12-09 14:25:54.254 | INFO | Epoch 17/250 | Train Loss 0.3894, Train Acc 84.27% | Val Loss 0.3747, Val Acc 85.47%
+2025-12-09 14:25:54.338 | INFO | Epoch 18/250 | Train Loss 0.3745, Train Acc 85.53% | Val Loss 0.3752, Val Acc 84.92%
+2025-12-09 14:25:54.407 | INFO | Epoch 19/250 | Train Loss 0.3622, Train Acc 85.39% | Val Loss 0.3794, Val Acc 83.80%
+2025-12-09 14:25:54.507 | INFO | Epoch 20/250 | Train Loss 0.3713, Train Acc 84.41% | Val Loss 0.3810, Val Acc 83.80%
+2025-12-09 14:25:54.574 | INFO | Epoch 21/250 | Train Loss 0.3771, Train Acc 85.25% | Val Loss 0.3878, Val Acc 83.24%
+2025-12-09 14:25:54.636 | INFO | Epoch 22/250 | Train Loss 0.3922, Train Acc 85.96% | Val Loss 0.3898, Val Acc 83.80%
+2025-12-09 14:25:54.734 | INFO | Epoch 23/250 | Train Loss 0.3764, Train Acc 84.55% | Val Loss 0.3905, Val Acc 83.80%
+2025-12-09 14:25:54.812 | INFO | Epoch 24/250 | Train Loss 0.3657, Train Acc 85.11% | Val Loss 0.3872, Val Acc 83.80%
+2025-12-09 14:25:54.881 | INFO | Epoch 25/250 | Train Loss 0.3703, Train Acc 85.81% | Val Loss 0.3855, Val Acc 83.80%
+2025-12-09 14:25:54.985 | INFO | Epoch 26/250 | Train Loss 0.3618, Train Acc 85.39% | Val Loss 0.3822, Val Acc 83.80%
+2025-12-09 14:25:55.068 | INFO | Epoch 27/250 | Train Loss 0.3717, Train Acc 85.39% | Val Loss 0.3812, Val Acc 83.80%
+2025-12-09 14:25:55.143 | INFO | Epoch 28/250 | Train Loss 0.3776, Train Acc 85.39% | Val Loss 0.3817, Val Acc 84.36%
+2025-12-09 14:25:55.247 | INFO | Epoch 29/250 | Train Loss 0.3632, Train Acc 85.96% | Val Loss 0.3839, Val Acc 84.36%
+2025-12-09 14:25:55.325 | INFO | Epoch 30/250 | Train Loss 0.3682, Train Acc 85.11% | Val Loss 0.3851, Val Acc 83.80%
+2025-12-09 14:25:55.325 | INFO | Early stopping triggered
+2025-12-09 14:25:55.756 | INFO | Training history plot saved to /workspace/output/MLP_ES_seed45_training_2025-12-09.png
+2025-12-09 14:25:55.791 | INFO | Final validation accuracy: 85.47% (loss 0.3677)
+2025-12-09 14:25:55.803 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8750    0.8909    0.8829       110
+       Survived     0.8209    0.7971    0.8088        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8479    0.8440    0.8459       179
+   weighted avg     0.8541    0.8547    0.8543       179
+
+2025-12-09 14:25:56.020 | INFO | Confusion matrix saved to /workspace/output/MLP_ES_seed45_cm_2025-12-09.png
+2025-12-09 14:25:56.039 | INFO | Submission saved to /workspace/output/MLP_ES_seed45_submission.csv
+2025-12-09 14:25:56.105 | INFO | Model: TitanicMLP
+2025-12-09 14:25:56.106 | INFO | Optimizer: AdamW
+2025-12-09 14:25:56.205 | INFO | Epoch 1/250 | Train Loss 0.6448, Train Acc 64.19% | Val Loss 0.6385, Val Acc 75.98%
+2025-12-09 14:25:56.212 | INFO | New best model saved with validation accuracy 75.98%
+2025-12-09 14:25:56.272 | INFO | Epoch 2/250 | Train Loss 0.4955, Train Acc 76.40% | Val Loss 0.5390, Val Acc 75.98%
+2025-12-09 14:25:56.366 | INFO | Epoch 3/250 | Train Loss 0.4704, Train Acc 80.48% | Val Loss 0.4658, Val Acc 79.33%
+2025-12-09 14:25:56.373 | INFO | New best model saved with validation accuracy 79.33%
+2025-12-09 14:25:56.479 | INFO | Epoch 4/250 | Train Loss 0.4433, Train Acc 80.62% | Val Loss 0.4198, Val Acc 80.45%
+2025-12-09 14:25:56.485 | INFO | New best model saved with validation accuracy 80.45%
+2025-12-09 14:25:56.546 | INFO | Epoch 5/250 | Train Loss 0.4328, Train Acc 81.18% | Val Loss 0.3934, Val Acc 82.68%
+2025-12-09 14:25:56.553 | INFO | New best model saved with validation accuracy 82.68%
+2025-12-09 14:25:56.652 | INFO | Epoch 6/250 | Train Loss 0.4349, Train Acc 81.32% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:25:56.726 | INFO | Epoch 7/250 | Train Loss 0.4195, Train Acc 82.30% | Val Loss 0.3812, Val Acc 82.68%
+2025-12-09 14:25:56.799 | INFO | Epoch 8/250 | Train Loss 0.3979, Train Acc 83.57% | Val Loss 0.3806, Val Acc 83.80%
+2025-12-09 14:25:56.815 | INFO | New best model saved with validation accuracy 83.80%
+2025-12-09 14:25:56.911 | INFO | Epoch 9/250 | Train Loss 0.4078, Train Acc 83.29% | Val Loss 0.3728, Val Acc 84.36%
+2025-12-09 14:25:58.301 | INFO | New best model saved with validation accuracy 84.36%
+2025-12-09 14:25:58.399 | INFO | Epoch 10/250 | Train Loss 0.3809, Train Acc 83.43% | Val Loss 0.3677, Val Acc 85.47%
+2025-12-09 14:25:58.560 | INFO | New best model saved with validation accuracy 85.47%
+2025-12-09 14:25:58.656 | INFO | Epoch 11/250 | Train Loss 0.3990, Train Acc 83.57% | Val Loss 0.3695, Val Acc 85.47%
+2025-12-09 14:25:58.724 | INFO | Epoch 12/250 | Train Loss 0.3742, Train Acc 84.27% | Val Loss 0.3705, Val Acc 85.47%
+2025-12-09 14:25:58.824 | INFO | Epoch 13/250 | Train Loss 0.3839, Train Acc 85.39% | Val Loss 0.3753, Val Acc 84.92%
+2025-12-09 14:25:58.895 | INFO | Epoch 14/250 | Train Loss 0.4056, Train Acc 83.29% | Val Loss 0.3778, Val Acc 83.80%
+2025-12-09 14:25:58.978 | INFO | Epoch 15/250 | Train Loss 0.3813, Train Acc 85.25% | Val Loss 0.3793, Val Acc 84.92%
+2025-12-09 14:25:59.082 | INFO | Epoch 16/250 | Train Loss 0.3716, Train Acc 84.41% | Val Loss 0.3748, Val Acc 85.47%
+2025-12-09 14:25:59.134 | INFO | Epoch 17/250 | Train Loss 0.3894, Train Acc 84.27% | Val Loss 0.3747, Val Acc 85.47%
+2025-12-09 14:25:59.228 | INFO | Epoch 18/250 | Train Loss 0.3745, Train Acc 85.53% | Val Loss 0.3752, Val Acc 84.92%
+2025-12-09 14:25:59.329 | INFO | Epoch 19/250 | Train Loss 0.3622, Train Acc 85.39% | Val Loss 0.3794, Val Acc 83.80%
+2025-12-09 14:25:59.389 | INFO | Epoch 20/250 | Train Loss 0.3713, Train Acc 84.41% | Val Loss 0.3810, Val Acc 83.80%
+2025-12-09 14:25:59.495 | INFO | Epoch 21/250 | Train Loss 0.3771, Train Acc 85.25% | Val Loss 0.3878, Val Acc 83.24%
+2025-12-09 14:25:59.571 | INFO | Epoch 22/250 | Train Loss 0.3922, Train Acc 85.96% | Val Loss 0.3898, Val Acc 83.80%
+2025-12-09 14:25:59.648 | INFO | Epoch 23/250 | Train Loss 0.3764, Train Acc 84.55% | Val Loss 0.3905, Val Acc 83.80%
+2025-12-09 14:25:59.752 | INFO | Epoch 24/250 | Train Loss 0.3657, Train Acc 85.11% | Val Loss 0.3872, Val Acc 83.80%
+2025-12-09 14:25:59.810 | INFO | Epoch 25/250 | Train Loss 0.3703, Train Acc 85.81% | Val Loss 0.3855, Val Acc 83.80%
+2025-12-09 14:25:59.891 | INFO | Epoch 26/250 | Train Loss 0.3618, Train Acc 85.39% | Val Loss 0.3822, Val Acc 83.80%
+2025-12-09 14:25:59.994 | INFO | Epoch 27/250 | Train Loss 0.3717, Train Acc 85.39% | Val Loss 0.3812, Val Acc 83.80%
+2025-12-09 14:26:00.065 | INFO | Epoch 28/250 | Train Loss 0.3776, Train Acc 85.39% | Val Loss 0.3817, Val Acc 84.36%
+2025-12-09 14:26:00.173 | INFO | Epoch 29/250 | Train Loss 0.3632, Train Acc 85.96% | Val Loss 0.3839, Val Acc 84.36%
+2025-12-09 14:26:00.264 | INFO | Epoch 30/250 | Train Loss 0.3682, Train Acc 85.11% | Val Loss 0.3851, Val Acc 83.80%
+2025-12-09 14:26:00.264 | INFO | Early stopping triggered
+2025-12-09 14:26:00.667 | INFO | Training history plot saved to /workspace/output/MLP_ES_seed45_training_2025-12-09.png
+2025-12-09 14:26:00.685 | INFO | Final validation accuracy: 85.47% (loss 0.3677)
+2025-12-09 14:26:00.695 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8750    0.8909    0.8829       110
+       Survived     0.8209    0.7971    0.8088        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8479    0.8440    0.8459       179
+   weighted avg     0.8541    0.8547    0.8543       179
+
+2025-12-09 14:26:00.900 | INFO | Confusion matrix saved to /workspace/output/MLP_ES_seed45_cm_2025-12-09.png
+2025-12-09 14:26:00.911 | INFO | Submission saved to /workspace/output/MLP_ES_seed45_submission.csv

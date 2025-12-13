@@ -1,0 +1,39 @@
+PassengerId,Actual,Pred,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
+893,1,0,3,"Wilkes, Mrs. James (Ellen Needs)",female,47.0,1,0,363272,7.0,,S
+896,1,0,3,"Hirvonen, Mrs. Alexander (Helga E Lindqvist)",female,22.0,1,1,3101298,12.2875,,S
+898,1,0,3,"Connolly, Miss. Kate",female,30.0,0,0,330972,7.6292,,Q
+910,1,0,3,"Ilmakangas, Miss. Ida Livija",female,27.0,1,0,STON/O2. 3101270,7.925,,S
+925,1,0,3,"Johnston, Mrs. Andrew G (Elizabeth Lily"" Watson)""",female,,1,2,W./C. 6607,23.45,,S
+928,1,0,3,"Roth, Miss. Sarah A",female,,0,0,342712,8.05,,S
+929,1,0,3,"Cacic, Miss. Manda",female,21.0,0,0,315087,8.6625,,S
+955,1,0,3,"Bradley, Miss. Bridget Delia",female,22.0,0,0,334914,7.725,,Q
+962,1,0,3,"Mulvihill, Miss. Bertha E",female,24.0,0,0,382653,7.75,,Q
+964,1,0,3,"Nieminen, Miss. Manta Josefina",female,29.0,0,0,3101297,7.925,,S
+971,1,0,3,"Doyle, Miss. Elizabeth",female,24.0,0,0,368702,7.75,,Q
+978,1,0,3,"Barry, Miss. Julia",female,27.0,0,0,330844,7.8792,,Q
+979,1,0,3,"Badman, Miss. Emily Louisa",female,18.0,0,0,A/4 31416,8.05,,S
+982,1,0,3,"Dyker, Mrs. Adolf Fredrik (Anna Elisabeth Judith Andersson)",female,22.0,1,0,347072,13.9,,S
+990,1,0,3,"Braf, Miss. Elin Ester Maria",female,20.0,0,0,347471,7.8542,,S
+996,1,0,3,"Thomas, Mrs. Alexander (Thamine Thelma"")""",female,16.0,1,1,2625,8.5167,,C
+1024,1,0,3,"Lefebre, Mrs. Frank (Frances)",female,,0,4,4133,25.4667,,S
+1030,1,0,3,"Drapkin, Miss. Jennie",female,23.0,0,0,SOTON/OQ 392083,8.05,,S
+1032,1,0,3,"Goodwin, Miss. Jessie Allis",female,10.0,5,2,CA 2144,46.9,,S
+1054,1,0,2,"Wright, Miss. Marion",female,26.0,0,0,220844,13.5,,S
+1057,1,0,3,"Kink-Heilmann, Mrs. Anton (Luise Heilmann)",female,26.0,1,1,315153,22.025,,S
+1061,1,0,3,"Hellstrom, Miss. Hilda Maria",female,22.0,0,0,7548,8.9625,,S
+1080,1,0,3,"Sage, Miss. Ada",female,,8,2,CA. 2343,69.55,,S
+1089,1,0,3,"Nilsson, Miss. Berta Olivia",female,18.0,0,0,347066,7.775,,S
+1098,1,0,3,"McGowan, Miss. Katherine",female,35.0,0,0,9232,7.75,,Q
+1105,1,0,2,"Howard, Mrs. Benjamin (Ellen Truelove Arman)",female,60.0,1,0,24065,26.0,,S
+1106,1,0,3,"Andersson, Miss. Ida Augusta Margareta",female,38.0,4,2,347091,7.775,,S
+1117,1,0,3,"Moubarek, Mrs. George (Omine Amenia"" Alexander)""",female,,0,2,2661,15.2458,,C
+1141,1,0,3,"Khalil, Mrs. Betros (Zahie Maria"" Elias)""",female,,1,0,2660,14.4542,,C
+1160,1,0,3,"Howard, Miss. May Elizabeth",female,,0,0,A. 2. 39186,8.05,,S
+1172,1,0,3,"Oreskovic, Miss. Jelka",female,23.0,0,0,315085,8.6625,,S
+1175,1,0,3,"Touma, Miss. Maria Youssef",female,9.0,1,1,2650,15.2458,,C
+1183,1,0,3,"Daly, Miss. Margaret Marcella Maggie""""",female,30.0,0,0,382650,6.95,,Q
+1201,1,0,3,"Hansen, Mrs. Claus Peter (Jennie L Howard)",female,45.0,1,0,350026,14.1083,,S
+1205,1,0,3,"Carr, Miss. Jeannie",female,37.0,0,0,368364,7.75,,Q
+1237,1,0,3,"Abelseth, Miss. Karen Marie",female,16.0,0,0,348125,7.65,,S
+1268,1,0,3,"Kink, Miss. Maria",female,22.0,2,0,315152,8.6625,,S
+1304,1,0,3,"Henriksson, Miss. Jenny Lovisa",female,28.0,0,0,347086,7.775,,S
