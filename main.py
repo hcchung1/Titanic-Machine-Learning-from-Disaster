@@ -8,7 +8,9 @@ from datetime import datetime
 from dataclasses import replace
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+matplotlib.use('Agg')
 import numpy as np # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import pandas as pd # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 import seaborn as sns # pyright: ignore[reportMissingModuleSource, reportMissingImports]
@@ -22,8 +24,13 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.neighbors import KNeighborsClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.svm import SVC # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from sklearn.model_selection import GridSearchCV, train_test_split # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader # pyright: ignore[reportMissingModuleSource, reportMissingImports]
 from tqdm.auto import tqdm # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+import xgboost
+from xgboost import XGBClassifier # pyright: ignore[reportMissingModuleSource, reportMissingImports]
+from xgboost.callback import EarlyStopping
 import csv
 from typing import Iterable, List, Tuple
 from network import TitanicMLP, evaluate, test, train_epoch
@@ -31,9 +38,9 @@ from utils import (
     CLASS_NAMES,
     CUR_MODEL,
     EARLY_STOPPING,
-    IMMFEATURE,
     KAGGLE_SUBMIT,
     NUM_WORKERS,
+    FEATURE,
     TrainingConfig,
     TitanicDataset,
     prepare_titanic_data,
@@ -233,7 +240,7 @@ def train_random_forest(
     torch.save(rf, model_path)
     logger.info(f'RandomForest model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, rf
 
 
 def train_gradient_boosting(
@@ -258,13 +265,14 @@ def train_gradient_boosting(
 
     gb_base = GradientBoostingClassifier(random_state=cfg.seed)
     param_grid = {
-        'n_estimators': [200, 400, 600],
-        'learning_rate': [0.02, 0.05, 0.1],
-        'max_depth': [2, 3, 4],
+        'n_estimators': [300, 500, 800],
+        'learning_rate': [0.01, 0.02, 0.05],
+        'max_depth': [3, 4, 5],
         'min_samples_split': [2, 4],
         'min_samples_leaf': [1, 2],
-        'subsample': [0.8, 1.0],
+        'subsample': [0.85, 0.9, 1.0]
     }
+
 
     """
     n_estimators: 400,600,800
@@ -314,7 +322,307 @@ def train_gradient_boosting(
     torch.save(best_model, model_path)
     logger.info(f'GradientBoosting model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
+
+
+def train_xgboost(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    cpu_count = os.cpu_count() or 1
+    
+    xgb = XGBClassifier(
+        n_estimators=600,
+        learning_rate=0.03,
+        max_depth=3,
+        subsample=0.9,
+        colsample_bytree=0.8,
+        reg_lambda=1.0,
+        reg_alpha=0.0,
+        min_child_weight=1.0,
+        objective='binary:logistic',
+        eval_metric='logloss',
+        random_state=cfg.seed,
+        n_jobs=max(1, cpu_count - 1),
+        early_stopping_rounds=50,  # 放在這裡
+    )
+    logger.info('Training XGBoostClassifier...')
+    xgb.fit(
+        X_train,
+        y_train,
+        eval_set=[(X_val, y_val)],
+        verbose=False,
+    )
+    # xgb.fit(X_train, y_train)
+    val_preds = xgb.predict(X_val)
+    val_acc = accuracy_score(y_val, val_preds) * 100.0
+    report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
+    logger.info(f'XGBoost validation accuracy: {val_acc:.2f}%')
+    logger.info('Validation report:\n' + report)
+    plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
+
+    test_preds = xgb.predict(test_features)
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(f'XGBoost submission saved to {submission_path}')
+
+    model_path = os.path.join(output_dir, f'{log_name}_xgboost_{today}.pth')
+    torch.save(xgb, model_path)
+    logger.info(f'XGBoost model serialized to {model_path}')
+
+    return val_acc, submission_path, model_path, xgb
+
+
+def train_rfxgb(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    """Train RF and XGB on the same split and soft-vote their probabilities."""
+
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    rf = RandomForestClassifier(
+        criterion='gini',
+        n_estimators=1000,
+        min_samples_split=12,
+        min_samples_leaf=1,
+        oob_score=True,
+        random_state=cfg.seed,
+        n_jobs=-1
+    )
+    logger.info('Training RandomForestClassifier (RFXGB ensemble part)...')
+    rf.fit(X_train, y_train)
+
+    cpu_count = os.cpu_count() or 1
+    xgb = XGBClassifier(
+        n_estimators=600,
+        learning_rate=0.03,
+        max_depth=3,
+        subsample=0.9,
+        colsample_bytree=0.8,
+        reg_lambda=1.0,
+        reg_alpha=0.0,
+        min_child_weight=1.0,
+        objective='binary:logistic',
+        eval_metric='logloss',
+        random_state=cfg.seed,
+        n_jobs=max(1, cpu_count - 1),
+        early_stopping_rounds=50,
+    )
+    logger.info('Training XGBoostClassifier (RFXGB ensemble part)...')
+    xgb.fit(
+        X_train,
+        y_train,
+        eval_set=[(X_val, y_val)],
+        verbose=False,
+    )
+
+    rf_val_proba = rf.predict_proba(X_val)
+    xgb_val_proba = xgb.predict_proba(X_val)
+    avg_val_proba = (rf_val_proba + xgb_val_proba) / 2.0
+    val_preds = np.argmax(avg_val_proba, axis=1)
+
+    val_acc = accuracy_score(y_val, val_preds) * 100.0
+    report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
+    logger.info(f'RFXGB validation accuracy: {val_acc:.2f}%')
+    logger.info('Validation report:\n' + report)
+    plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
+
+    rf_test_proba = rf.predict_proba(test_features)
+    xgb_test_proba = xgb.predict_proba(test_features)
+    avg_test_proba = (rf_test_proba + xgb_test_proba) / 2.0
+    test_preds = np.argmax(avg_test_proba, axis=1)
+
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(f'RFXGB submission saved to {submission_path}')
+
+    model_path = os.path.join(output_dir, f'{log_name}_rfxgb_{today}.pth')
+    torch.save({'rf': rf, 'xgb': xgb}, model_path)
+    logger.info(f'RFXGB models serialized to {model_path}')
+
+    return val_acc, submission_path, model_path, {'rf': rf, 'xgb': xgb}
+
+
+def train_rfxgb_seed_only(
+    train_features,
+    train_labels,
+    cfg,
+    log_name,
+    today
+):
+    """Train RF and XGB for a given seed, return individual models and accuracies."""
+
+    X_train, X_val, y_train, y_val = train_test_split(
+        train_features,
+        train_labels,
+        test_size=cfg.val_ratio,
+        random_state=cfg.seed,
+        stratify=train_labels
+    )
+
+    rf = RandomForestClassifier(
+        criterion='gini',
+        n_estimators=1000,
+        min_samples_split=12,
+        min_samples_leaf=1,
+        oob_score=True,
+        random_state=cfg.seed,
+        n_jobs=-1
+    )
+    rf.fit(X_train, y_train)
+    rf_val_preds = rf.predict(X_val)
+    rf_val_acc = accuracy_score(y_val, rf_val_preds) * 100.0
+
+    cpu_count = os.cpu_count() or 1
+    xgb = XGBClassifier(
+        n_estimators=600,
+        learning_rate=0.03,
+        max_depth=3,
+        subsample=0.9,
+        colsample_bytree=0.8,
+        reg_lambda=1.0,
+        reg_alpha=0.0,
+        min_child_weight=1.0,
+        objective='binary:logistic',
+        eval_metric='logloss',
+        random_state=cfg.seed,
+        n_jobs=max(1, cpu_count - 1),
+        early_stopping_rounds=50,
+    )
+    xgb.fit(
+        X_train,
+        y_train,
+        eval_set=[(X_val, y_val)],
+        verbose=False,
+    )
+    xgb_val_preds = xgb.predict(X_val)
+    xgb_val_acc = accuracy_score(y_val, xgb_val_preds) * 100.0
+
+    logger.info(
+        f'RFXGB seed {cfg.seed}: RF val {rf_val_acc:.2f}%, XGB val {xgb_val_acc:.2f}%'
+    )
+
+    return {
+        'seed': cfg.seed,
+        'rf_acc': rf_val_acc,
+        'xgb_acc': xgb_val_acc,
+        'rf_model': rf,
+        'xgb_model': xgb,
+        'log_name': log_name,
+        'today': today,
+    }
+
+
+def train_rfxgb_best_over_seeds(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    base_cfg,
+    seeds,
+    output_dir,
+    log_name,
+    today,
+    ground_truth_path
+):
+    """Train RF/XGB across seeds separately, pick best RF and best XGB, then soft-vote."""
+
+    if not seeds:
+        raise ValueError('No seeds provided for RFXGB')
+
+    best_rf = None
+    best_xgb = None
+    best_rf_acc = -1.0
+    best_xgb_acc = -1.0
+
+    for seed in seeds:
+        cfg = replace(base_cfg, seed=seed)
+        set_global_seed(seed)
+        seed_log_name = f'{log_name}_seed{seed}'
+        result = train_rfxgb_seed_only(
+            train_features,
+            train_labels,
+            cfg,
+            seed_log_name,
+            today
+        )
+        if result['rf_acc'] > best_rf_acc:
+            best_rf_acc = result['rf_acc']
+            best_rf = result['rf_model']
+            best_rf_seed = seed
+        if result['xgb_acc'] > best_xgb_acc:
+            best_xgb_acc = result['xgb_acc']
+            best_xgb = result['xgb_model']
+            best_xgb_seed = seed
+
+    if best_rf is None or best_xgb is None:
+        raise RuntimeError('Failed to obtain best RF or XGB model for RFXGB')
+
+    rf_test_proba = best_rf.predict_proba(test_features)
+    xgb_test_proba = best_xgb.predict_proba(test_features)
+    avg_test_proba = (rf_test_proba + xgb_test_proba) / 2.0
+    test_preds = np.argmax(avg_test_proba, axis=1)
+
+    submission_path = os.path.join(output_dir, f'{log_name}_best_rfxgb_submission.csv')
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(submission_path, index=False)
+    logger.info(
+        f'RFXGB (best seeds) submission saved to {submission_path}; '
+        f'best RF seed {best_rf_seed} ({best_rf_acc:.2f}%), '
+        f'best XGB seed {best_xgb_seed} ({best_xgb_acc:.2f}%)'
+    )
+
+    model_path = os.path.join(output_dir, f'{log_name}_best_rfxgb_{today}.pth')
+    torch.save({'rf': best_rf, 'xgb': best_xgb, 'rf_seed': best_rf_seed, 'xgb_seed': best_xgb_seed}, model_path)
+    logger.info(f'Best RFXGB models serialized to {model_path}')
+
+    summary_path = os.path.join(output_dir, f'{log_name}_best_rfxgb_summary_{today}.txt')
+    with open(summary_path, 'w', encoding='utf-8') as handle:
+        handle.write(f'Best RF seed: {best_rf_seed}, val_acc={best_rf_acc:.4f}\n')
+        handle.write(f'Best XGB seed: {best_xgb_seed}, val_acc={best_xgb_acc:.4f}\n')
+
+    submission_accuracy, matches, total = score_submission(Path(submission_path), ground_truth_path)
+    logger.info(
+        f'RFXGB best-seed submission accuracy vs corrected ground truth: '
+        f'{submission_accuracy:.4f} ({matches}/{total})'
+    )
+
+    ensemble_val_acc = float((best_rf_acc + best_xgb_acc) / 2.0)
+    return ensemble_val_acc, submission_path, model_path, {'rf': best_rf, 'xgb': best_xgb}
 
 
 def train_logistic_regression(
@@ -364,7 +672,7 @@ def train_logistic_regression(
     torch.save(lr, model_path)
     logger.info(f'LogisticRegression model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, lr
 
 
 def train_svm(
@@ -387,34 +695,49 @@ def train_svm(
         stratify=train_labels
     )
 
-    svm = SVC(
-        C=2.0,
-        kernel='rbf',
-        gamma='scale',
-        class_weight='balanced',
-        probability=False
+    svm_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('svc', SVC(kernel='rbf', class_weight='balanced', probability=True)),
+    ])
+    svm_param_grid = {
+        'svc__C': [0.5, 1.0, 2.0, 5.0],
+        'svc__gamma': ['scale', 0.05, 0.1],
+    }
+    logger.info('Running GridSearchCV for SVM (RBF kernel) with scaling...')
+    svm_grid = GridSearchCV(
+        svm_pipeline,
+        param_grid=svm_param_grid,
+        scoring='accuracy',
+        cv=3,
+        n_jobs=-1,
+        verbose=0,
     )
-    logger.info('Training SVM (RBF kernel)...')
-    svm.fit(X_train, y_train)
+    svm_grid.fit(X_train, y_train)
 
-    val_preds = svm.predict(X_val)
+    best_model: Pipeline = svm_grid.best_estimator_
+    logger.info(
+        f'Best SVM params: {svm_grid.best_params_} '
+        f'(cv accuracy {svm_grid.best_score_:.4f})'
+    )
+
+    val_preds = best_model.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
     logger.info(f'SVM validation accuracy: {val_acc:.2f}%')
     logger.info('Validation report:\n' + report)
     plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
 
-    test_preds = svm.predict(test_features)
+    test_preds = best_model.predict(test_features)
     submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'SVM submission saved to {submission_path}')
 
     model_path = os.path.join(output_dir, f'{log_name}_svm_{today}.pth')
-    torch.save(svm, model_path)
+    torch.save(best_model, model_path)
     logger.info(f'SVM model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
 
 
 def train_knn(
@@ -437,34 +760,137 @@ def train_knn(
         stratify=train_labels
     )
 
-    knn = KNeighborsClassifier(
-        n_neighbors=15,
-        weights='distance',
-        metric='minkowski',
-        p=2,
-        n_jobs=-1
+    knn_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('knn', KNeighborsClassifier(metric='minkowski', n_jobs=-1)),
+    ])
+    knn_param_grid = {
+        'knn__n_neighbors': [7, 11, 15, 21],
+        'knn__weights': ['uniform', 'distance'],
+        'knn__p': [1, 2],
+    }
+    logger.info('Running GridSearchCV for KNeighborsClassifier with scaling...')
+    knn_grid = GridSearchCV(
+        knn_pipeline,
+        param_grid=knn_param_grid,
+        scoring='accuracy',
+        cv=3,
+        n_jobs=-1,
+        verbose=0,
     )
-    logger.info('Training KNeighborsClassifier...')
-    knn.fit(X_train, y_train)
+    knn_grid.fit(X_train, y_train)
 
-    val_preds = knn.predict(X_val)
+    best_model: Pipeline = knn_grid.best_estimator_
+    logger.info(
+        f'Best KNN params: {knn_grid.best_params_} '
+        f'(cv accuracy {knn_grid.best_score_:.4f})'
+    )
+
+    val_preds = best_model.predict(X_val)
     val_acc = accuracy_score(y_val, val_preds) * 100.0
     report = classification_report(y_val, val_preds, target_names=CLASS_NAMES, digits=4)
     logger.info(f'KNN validation accuracy: {val_acc:.2f}%')
     logger.info('Validation report:\n' + report)
     plot_confusion_matrix(y_val, val_preds, CLASS_NAMES, cm_name)
 
-    test_preds = knn.predict(test_features)
+    test_preds = best_model.predict(test_features)
     submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': test_preds})
     submission_df = submission_df.sort_values('PassengerId')
     submission_df.to_csv(submission_path, index=False)
     logger.info(f'KNN submission saved to {submission_path}')
 
     model_path = os.path.join(output_dir, f'{log_name}_knn_{today}.pth')
-    torch.save(knn, model_path)
+    torch.save(best_model, model_path)
     logger.info(f'KNN model serialized to {model_path}')
 
-    return val_acc, submission_path, model_path
+    return val_acc, submission_path, model_path, best_model
+
+
+def train_ensemble(
+    train_features,
+    train_labels,
+    test_features,
+    passenger_ids,
+    cfg,
+    output_dir,
+    log_name,
+    today,
+    cm_name,
+    submission_path
+):
+    """Train all base models, pick top-3 by validation accuracy, then soft-vote."""
+
+    base_trainers = [
+        ('randomforest', train_random_forest),
+        ('gradientboosting', train_gradient_boosting),
+        ('logisticregression', train_logistic_regression),
+        ('svm', train_svm),
+        ('knn', train_knn),
+        ('xgboost', train_xgboost),
+    ]
+
+    results = []
+    for name, trainer in base_trainers:
+        model_log_name = f'{log_name}_{name}'
+        model_submission_path = os.path.join(output_dir, f'{model_log_name}_submission.csv')
+        model_cm_name = os.path.join(output_dir, f'{model_log_name}_cm_{today}.png')
+        val_acc, sub_path, model_path, model_obj = trainer(
+            train_features,
+            train_labels,
+            test_features,
+            passenger_ids,
+            cfg,
+            output_dir,
+            model_log_name,
+            today,
+            model_cm_name,
+            model_submission_path
+        )
+        results.append({
+            'name': name,
+            'val_acc': val_acc,
+            'submission': sub_path,
+            'model_path': model_path,
+            'model': model_obj,
+        })
+
+    if not results:
+        raise RuntimeError('No base models were trained for ensemble.')
+
+    results_sorted = sorted(results, key=lambda x: x['val_acc'], reverse=True)
+    top3 = results_sorted[:3]
+    logger.info('Top-3 models for ensemble (val acc): ' + ', '.join(
+        f"{r['name']}={r['val_acc']:.2f}%" for r in top3
+    ))
+
+    probas = []
+    for item in top3:
+        model = item['model']
+        if hasattr(model, 'predict_proba'):
+            probas.append(model.predict_proba(test_features))
+        else:
+            logger.warning(f"Model {item['name']} lacks predict_proba; skipping in soft vote")
+
+    if not probas:
+        raise RuntimeError('No models provided probabilities for ensemble voting.')
+
+    avg_proba = np.mean(np.stack(probas, axis=0), axis=0)
+    final_preds = np.argmax(avg_proba, axis=1)
+
+    ensemble_submission_path = os.path.join(output_dir, f'{log_name}_ensemble_submission.csv')
+    submission_df = pd.DataFrame({'PassengerId': passenger_ids, 'Survived': final_preds})
+    submission_df = submission_df.sort_values('PassengerId')
+    submission_df.to_csv(ensemble_submission_path, index=False)
+    logger.info(f'Ensemble submission saved to {ensemble_submission_path}')
+
+    ensemble_summary_path = os.path.join(output_dir, f'{log_name}_ensemble_top3_{today}.txt')
+    with open(ensemble_summary_path, 'w', encoding='utf-8') as handle:
+        handle.write('Top-3 models by validation accuracy\n')
+        for item in top3:
+            handle.write(f"{item['name']}: {item['val_acc']:.4f}, model={item['model_path']}\n")
+
+    ensemble_val_acc = float(np.mean([item['val_acc'] for item in top3]))
+    return ensemble_val_acc, ensemble_submission_path, ensemble_summary_path, top3
 
 
 def main():
@@ -502,7 +928,7 @@ def main():
     train_features, train_labels, test_features, passenger_ids, feature_names = prepare_titanic_data(
         train_csv,
         test_csv,
-        immfeature=IMMFEATURE
+        feature=FEATURE
     )
     logger.info(f'Loaded {train_features.shape[0]} training samples with {train_features.shape[1]} features')
 
@@ -514,212 +940,259 @@ def main():
         'model_path': None
     }
 
-    for seed in seed_list:
-        cfg = replace(base_cfg, seed=seed)
-        set_global_seed(seed)
-
-        seed_log_name = f'{log_name}_seed{seed}'
-        plot_name = os.path.join(output_dir, f'{seed_log_name}_training_{today}.png')
-        cm_name = os.path.join(output_dir, f'{seed_log_name}_cm_{today}.png')
-        best_model_path = os.path.join(output_dir, f'best_{seed_log_name}_{today}.pth')
-        submission_path = os.path.join(output_dir, f'{seed_log_name}_submission.csv')
-        seed_log_path = os.path.join(output_dir, f'{seed_log_name}_{today}.log')
-
-        file_sink = logger.add(
-            seed_log_path,
-            format='{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}',
-            colorize=False
+    if model_name == 'rfxgb':
+        val_acc, submission, model_path, _model_obj = train_rfxgb_best_over_seeds(
+            train_features,
+            train_labels,
+            test_features,
+            passenger_ids,
+            base_cfg,
+            seed_list,
+            output_dir,
+            log_name,
+            today,
+            ground_truth_path
         )
+        best_result = {
+            'val_acc': val_acc,
+            'seed': 'best_rf_xgb',
+            'submission': submission,
+            'model_path': model_path
+        }
+    else:
+        for seed in seed_list:
+            cfg = replace(base_cfg, seed=seed)
+            set_global_seed(seed)
 
-        try:
-            if model_name == 'randomforest':
-                val_acc, submission, model_path = train_random_forest(
-                    train_features,
-                    train_labels,
-                    test_features,
-                    passenger_ids,
-                    cfg,
-                    output_dir,
-                    seed_log_name,
-                    today,
-                    cm_name,
-                    submission_path
-                )
-            elif model_name == 'gradientboosting':
-                val_acc, submission, model_path = train_gradient_boosting(
-                    train_features,
-                    train_labels,
-                    test_features,
-                    passenger_ids,
-                    cfg,
-                    output_dir,
-                    seed_log_name,
-                    today,
-                    cm_name,
-                    submission_path
-                )
-            elif model_name == 'logisticregression':
-                val_acc, submission, model_path = train_logistic_regression(
-                    train_features,
-                    train_labels,
-                    test_features,
-                    passenger_ids,
-                    cfg,
-                    output_dir,
-                    seed_log_name,
-                    today,
-                    cm_name,
-                    submission_path
-                )
-            elif model_name == 'svm':
-                val_acc, submission, model_path = train_svm(
-                    train_features,
-                    train_labels,
-                    test_features,
-                    passenger_ids,
-                    cfg,
-                    output_dir,
-                    seed_log_name,
-                    today,
-                    cm_name,
-                    submission_path
-                )
-            elif model_name == 'knn':
-                val_acc, submission, model_path = train_knn(
-                    train_features,
-                    train_labels,
-                    test_features,
-                    passenger_ids,
-                    cfg,
-                    output_dir,
-                    seed_log_name,
-                    today,
-                    cm_name,
-                    submission_path
-                )
-            else:
-                X_train, X_val, y_train, y_val = train_test_split(
-                    train_features,
-                    train_labels,
-                    test_size=cfg.val_ratio,
-                    random_state=cfg.seed,
-                    stratify=train_labels
-                )
+            seed_log_name = f'{log_name}_seed{seed}'
+            plot_name = os.path.join(output_dir, f'{seed_log_name}_training_{today}.png')
+            cm_name = os.path.join(output_dir, f'{seed_log_name}_cm_{today}.png')
+            best_model_path = os.path.join(output_dir, f'best_{seed_log_name}_{today}.pth')
+            submission_path = os.path.join(output_dir, f'{seed_log_name}_submission.csv')
+            seed_log_path = os.path.join(output_dir, f'{seed_log_name}_{today}.log')
 
-                train_loader = DataLoader(
-                    TitanicDataset(X_train, y_train),
-                    batch_size=cfg.batch_size,
-                    shuffle=True,
-                    num_workers=NUM_WORKERS
-                )
-                val_loader = DataLoader(
-                    TitanicDataset(X_val, y_val),
-                    batch_size=cfg.batch_size,
-                    shuffle=False,
-                    num_workers=NUM_WORKERS
-                )
-                test_loader = DataLoader(
-                    TitanicDataset(test_features, ids=passenger_ids),
-                    batch_size=cfg.batch_size,
-                    shuffle=False,
-                    num_workers=NUM_WORKERS
-                )
-
-                model = TitanicMLP(input_dim=train_features.shape[1], hidden_dims=(256, 128, 64), dropout=0.35).to(device)
-                criterion = nn.CrossEntropyLoss()
-                optimizer = optim.AdamW(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
-                scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=6)
-                logger.info(f'Model: {model.__class__.__name__}')
-                logger.info(f'Optimizer: {optimizer.__class__.__name__}')
-
-                train_losses, val_losses, train_accs, val_accs = [], [], [], []
-                best_val = 0.0
-                epochs_without_improve = 0
-
-                for epoch in range(cfg.num_epochs):
-                    train_loss, train_acc = train_epoch(
-                        model,
-                        tqdm(train_loader, desc=f'Train {epoch+1}/{cfg.num_epochs}', leave=False),
-                        criterion,
-                        optimizer,
-                        device
-                    )
-                    val_loss, epoch_val_acc = evaluate(
-                        model,
-                        tqdm(val_loader, desc=f'Val {epoch+1}/{cfg.num_epochs}', leave=False),
-                        criterion,
-                        device
-                    )
-
-                    scheduler.step(epoch_val_acc)
-
-                    train_losses.append(train_loss)
-                    val_losses.append(val_loss)
-                    train_accs.append(train_acc)
-                    val_accs.append(epoch_val_acc)
-
-                    logger.info(
-                        f'Epoch {epoch+1}/{cfg.num_epochs} | '
-                        f'Train Loss {train_loss:.4f}, Train Acc {train_acc:.2f}% | '
-                        f'Val Loss {val_loss:.4f}, Val Acc {epoch_val_acc:.2f}%'
-                    )
-
-                    if epoch_val_acc > best_val:
-                        best_val = epoch_val_acc
-                        epochs_without_improve = 0
-                        torch.save(model.state_dict(), best_model_path)
-                        logger.info(f'New best model saved with validation accuracy {epoch_val_acc:.2f}%')
-                    else:
-                        epochs_without_improve += 1
-                        if EARLY_STOPPING and epochs_without_improve >= cfg.patience:
-                            logger.info('Early stopping triggered')
-                            break
-
-                plot_training_history(train_losses, train_accs, val_losses, val_accs, plot_name)
-
-                if os.path.exists(best_model_path):
-                    state_dict = torch.load(best_model_path, map_location=device)
-                    model.load_state_dict(state_dict)
-
-                val_loss, final_val_acc, val_labels, val_preds = evaluate(
-                    model,
-                    tqdm(val_loader, desc='Val (final)', leave=False),
-                    criterion,
-                    device,
-                    return_predictions=True
-                )
-                logger.info(f'Final validation accuracy: {final_val_acc:.2f}% (loss {val_loss:.4f})')
-                report = classification_report(val_labels, val_preds, target_names=CLASS_NAMES, digits=4)
-                logger.info('Validation report:\n' + report)
-                plot_confusion_matrix(val_labels, val_preds, CLASS_NAMES, cm_name)
-
-                test_predictions = test(model, tqdm(test_loader, desc='Test', leave=False), device)
-                submission_df = pd.DataFrame(test_predictions, columns=['PassengerId', 'Survived'])
-                submission_df = submission_df.sort_values('PassengerId')
-                submission_df.to_csv(submission_path, index=False)
-                logger.info(f'Submission saved to {submission_path}')
-
-                val_acc = max(best_val, final_val_acc)
-                submission = submission_path
-                model_path = best_model_path
-
-            submission_accuracy, matches, total = score_submission(
-                Path(submission), ground_truth_path
+            file_sink = logger.add(
+                seed_log_path,
+                format='{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}',
+                colorize=False
             )
-            logger.info(
-                f'Submission accuracy vs corrected ground truth: '
-                f'{submission_accuracy:.4f} ({matches}/{total})'
-            )
-        finally:
-            logger.remove(file_sink)
 
-        if val_acc > best_result['val_acc']:
-            best_result = {
-                'val_acc': val_acc,
-                'seed': seed,
-                'submission': submission,
-                'model_path': model_path
-            }
+            try:
+                if model_name == 'randomforest':
+                    val_acc, submission, model_path, _model_obj = train_random_forest(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'gradientboosting':
+                    val_acc, submission, model_path, _model_obj = train_gradient_boosting(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'logisticregression':
+                    val_acc, submission, model_path, _model_obj = train_logistic_regression(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'svm':
+                    val_acc, submission, model_path, _model_obj = train_svm(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'knn':
+                    val_acc, submission, model_path, _model_obj = train_knn(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'xgboost':
+                    val_acc, submission, model_path, _model_obj = train_xgboost(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                elif model_name == 'ensemble':
+                    val_acc, submission, model_path, _model_obj = train_ensemble(
+                        train_features,
+                        train_labels,
+                        test_features,
+                        passenger_ids,
+                        cfg,
+                        output_dir,
+                        seed_log_name,
+                        today,
+                        cm_name,
+                        submission_path
+                    )
+                else: # MLP Training
+                    X_train, X_val, y_train, y_val = train_test_split(
+                        train_features,
+                        train_labels,
+                        test_size=cfg.val_ratio,
+                        random_state=cfg.seed,
+                        stratify=train_labels
+                    )
+
+                    train_loader = DataLoader(
+                        TitanicDataset(X_train, y_train),
+                        batch_size=cfg.batch_size,
+                        shuffle=True,
+                        num_workers=NUM_WORKERS
+                    )
+                    val_loader = DataLoader(
+                        TitanicDataset(X_val, y_val),
+                        batch_size=cfg.batch_size,
+                        shuffle=False,
+                        num_workers=NUM_WORKERS
+                    )
+                    test_loader = DataLoader(
+                        TitanicDataset(test_features, ids=passenger_ids),
+                        batch_size=cfg.batch_size,
+                        shuffle=False,
+                        num_workers=NUM_WORKERS
+                    )
+
+                    model = TitanicMLP(input_dim=train_features.shape[1], hidden_dims=(256, 128, 64), dropout=0.35).to(device)
+                    criterion = nn.CrossEntropyLoss()
+                    optimizer = optim.AdamW(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+                    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=6)
+                    logger.info(f'Model: {model.__class__.__name__}')
+                    logger.info(f'Optimizer: {optimizer.__class__.__name__}')
+
+                    train_losses, val_losses, train_accs, val_accs = [], [], [], []
+                    best_val = 0.0
+                    epochs_without_improve = 0
+
+                    for epoch in range(cfg.num_epochs):
+                        train_loss, train_acc = train_epoch(
+                            model,
+                            tqdm(train_loader, desc=f'Train {epoch+1}/{cfg.num_epochs}', leave=False),
+                            criterion,
+                            optimizer,
+                            device
+                        )
+                        val_loss, epoch_val_acc = evaluate(
+                            model,
+                            tqdm(val_loader, desc=f'Val {epoch+1}/{cfg.num_epochs}', leave=False),
+                            criterion,
+                            device
+                        )
+
+                        scheduler.step(epoch_val_acc)
+
+                        train_losses.append(train_loss)
+                        val_losses.append(val_loss)
+                        train_accs.append(train_acc)
+                        val_accs.append(epoch_val_acc)
+
+                        logger.info(
+                            f'Epoch {epoch+1}/{cfg.num_epochs} | '
+                            f'Train Loss {train_loss:.4f}, Train Acc {train_acc:.2f}% | '
+                            f'Val Loss {val_loss:.4f}, Val Acc {epoch_val_acc:.2f}%'
+                        )
+
+                        if epoch_val_acc > best_val:
+                            best_val = epoch_val_acc
+                            epochs_without_improve = 0
+                            torch.save(model.state_dict(), best_model_path)
+                            logger.info(f'New best model saved with validation accuracy {epoch_val_acc:.2f}%')
+                        else:
+                            epochs_without_improve += 1
+                            if EARLY_STOPPING and epochs_without_improve >= cfg.patience:
+                                logger.info('Early stopping triggered')
+                                break
+
+                    plot_training_history(train_losses, train_accs, val_losses, val_accs, plot_name)
+
+                    if os.path.exists(best_model_path):
+                        state_dict = torch.load(best_model_path, map_location=device)
+                        model.load_state_dict(state_dict)
+
+                    val_loss, final_val_acc, val_labels, val_preds = evaluate(
+                        model,
+                        tqdm(val_loader, desc='Val (final)', leave=False),
+                        criterion,
+                        device,
+                        return_predictions=True
+                    )
+                    logger.info(f'Final validation accuracy: {final_val_acc:.2f}% (loss {val_loss:.4f})')
+                    report = classification_report(val_labels, val_preds, target_names=CLASS_NAMES, digits=4)
+                    logger.info('Validation report:\n' + report)
+                    plot_confusion_matrix(val_labels, val_preds, CLASS_NAMES, cm_name)
+
+                    test_predictions = test(model, tqdm(test_loader, desc='Test', leave=False), device)
+                    submission_df = pd.DataFrame(test_predictions, columns=['PassengerId', 'Survived'])
+                    submission_df = submission_df.sort_values('PassengerId')
+                    submission_df.to_csv(submission_path, index=False)
+                    logger.info(f'Submission saved to {submission_path}')
+
+                    val_acc = max(best_val, final_val_acc)
+                    submission = submission_path
+                    model_path = best_model_path
+                    _model_obj = model
+
+                submission_accuracy, matches, total = score_submission(
+                    Path(submission), ground_truth_path
+                )
+                logger.info(
+                    f'Submission accuracy vs corrected ground truth: '
+                    f'{submission_accuracy:.4f} ({matches}/{total})'
+                )
+            finally:
+                logger.remove(file_sink)
+
+            if val_acc > best_result['val_acc']:
+                best_result = {
+                    'val_acc': val_acc,
+                    'seed': seed,
+                    'submission': submission,
+                    'model_path': model_path
+                }
 
     if best_result['submission']:
         logger.info(
