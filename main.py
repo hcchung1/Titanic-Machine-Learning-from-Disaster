@@ -360,7 +360,7 @@ def train_xgboost(
         eval_metric='logloss',
         random_state=cfg.seed,
         n_jobs=max(1, cpu_count - 1),
-        early_stopping_rounds=50,  # 放在這裡
+        early_stopping_rounds=50,
     )
     logger.info('Training XGBoostClassifier...')
     xgb.fit(
