@@ -1,0 +1,108 @@
+2025-12-10 13:53:13.137 | INFO | Using device: cuda
+2025-12-10 13:53:17.283 | INFO | Loaded 891 training samples with 9 features
+2025-12-10 13:53:17.291 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:53:25.036 | INFO | Best KNN params: {'knn__n_neighbors': 11, 'knn__p': 1, 'knn__weights': 'distance'} (cv accuracy 0.8147)
+2025-12-10 13:53:25.073 | INFO | KNN validation accuracy: 78.21%
+2025-12-10 13:53:25.074 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8034    0.8545    0.8282       110
+       Survived     0.7419    0.6667    0.7023        69
+
+       accuracy                         0.7821       179
+      macro avg     0.7727    0.7606    0.7652       179
+   weighted avg     0.7797    0.7821    0.7797       179
+
+2025-12-10 13:53:25.305 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-10.png
+2025-12-10 13:53:25.344 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-10 13:53:25.350 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-10.pth
+2025-12-10 13:53:25.354 | INFO | Submission accuracy vs corrected ground truth: 0.7464 (312/418)
+2025-12-10 13:53:25.359 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:53:25.563 | INFO | Best KNN params: {'knn__n_neighbors': 15, 'knn__p': 1, 'knn__weights': 'uniform'} (cv accuracy 0.8231)
+2025-12-10 13:53:25.615 | INFO | KNN validation accuracy: 81.01%
+2025-12-10 13:53:25.615 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8065    0.9091    0.8547       110
+       Survived     0.8182    0.6522    0.7258        69
+
+       accuracy                         0.8101       179
+      macro avg     0.8123    0.7806    0.7903       179
+   weighted avg     0.8110    0.8101    0.8050       179
+
+2025-12-10 13:53:25.756 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_cm_2025-12-10.png
+2025-12-10 13:53:25.801 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_submission.csv
+2025-12-10 13:53:25.803 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_knn_2025-12-10.pth
+2025-12-10 13:53:25.805 | INFO | Submission accuracy vs corrected ground truth: 0.7799 (326/418)
+2025-12-10 13:53:25.810 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:53:26.020 | INFO | Best KNN params: {'knn__n_neighbors': 15, 'knn__p': 1, 'knn__weights': 'uniform'} (cv accuracy 0.8160)
+2025-12-10 13:53:26.068 | INFO | KNN validation accuracy: 84.36%
+2025-12-10 13:53:26.068 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8361    0.9273    0.8793       110
+       Survived     0.8596    0.7101    0.7778        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8479    0.8187    0.8285       179
+   weighted avg     0.8452    0.8436    0.8402       179
+
+2025-12-10 13:53:26.186 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_cm_2025-12-10.png
+2025-12-10 13:53:26.246 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-10 13:53:26.247 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_knn_2025-12-10.pth
+2025-12-10 13:53:26.249 | INFO | Submission accuracy vs corrected ground truth: 0.7895 (330/418)
+2025-12-10 13:53:26.250 | INFO | Best seed 777 achieved validation accuracy 84.36% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-10 13:54:01.012 | INFO | Using device: cuda
+2025-12-10 13:54:05.095 | INFO | Loaded 891 training samples with 14 features
+2025-12-10 13:54:05.109 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:54:12.937 | INFO | Best KNN params: {'knn__n_neighbors': 15, 'knn__p': 1, 'knn__weights': 'distance'} (cv accuracy 0.7977)
+2025-12-10 13:54:12.989 | INFO | KNN validation accuracy: 79.33%
+2025-12-10 13:54:12.990 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8174    0.8545    0.8356       110
+       Survived     0.7500    0.6957    0.7218        69
+
+       accuracy                         0.7933       179
+      macro avg     0.7837    0.7751    0.7787       179
+   weighted avg     0.7914    0.7933    0.7917       179
+
+2025-12-10 13:54:13.163 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-10.png
+2025-12-10 13:54:13.189 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-10 13:54:13.194 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-10.pth
+2025-12-10 13:54:13.197 | INFO | Submission accuracy vs corrected ground truth: 0.7344 (307/418)
+2025-12-10 13:54:13.200 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:54:13.406 | INFO | Best KNN params: {'knn__n_neighbors': 21, 'knn__p': 1, 'knn__weights': 'distance'} (cv accuracy 0.8161)
+2025-12-10 13:54:13.442 | INFO | KNN validation accuracy: 77.09%
+2025-12-10 13:54:13.443 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8000    0.8364    0.8178       110
+       Survived     0.7188    0.6667    0.6917        69
+
+       accuracy                         0.7709       179
+      macro avg     0.7594    0.7515    0.7548       179
+   weighted avg     0.7687    0.7709    0.7692       179
+
+2025-12-10 13:54:13.573 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_cm_2025-12-10.png
+2025-12-10 13:54:13.612 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_submission.csv
+2025-12-10 13:54:13.614 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed2025_knn_2025-12-10.pth
+2025-12-10 13:54:13.616 | INFO | Submission accuracy vs corrected ground truth: 0.7488 (313/418)
+2025-12-10 13:54:13.620 | INFO | Running GridSearchCV for KNeighborsClassifier with scaling...
+2025-12-10 13:54:13.831 | INFO | Best KNN params: {'knn__n_neighbors': 21, 'knn__p': 1, 'knn__weights': 'distance'} (cv accuracy 0.7991)
+2025-12-10 13:54:13.867 | INFO | KNN validation accuracy: 86.59%
+2025-12-10 13:54:13.867 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8707    0.9182    0.8938       110
+       Survived     0.8571    0.7826    0.8182        69
+
+       accuracy                         0.8659       179
+      macro avg     0.8639    0.8504    0.8560       179
+   weighted avg     0.8655    0.8659    0.8647       179
+
+2025-12-10 13:54:13.983 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_cm_2025-12-10.png
+2025-12-10 13:54:14.023 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv
+2025-12-10 13:54:14.024 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_knn_2025-12-10.pth
+2025-12-10 13:54:14.026 | INFO | Submission accuracy vs corrected ground truth: 0.7440 (311/418)
+2025-12-10 13:54:14.027 | INFO | Best seed 777 achieved validation accuracy 86.59% with submission E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed777_submission.csv

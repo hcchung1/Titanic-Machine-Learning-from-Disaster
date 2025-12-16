@@ -1,0 +1,106 @@
+2025-12-09 13:57:55.401 | INFO | Training RandomForestClassifier...
+2025-12-09 13:57:58.572 | INFO | RandomForest validation accuracy: 87.15%
+2025-12-09 13:57:58.572 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8655    0.9364    0.8996       110
+       Survived     0.8833    0.7681    0.8217        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8744    0.8522    0.8606       179
+   weighted avg     0.8724    0.8715    0.8696       179
+
+2025-12-09 13:57:58.746 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 13:57:58.981 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 13:57:59.585 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 13:58:47.535 | INFO | Training RandomForestClassifier...
+2025-12-09 13:58:50.742 | INFO | RandomForest validation accuracy: 87.15%
+2025-12-09 13:58:50.743 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8655    0.9364    0.8996       110
+       Survived     0.8833    0.7681    0.8217        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8744    0.8522    0.8606       179
+   weighted avg     0.8724    0.8715    0.8696       179
+
+2025-12-09 13:58:50.917 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 13:58:51.162 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 13:58:51.775 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 14:20:17.231 | INFO | Training RandomForestClassifier...
+2025-12-09 14:20:20.669 | INFO | RandomForest validation accuracy: 87.15%
+2025-12-09 14:20:20.669 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8655    0.9364    0.8996       110
+       Survived     0.8833    0.7681    0.8217        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8744    0.8522    0.8606       179
+   weighted avg     0.8724    0.8715    0.8696       179
+
+2025-12-09 14:20:20.865 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 14:20:21.140 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 14:20:21.751 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 14:21:02.217 | INFO | Training RandomForestClassifier...
+2025-12-09 14:21:05.891 | INFO | RandomForest validation accuracy: 86.59%
+2025-12-09 14:21:05.892 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8583    0.9364    0.8957       110
+       Survived     0.8814    0.7536    0.8125        69
+
+       accuracy                         0.8659       179
+      macro avg     0.8698    0.8450    0.8541       179
+   weighted avg     0.8672    0.8659    0.8636       179
+
+2025-12-09 14:21:06.085 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 14:21:06.365 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 14:21:06.906 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 14:44:51.592 | INFO | Training RandomForestClassifier...
+2025-12-09 14:44:54.325 | INFO | RandomForest validation accuracy: 85.47%
+2025-12-09 14:44:54.326 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8559    0.9182    0.8860       110
+       Survived     0.8525    0.7536    0.8000        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8542    0.8359    0.8430       179
+   weighted avg     0.8546    0.8547    0.8528       179
+
+2025-12-09 14:44:54.508 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 14:44:54.766 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 14:44:55.049 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 14:50:31.894 | INFO | Training RandomForestClassifier...
+2025-12-09 14:50:33.281 | INFO | RandomForest validation accuracy: 85.47%
+2025-12-09 14:50:33.282 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8559    0.9182    0.8860       110
+       Survived     0.8525    0.7536    0.8000        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8542    0.8359    0.8430       179
+   weighted avg     0.8546    0.8547    0.8528       179
+
+2025-12-09 14:50:33.459 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 14:50:33.604 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 14:50:33.718 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 15:49:55.932 | INFO | Training RandomForestClassifier...
+2025-12-09 15:49:58.619 | INFO | RandomForest validation accuracy: 85.47%
+2025-12-09 15:49:58.620 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8559    0.9182    0.8860       110
+       Survived     0.8525    0.7536    0.8000        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8542    0.8359    0.8430       179
+   weighted avg     0.8546    0.8547    0.8528       179
+
+2025-12-09 15:49:58.792 | INFO | Confusion matrix saved to /workspace/output/RandomForest_ES_seed777_cm_2025-12-09.png
+2025-12-09 15:49:59.036 | INFO | RandomForest submission saved to /workspace/output/RandomForest_ES_seed777_submission.csv
+2025-12-09 15:49:59.321 | INFO | RandomForest model serialized to /workspace/output/RandomForest_ES_seed777_random_forest_2025-12-09.pth
+2025-12-09 15:49:59.327 | INFO | Submission accuracy vs corrected ground truth: 0.7967 (333/418)

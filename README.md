@@ -1,4 +1,4 @@
-# Titanic from Kaggle using machine learning techiniche
+# Titanic from Kaggle using machine learning technique
 ## Feature Engineering
 1. **Title Extraction**
     - Extract titles from Name (e.g., Mr, Mrs, Miss, Master)

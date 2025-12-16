@@ -1,0 +1,18 @@
+2025-12-09 11:53:43.065 | INFO | Using device: cuda
+2025-12-09 11:53:43.110 | INFO | Loaded 891 training samples with 27 features
+2025-12-09 11:53:43.112 | INFO | Training KNeighborsClassifier...
+2025-12-09 11:53:43.254 | INFO | KNN validation accuracy: 81.01%
+2025-12-09 11:53:43.255 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8276    0.8727    0.8496       110
+       Survived     0.7778    0.7101    0.7424        69
+
+       accuracy                         0.8101       179
+      macro avg     0.8027    0.7914    0.7960       179
+   weighted avg     0.8084    0.8101    0.8083       179
+
+2025-12-09 11:53:43.582 | INFO | Confusion matrix saved to /workspace/output/knn_ES_cm_2025-12-09.png
+2025-12-09 11:53:43.594 | INFO | KNN submission saved to /workspace/output/knn_ES_submission.csv
+2025-12-09 11:53:43.598 | INFO | KNN model serialized to /workspace/output/knn_ES_knn_2025-12-09.pth
+2025-12-09 11:53:43.770 | INFO | Submitting '/workspace/output/knn_ES_submission.csv' to Kaggle competition 'titanic'

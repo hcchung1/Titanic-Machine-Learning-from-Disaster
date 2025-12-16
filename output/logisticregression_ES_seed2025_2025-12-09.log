@@ -1,0 +1,32 @@
+2025-12-09 21:23:30.296 | INFO | Training LogisticRegression...
+2025-12-09 21:23:30.305 | INFO | LogisticRegression validation accuracy: 77.65%
+2025-12-09 21:23:30.306 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8302    0.8000    0.8148       110
+       Survived     0.6986    0.7391    0.7183        69
+
+       accuracy                         0.7765       179
+      macro avg     0.7644    0.7696    0.7666       179
+   weighted avg     0.7795    0.7765    0.7776       179
+
+2025-12-09 21:23:30.425 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_cm_2025-12-09.png
+2025-12-09 21:23:30.427 | INFO | LogisticRegression submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_submission.csv
+2025-12-09 21:23:30.428 | INFO | LogisticRegression model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_logistic_regression_2025-12-09.pth
+2025-12-09 21:23:30.430 | INFO | Submission accuracy vs corrected ground truth: 0.7368 (308/418)
+2025-12-09 23:18:01.210 | INFO | Training LogisticRegression...
+2025-12-09 23:18:01.222 | INFO | LogisticRegression validation accuracy: 77.65%
+2025-12-09 23:18:01.222 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8241    0.8091    0.8165       110
+       Survived     0.7042    0.7246    0.7143        69
+
+       accuracy                         0.7765       179
+      macro avg     0.7641    0.7669    0.7654       179
+   weighted avg     0.7779    0.7765    0.7771       179
+
+2025-12-09 23:18:01.340 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_cm_2025-12-09.png
+2025-12-09 23:18:01.342 | INFO | LogisticRegression submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_submission.csv
+2025-12-09 23:18:01.343 | INFO | LogisticRegression model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\logisticregression_ES_seed2025_logistic_regression_2025-12-09.pth
+2025-12-09 23:18:01.345 | INFO | Submission accuracy vs corrected ground truth: 0.7273 (304/418)

@@ -1,0 +1,375 @@
+2025-12-09 15:03:05.904 | INFO | Using device: cuda
+2025-12-09 15:03:12.796 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 15:03:12.806 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:03:15.946 | INFO | GradientBoosting validation accuracy: 84.36%
+2025-12-09 15:03:15.946 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8596    0.8909    0.8750       110
+       Survived     0.8154    0.7681    0.7910        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8375    0.8295    0.8330       179
+   weighted avg     0.8426    0.8436    0.8426       179
+
+2025-12-09 15:03:16.205 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 15:03:16.226 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 15:03:16.382 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 15:03:16.394 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:03:19.523 | INFO | GradientBoosting validation accuracy: 81.56%
+2025-12-09 15:03:19.524 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8130    0.9091    0.8584       110
+       Survived     0.8214    0.6667    0.7360        69
+
+       accuracy                         0.8156       179
+      macro avg     0.8172    0.7879    0.7972       179
+   weighted avg     0.8163    0.8156    0.8112       179
+
+2025-12-09 15:03:19.731 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 15:03:19.750 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 15:03:19.894 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 15:03:19.905 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:03:22.792 | INFO | GradientBoosting validation accuracy: 87.71%
+2025-12-09 15:03:22.792 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8729    0.9364    0.9035       110
+       Survived     0.8852    0.7826    0.8308        69
+
+       accuracy                         0.8771       179
+      macro avg     0.8791    0.8595    0.8671       179
+   weighted avg     0.8776    0.8771    0.8755       179
+
+2025-12-09 15:03:22.970 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 15:03:22.989 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:03:23.146 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 15:03:23.148 | INFO | Best seed 777 achieved validation accuracy 87.71% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:11:37.512 | INFO | Using device: cuda
+2025-12-09 15:11:43.971 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 15:11:43.983 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:11:44.955 | INFO | GradientBoosting validation accuracy: 83.80%
+2025-12-09 15:11:44.956 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8584    0.8818    0.8700       110
+       Survived     0.8030    0.7681    0.7852        69
+
+       accuracy                         0.8380       179
+      macro avg     0.8307    0.8250    0.8276       179
+   weighted avg     0.8371    0.8380    0.8373       179
+
+2025-12-09 15:11:45.187 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 15:11:45.194 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 15:11:45.236 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 15:11:45.246 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:11:46.041 | INFO | GradientBoosting validation accuracy: 82.12%
+2025-12-09 15:11:46.042 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8250    0.9000    0.8609       110
+       Survived     0.8136    0.6957    0.7500        69
+
+       accuracy                         0.8212       179
+      macro avg     0.8193    0.7978    0.8054       179
+   weighted avg     0.8206    0.8212    0.8181       179
+
+2025-12-09 15:11:46.263 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 15:11:46.271 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 15:11:46.311 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 15:11:46.322 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:11:47.112 | INFO | GradientBoosting validation accuracy: 86.03%
+2025-12-09 15:11:47.113 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8696    0.9091    0.8889       110
+       Survived     0.8438    0.7826    0.8120        69
+
+       accuracy                         0.8603       179
+      macro avg     0.8567    0.8458    0.8505       179
+   weighted avg     0.8596    0.8603    0.8593       179
+
+2025-12-09 15:11:47.338 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 15:11:47.346 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:11:47.384 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 15:11:47.385 | INFO | Best seed 777 achieved validation accuracy 86.03% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:50:49.161 | INFO | Using device: cuda
+2025-12-09 15:50:55.688 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 15:50:55.700 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:50:56.854 | INFO | GradientBoosting validation accuracy: 84.36%
+2025-12-09 15:50:56.855 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8661    0.8818    0.8739       110
+       Survived     0.8060    0.7826    0.7941        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8360    0.8322    0.8340       179
+   weighted avg     0.8429    0.8436    0.8431       179
+
+2025-12-09 15:50:57.090 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 15:50:57.100 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 15:50:57.174 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 15:50:57.178 | INFO | Submission accuracy vs corrected ground truth: 0.7679 (321/418)
+2025-12-09 15:50:57.189 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:50:58.328 | INFO | GradientBoosting validation accuracy: 81.01%
+2025-12-09 15:50:58.328 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8220    0.8818    0.8509       110
+       Survived     0.7869    0.6957    0.7385        69
+
+       accuracy                         0.8101       179
+      macro avg     0.8045    0.7887    0.7947       179
+   weighted avg     0.8085    0.8101    0.8075       179
+
+2025-12-09 15:50:58.537 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 15:50:58.545 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 15:50:58.600 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 15:50:58.603 | INFO | Submission accuracy vs corrected ground truth: 0.7727 (323/418)
+2025-12-09 15:50:58.614 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:50:59.717 | INFO | GradientBoosting validation accuracy: 86.59%
+2025-12-09 15:50:59.718 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8707    0.9182    0.8938       110
+       Survived     0.8571    0.7826    0.8182        69
+
+       accuracy                         0.8659       179
+      macro avg     0.8639    0.8504    0.8560       179
+   weighted avg     0.8655    0.8659    0.8647       179
+
+2025-12-09 15:50:59.904 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 15:50:59.913 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:50:59.977 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 15:50:59.981 | INFO | Submission accuracy vs corrected ground truth: 0.7775 (325/418)
+2025-12-09 15:50:59.981 | INFO | Best seed 777 achieved validation accuracy 86.59% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:52:05.590 | INFO | Using device: cuda
+2025-12-09 15:52:11.793 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 15:52:11.806 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:52:12.653 | INFO | GradientBoosting validation accuracy: 83.80%
+2025-12-09 15:52:12.653 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8584    0.8818    0.8700       110
+       Survived     0.8030    0.7681    0.7852        69
+
+       accuracy                         0.8380       179
+      macro avg     0.8307    0.8250    0.8276       179
+   weighted avg     0.8371    0.8380    0.8373       179
+
+2025-12-09 15:52:12.865 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 15:52:12.871 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 15:52:12.908 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 15:52:12.912 | INFO | Submission accuracy vs corrected ground truth: 0.7679 (321/418)
+2025-12-09 15:52:12.921 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:52:13.631 | INFO | GradientBoosting validation accuracy: 82.12%
+2025-12-09 15:52:13.631 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8250    0.9000    0.8609       110
+       Survived     0.8136    0.6957    0.7500        69
+
+       accuracy                         0.8212       179
+      macro avg     0.8193    0.7978    0.8054       179
+   weighted avg     0.8206    0.8212    0.8181       179
+
+2025-12-09 15:52:13.822 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 15:52:13.828 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 15:52:13.863 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 15:52:13.866 | INFO | Submission accuracy vs corrected ground truth: 0.7608 (318/418)
+2025-12-09 15:52:13.875 | INFO | Training GradientBoostingClassifier...
+2025-12-09 15:52:14.597 | INFO | GradientBoosting validation accuracy: 86.03%
+2025-12-09 15:52:14.598 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8696    0.9091    0.8889       110
+       Survived     0.8438    0.7826    0.8120        69
+
+       accuracy                         0.8603       179
+      macro avg     0.8567    0.8458    0.8505       179
+   weighted avg     0.8596    0.8603    0.8593       179
+
+2025-12-09 15:52:14.801 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 15:52:14.807 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 15:52:14.845 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 15:52:14.848 | INFO | Submission accuracy vs corrected ground truth: 0.7656 (320/418)
+2025-12-09 15:52:14.848 | INFO | Best seed 777 achieved validation accuracy 86.03% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:01:27.821 | INFO | Using device: cuda
+2025-12-09 16:01:34.247 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 16:01:34.258 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:02:54.812 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 4, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8343)
+2025-12-09 16:03:01.193 | INFO | GradientBoosting validation accuracy: 83.24%
+2025-12-09 16:03:01.194 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8448    0.8909    0.8673       110
+       Survived     0.8095    0.7391    0.7727        69
+
+       accuracy                         0.8324       179
+      macro avg     0.8272    0.8150    0.8200       179
+   weighted avg     0.8312    0.8324    0.8308       179
+
+2025-12-09 16:05:17.581 | INFO | Using device: cuda
+2025-12-09 16:05:23.616 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 16:05:23.663 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:05:43.482 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 4, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8343)
+2025-12-09 16:05:43.492 | INFO | GradientBoosting validation accuracy: 83.24%
+2025-12-09 16:05:43.493 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8448    0.8909    0.8673       110
+       Survived     0.8095    0.7391    0.7727        69
+
+       accuracy                         0.8324       179
+      macro avg     0.8272    0.8150    0.8200       179
+   weighted avg     0.8312    0.8324    0.8308       179
+
+2025-12-09 16:05:43.945 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 16:05:43.961 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 16:05:43.987 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 16:05:44.000 | INFO | Submission accuracy vs corrected ground truth: 0.7679 (321/418)
+2025-12-09 16:05:44.009 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:05:57.725 | INFO | Best GradientBoosting params: {'learning_rate': 0.02, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8455)
+2025-12-09 16:05:57.736 | INFO | GradientBoosting validation accuracy: 84.36%
+2025-12-09 16:05:57.736 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8534    0.9000    0.8761       110
+       Survived     0.8254    0.7536    0.7879        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8394    0.8268    0.8320       179
+   weighted avg     0.8426    0.8436    0.8421       179
+
+2025-12-09 16:05:57.919 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 16:05:57.924 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 16:05:57.941 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 16:05:57.943 | INFO | Submission accuracy vs corrected ground truth: 0.7751 (324/418)
+2025-12-09 16:05:57.953 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:06:11.470 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8384)
+2025-12-09 16:06:11.481 | INFO | GradientBoosting validation accuracy: 87.15%
+2025-12-09 16:06:11.481 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8783    0.9182    0.8978       110
+       Survived     0.8594    0.7971    0.8271        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8688    0.8576    0.8624       179
+   weighted avg     0.8710    0.8715    0.8705       179
+
+2025-12-09 16:06:11.655 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 16:06:11.659 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:06:11.679 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 16:06:11.682 | INFO | Submission accuracy vs corrected ground truth: 0.7703 (322/418)
+2025-12-09 16:06:11.682 | INFO | Best seed 777 achieved validation accuracy 87.15% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:07:22.666 | INFO | Using device: cuda:3
+2025-12-09 16:07:28.348 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 16:07:28.359 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:07:48.299 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 4, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8343)
+2025-12-09 16:07:48.310 | INFO | GradientBoosting validation accuracy: 83.24%
+2025-12-09 16:07:48.310 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8448    0.8909    0.8673       110
+       Survived     0.8095    0.7391    0.7727        69
+
+       accuracy                         0.8324       179
+      macro avg     0.8272    0.8150    0.8200       179
+   weighted avg     0.8312    0.8324    0.8308       179
+
+2025-12-09 16:07:48.508 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 16:07:48.513 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 16:07:48.536 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 16:07:48.539 | INFO | Submission accuracy vs corrected ground truth: 0.7679 (321/418)
+2025-12-09 16:07:48.548 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:08:02.212 | INFO | Best GradientBoosting params: {'learning_rate': 0.02, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8455)
+2025-12-09 16:08:02.223 | INFO | GradientBoosting validation accuracy: 84.36%
+2025-12-09 16:08:02.223 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8534    0.9000    0.8761       110
+       Survived     0.8254    0.7536    0.7879        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8394    0.8268    0.8320       179
+   weighted avg     0.8426    0.8436    0.8421       179
+
+2025-12-09 16:08:02.416 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 16:08:02.420 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 16:08:02.438 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 16:08:02.441 | INFO | Submission accuracy vs corrected ground truth: 0.7751 (324/418)
+2025-12-09 16:08:02.453 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:08:16.043 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8384)
+2025-12-09 16:08:16.053 | INFO | GradientBoosting validation accuracy: 87.15%
+2025-12-09 16:08:16.053 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8783    0.9182    0.8978       110
+       Survived     0.8594    0.7971    0.8271        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8688    0.8576    0.8624       179
+   weighted avg     0.8710    0.8715    0.8705       179
+
+2025-12-09 16:08:16.215 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 16:08:16.219 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:08:16.239 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 16:08:16.241 | INFO | Submission accuracy vs corrected ground truth: 0.7703 (322/418)
+2025-12-09 16:08:16.242 | INFO | Best seed 777 achieved validation accuracy 87.15% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:08:32.821 | INFO | Using device: cuda:3
+2025-12-09 16:08:38.510 | INFO | Loaded 891 training samples with 9 features
+2025-12-09 16:08:38.520 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:08:58.375 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 4, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8343)
+2025-12-09 16:08:58.386 | INFO | GradientBoosting validation accuracy: 83.24%
+2025-12-09 16:08:58.386 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8448    0.8909    0.8673       110
+       Survived     0.8095    0.7391    0.7727        69
+
+       accuracy                         0.8324       179
+      macro avg     0.8272    0.8150    0.8200       179
+   weighted avg     0.8312    0.8324    0.8308       179
+
+2025-12-09 16:08:58.589 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed45_cm_2025-12-09.png
+2025-12-09 16:08:58.595 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed45_submission.csv
+2025-12-09 16:08:58.619 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed45_gradient_boosting_2025-12-09.pth
+2025-12-09 16:08:58.622 | INFO | Submission accuracy vs corrected ground truth: 0.7679 (321/418)
+2025-12-09 16:08:58.631 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:09:12.333 | INFO | Best GradientBoosting params: {'learning_rate': 0.02, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8455)
+2025-12-09 16:09:12.342 | INFO | GradientBoosting validation accuracy: 84.36%
+2025-12-09 16:09:12.343 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8534    0.9000    0.8761       110
+       Survived     0.8254    0.7536    0.7879        69
+
+       accuracy                         0.8436       179
+      macro avg     0.8394    0.8268    0.8320       179
+   weighted avg     0.8426    0.8436    0.8421       179
+
+2025-12-09 16:09:12.522 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed2025_cm_2025-12-09.png
+2025-12-09 16:09:12.526 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed2025_submission.csv
+2025-12-09 16:09:12.543 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed2025_gradient_boosting_2025-12-09.pth
+2025-12-09 16:09:12.546 | INFO | Submission accuracy vs corrected ground truth: 0.7751 (324/418)
+2025-12-09 16:09:12.555 | INFO | Running GridSearchCV for GradientBoostingClassifier...
+2025-12-09 16:09:26.170 | INFO | Best GradientBoosting params: {'learning_rate': 0.05, 'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 200, 'subsample': 1.0} (cv accuracy 0.8384)
+2025-12-09 16:09:26.180 | INFO | GradientBoosting validation accuracy: 87.15%
+2025-12-09 16:09:26.181 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8783    0.9182    0.8978       110
+       Survived     0.8594    0.7971    0.8271        69
+
+       accuracy                         0.8715       179
+      macro avg     0.8688    0.8576    0.8624       179
+   weighted avg     0.8710    0.8715    0.8705       179
+
+2025-12-09 16:09:26.349 | INFO | Confusion matrix saved to /workspace/output/gradientboosting_ES_seed777_cm_2025-12-09.png
+2025-12-09 16:09:26.353 | INFO | GradientBoosting submission saved to /workspace/output/gradientboosting_ES_seed777_submission.csv
+2025-12-09 16:09:26.371 | INFO | GradientBoosting model serialized to /workspace/output/gradientboosting_ES_seed777_gradient_boosting_2025-12-09.pth
+2025-12-09 16:09:26.373 | INFO | Submission accuracy vs corrected ground truth: 0.7703 (322/418)
+2025-12-09 16:09:26.374 | INFO | Best seed 777 achieved validation accuracy 87.15% with submission /workspace/output/gradientboosting_ES_seed777_submission.csv

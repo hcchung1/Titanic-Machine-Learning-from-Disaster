@@ -1,0 +1,32 @@
+2025-12-09 21:27:05.644 | INFO | Training SVM (RBF kernel)...
+2025-12-09 21:27:05.669 | INFO | SVM validation accuracy: 66.48%
+2025-12-09 21:27:05.670 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7193    0.7455    0.7321       110
+       Survived     0.5692    0.5362    0.5522        69
+
+       accuracy                         0.6648       179
+      macro avg     0.6443    0.6408    0.6422       179
+   weighted avg     0.6615    0.6648    0.6628       179
+
+2025-12-09 21:27:05.788 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_cm_2025-12-09.png
+2025-12-09 21:27:05.804 | INFO | SVM submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_submission.csv
+2025-12-09 21:27:05.806 | INFO | SVM model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_svm_2025-12-09.pth
+2025-12-09 21:27:05.808 | INFO | Submission accuracy vs corrected ground truth: 0.6627 (277/418)
+2025-12-09 23:18:56.814 | INFO | Training SVM (RBF kernel)...
+2025-12-09 23:18:56.840 | INFO | SVM validation accuracy: 67.04%
+2025-12-09 23:18:56.841 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.6783    0.8818    0.7668       110
+       Survived     0.6389    0.3333    0.4381        69
+
+       accuracy                         0.6704       179
+      macro avg     0.6586    0.6076    0.6024       179
+   weighted avg     0.6631    0.6704    0.6401       179
+
+2025-12-09 23:18:56.963 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_cm_2025-12-09.png
+2025-12-09 23:18:56.979 | INFO | SVM submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_submission.csv
+2025-12-09 23:18:56.980 | INFO | SVM model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\svm_ES_seed2025_svm_2025-12-09.pth
+2025-12-09 23:18:56.982 | INFO | Submission accuracy vs corrected ground truth: 0.6770 (283/418)

@@ -1,0 +1,6 @@
+Accuracy: 80.1435
+F1 Score: 0.7331
+TN: 221
+FP: 45
+FN: 38
+TP: 114

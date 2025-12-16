@@ -1,0 +1,80 @@
+2025-12-09 17:04:24.530 | INFO | Training XGBoostClassifier...
+2025-12-09 17:04:25.251 | INFO | XGBoost validation accuracy: 84.92%
+2025-12-09 17:04:25.252 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8547    0.9091    0.8811       110
+       Survived     0.8387    0.7536    0.7939        69
+
+       accuracy                         0.8492       179
+      macro avg     0.8467    0.8314    0.8375       179
+   weighted avg     0.8485    0.8492    0.8475       179
+
+2025-12-09 17:04:25.383 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_cm_2025-12-09.png
+2025-12-09 17:04:25.387 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_submission.csv
+2025-12-09 17:04:25.394 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_xgboost_2025-12-09.pth
+2025-12-09 17:04:25.396 | INFO | Submission accuracy vs corrected ground truth: 0.7464 (312/418)
+2025-12-09 21:08:39.277 | INFO | Training XGBoostClassifier...
+2025-12-09 21:08:39.444 | INFO | XGBoost validation accuracy: 86.59%
+2025-12-09 21:08:39.444 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8583    0.9364    0.8957       110
+       Survived     0.8814    0.7536    0.8125        69
+
+       accuracy                         0.8659       179
+      macro avg     0.8698    0.8450    0.8541       179
+   weighted avg     0.8672    0.8659    0.8636       179
+
+2025-12-09 21:08:39.555 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_cm_2025-12-09.png
+2025-12-09 21:08:39.558 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_submission.csv
+2025-12-09 21:08:39.562 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_xgboost_2025-12-09.pth
+2025-12-09 21:08:39.564 | INFO | Submission accuracy vs corrected ground truth: 0.7799 (326/418)
+2025-12-09 22:11:07.155 | INFO | Training XGBoostClassifier...
+2025-12-09 22:11:07.399 | INFO | XGBoost validation accuracy: 86.59%
+2025-12-09 22:11:07.399 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8644    0.9273    0.8947       110
+       Survived     0.8689    0.7681    0.8154        69
+
+       accuracy                         0.8659       179
+      macro avg     0.8666    0.8477    0.8551       179
+   weighted avg     0.8661    0.8659    0.8641       179
+
+2025-12-09 22:11:07.507 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_cm_2025-12-09.png
+2025-12-09 22:11:07.510 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_submission.csv
+2025-12-09 22:11:07.515 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_xgboost_2025-12-09.pth
+2025-12-09 22:11:07.517 | INFO | Submission accuracy vs corrected ground truth: 0.7751 (324/418)
+2025-12-09 22:51:32.682 | INFO | Training XGBoostClassifier...
+2025-12-09 22:51:32.961 | INFO | XGBoost validation accuracy: 85.47%
+2025-12-09 22:51:32.961 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8559    0.9182    0.8860       110
+       Survived     0.8525    0.7536    0.8000        69
+
+       accuracy                         0.8547       179
+      macro avg     0.8542    0.8359    0.8430       179
+   weighted avg     0.8546    0.8547    0.8528       179
+
+2025-12-09 22:51:33.071 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_cm_2025-12-09.png
+2025-12-09 22:51:33.074 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_submission.csv
+2025-12-09 22:51:33.080 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_xgboost_2025-12-09.pth
+2025-12-09 22:51:33.082 | INFO | Submission accuracy vs corrected ground truth: 0.7775 (325/418)
+2025-12-09 23:08:35.416 | INFO | Training XGBoostClassifier...
+2025-12-09 23:08:35.712 | INFO | XGBoost validation accuracy: 87.71%
+2025-12-09 23:08:35.712 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.8793    0.9273    0.9027       110
+       Survived     0.8730    0.7971    0.8333        69
+
+       accuracy                         0.8771       179
+      macro avg     0.8762    0.8622    0.8680       179
+   weighted avg     0.8769    0.8771    0.8759       179
+
+2025-12-09 23:08:35.821 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_cm_2025-12-09.png
+2025-12-09 23:08:35.823 | INFO | XGBoost submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_submission.csv
+2025-12-09 23:08:35.830 | INFO | XGBoost model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\xgboost_ES_seed777_xgboost_2025-12-09.pth
+2025-12-09 23:08:35.832 | INFO | Submission accuracy vs corrected ground truth: 0.7871 (329/418)

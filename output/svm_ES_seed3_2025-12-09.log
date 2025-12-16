@@ -1,0 +1,15 @@
+2025-12-09 14:29:42.619 | INFO | Training SVM (RBF kernel)...
+2025-12-09 14:29:42.655 | INFO | SVM validation accuracy: 71.51%
+2025-12-09 14:29:42.656 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7611    0.7818    0.7713       110
+       Survived     0.6364    0.6087    0.6222        69
+
+       accuracy                         0.7151       179
+      macro avg     0.6987    0.6953    0.6968       179
+   weighted avg     0.7130    0.7151    0.7138       179
+
+2025-12-09 14:29:42.843 | INFO | Confusion matrix saved to /workspace/output/svm_ES_seed3_cm_2025-12-09.png
+2025-12-09 14:29:42.858 | INFO | SVM submission saved to /workspace/output/svm_ES_seed3_submission.csv
+2025-12-09 14:29:42.860 | INFO | SVM model serialized to /workspace/output/svm_ES_seed3_svm_2025-12-09.pth

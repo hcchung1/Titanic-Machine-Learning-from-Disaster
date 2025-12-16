@@ -1,0 +1,32 @@
+2025-12-09 21:28:32.917 | INFO | Training KNeighborsClassifier...
+2025-12-09 21:28:33.042 | INFO | KNN validation accuracy: 69.83%
+2025-12-09 21:28:33.042 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7373    0.7909    0.7632       110
+       Survived     0.6230    0.5507    0.5846        69
+
+       accuracy                         0.6983       179
+      macro avg     0.6801    0.6708    0.6739       179
+   weighted avg     0.6932    0.6983    0.6943       179
+
+2025-12-09 21:28:33.207 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-09.png
+2025-12-09 21:28:33.247 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-09 21:28:33.254 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-09.pth
+2025-12-09 21:28:33.258 | INFO | Submission accuracy vs corrected ground truth: 0.6340 (265/418)
+2025-12-09 23:21:58.066 | INFO | Training KNeighborsClassifier...
+2025-12-09 23:21:58.114 | INFO | KNN validation accuracy: 75.42%
+2025-12-09 23:21:58.115 | INFO | Validation report:
+                 precision    recall  f1-score   support
+
+Did Not Survive     0.7946    0.8091    0.8018       110
+       Survived     0.6866    0.6667    0.6765        69
+
+       accuracy                         0.7542       179
+      macro avg     0.7406    0.7379    0.7391       179
+   weighted avg     0.7530    0.7542    0.7535       179
+
+2025-12-09 23:21:58.278 | INFO | Confusion matrix saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_cm_2025-12-09.png
+2025-12-09 23:21:58.310 | INFO | KNN submission saved to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_submission.csv
+2025-12-09 23:21:58.317 | INFO | KNN model serialized to E:\Henry\Github\Titanic-Machine-Learning-from-Disaster\output\knn_ES_seed45_knn_2025-12-09.pth
+2025-12-09 23:21:58.321 | INFO | Submission accuracy vs corrected ground truth: 0.6316 (264/418)
