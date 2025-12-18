@@ -1,0 +1,62 @@
+\section{Future Prospects and Conclusion}
+\label{sec:future}
+
+This work has demonstrated that systematic feature engineering and careful model selection can achieve competitive performance on the Titanic survival prediction task. Our Random Forest model with community-driven features attains 79.67\% accuracy, ranking in the top 8\% of Kaggle submissions. However, several promising directions remain unexplored and warrant future investigation.
+
+\subsection{Advanced Ensemble Techniques}
+
+While our experiments focused on individual models, \textbf{stacking and blending} represent natural next steps for improving performance. Stacking uses predictions from base models (Random Forest, XGBoost, Gradient Boosting) as meta-features for a second-level learner, potentially capturing complementary error patterns. Blending employs weighted averaging with learned coefficients rather than uniform voting. Top Kaggle solutions often achieve 82-84\% accuracy through sophisticated ensembles, suggesting a 2-4\% improvement opportunity.
+
+\subsection{Hyperparameter Optimization}
+
+Our hyperparameter selection relied primarily on manual tuning and limited grid search. \textbf{Bayesian optimization} methods such as Optuna or Hyperopt could systematically explore the parameter space more efficiently than exhaustive grid search. For Random Forest, jointly optimizing \texttt{n\_estimators}, \texttt{max\_depth}, \texttt{min\_samples\_split}, and \texttt{class\_weight} across multiple seeds may yield marginal but consistent gains. Similarly, XGBoost would benefit from careful tuning of \texttt{learning\_rate}, \texttt{subsample}, \texttt{colsample\_bytree}, and regularization parameters (\texttt{reg\_alpha}, \texttt{reg\_lambda}).
+
+\subsection{Feature Engineering Refinements}
+
+Several feature engineering opportunities remain underexplored:
+
+\textbf{Ticket Group Analysis:} Passengers sharing the same ticket number often represent families or traveling companions. Extracting group survival rates and group size distributions may provide additional predictive signals beyond simple family size counts.
+
+\textbf{Cabin Location Inference:} While cabin deck (A-G, T) correlates with survival, the specific cabin number may encode proximity to lifeboats or stairwells. Imputing missing cabin information based on fare and class could enhance this feature's utility.
+
+\textbf{Name-Based Social Networks:} Surnames reveal familial relationships, and honorifics (e.g., ``Lady,'' ``Countess'') indicate nobility. Graph-based features connecting passengers through shared surnames or social titles might capture rescue behaviors (e.g., traveling parties staying together).
+
+\textbf{Interaction Term Exploration:} Beyond the Sex$\times$Pclass and Pclass$\times$Age interactions tested in the XGB pipeline, higher-order interactions (e.g., Sex$\times$Age$\times$Pclass) or polynomial features may uncover non-linear relationships.
+
+\subsection{Class Imbalance Mitigation}
+
+The 38\%/62\% survival imbalance leads to higher recall on the majority class (Did Not Survive: 85.7\%) compared to the minority class (Survived: 70.6\%). Future work could employ \textbf{threshold tuning} to balance precision and recall, or investigate \textbf{cost-sensitive learning} where misclassifying survivors incurs higher penalties than misclassifying deaths. Techniques like SMOTE (Synthetic Minority Over-sampling) or class weighting may improve minority class performance without sacrificing overall accuracy.
+
+\subsection{Neural Architecture Exploration}
+
+Our MLP implementation used a simple feedforward architecture (256$\to$128$\to$64). More sophisticated designs could improve performance:
+
+\textbf{Residual Connections:} Skip connections might help gradient flow in deeper networks, though the limited dataset size (891 samples) constrains viable depth.
+
+\textbf{Attention Mechanisms:} Self-attention over engineered features could learn which features are most relevant for each passenger, providing interpretability alongside performance gains.
+
+\textbf{Tabular-Specific Architectures:} Recent methods like TabNet, FT-Transformer, and SAINT have demonstrated strong performance on tabular data by incorporating specialized inductive biases. These architectures may outperform generic MLPs on small datasets.
+
+\subsection{External Data Augmentation}
+
+Historical records beyond the Kaggle dataset exist, including detailed passenger manifests, crew rosters, and survivor testimonies. Incorporating external information (e.g., exact cabin locations from deck plans, documented social connections) could enrich features and improve predictions. However, care must be taken to avoid data leakage and ensure that external sources are available for both training and test passengers.
+
+\subsection{Interpretability and Explainability}
+
+While feature importance rankings provide global insights, \textbf{SHAP (SHapley Additive exPlanations)} values or \textbf{LIME (Local Interpretable Model-agnostic Explanations)} would offer instance-level explanations. Understanding why specific passengers were predicted to survive or perish could validate model reasoning and identify potential biases (e.g., overreliance on gender or class).
+
+\subsection{Concluding Remarks}
+
+This project has demonstrated that the Titanic survival prediction task remains a valuable benchmark for evaluating machine learning fundamentals: feature engineering, model selection, hyperparameter tuning, and generalization. Our systematic investigation revealed that \emph{thoughtful feature construction matters more than algorithmic sophistication}—a lesson applicable far beyond this historical dataset.
+
+Key takeaways include:
+\begin{itemize}
+    \item \textbf{Domain knowledge drives performance:} Title extraction from passenger names and family size aggregation contribute more than advanced algorithms.
+    \item \textbf{Tree-based methods excel on small tabular data:} Random Forest and XGBoost outperform neural networks without extensive tuning.
+    \item \textbf{Feature engineering should match algorithm inductive biases:} One-hot encoding for neural networks, label encoding for trees, frequency encoding for gradient boosting.
+    \item \textbf{Cross-seed validation ensures robustness:} Low variance across random seeds (std $<$ 0.5\%) confirms reproducible results.
+\end{itemize}
+
+While we achieved competitive performance (top 8\% of Kaggle submissions), the remaining gap to state-of-the-art (82-84\%) highlights opportunities for ensemble methods, advanced hyperparameter optimization, and refined feature engineering. These directions represent not just incremental improvements to a single benchmark, but transferable skills for applied machine learning on real-world tabular datasets where labeled data is scarce, features are heterogeneous, and interpretability is paramount.
+
+The Titanic dataset serves as more than a classification problem—it is a microcosm of the challenges practitioners face daily: missing values, class imbalance, limited samples, and the need to balance performance with interpretability. Mastery of these fundamentals prepares us for the more complex, high-stakes problems that await in healthcare, finance, and scientific research, where machine learning models must be not only accurate but also trustworthy and explainable.

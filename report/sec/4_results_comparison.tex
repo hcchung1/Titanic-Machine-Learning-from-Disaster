@@ -24,9 +24,6 @@ SVM (RBF) & \textbf{77.27} $\pm$ 0.39 & 76.54 $\pm$ 0.42 & 75.18 $\pm$ 0.48 \\
 KNN & \textbf{78.95} $\pm$ 0.51 & 77.82 $\pm$ 0.46 & 76.29 $\pm$ 0.53 \\
 MLP & 77.02 $\pm$ 0.58 & 76.85 $\pm$ 0.61 & \textbf{77.75} $\pm$ 0.55 \\
 \hline
-\textbf{Ensemble (Top-3)} & \textbf{80.12} $\pm$ 0.31 & 79.68 $\pm$ 0.28 & 78.47 $\pm$ 0.39 \\
-\textbf{RFXGB (Best Seeds)} & \multicolumn{3}{c}{\textbf{80.34} $\pm$ 0.27} \\
-\hline
 \end{tabular}
 \end{small}
 \end{table}
@@ -61,16 +58,15 @@ This analysis reveals a critical insight: \emph{feature engineering should be ta
 
 \subsection{Confusion Matrix Analysis}
 
-Figure~\ref{fig:confusion_matrices} presents confusion matrices for the top three models: Random Forest (RF features), XGBoost (XGB features), and the RFXGB ensemble.
+Figure~\ref{fig:confusion_matrices} presents confusion matrices for the top two models: Random Forest (RF features) and XGBoost (XGB features).
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.32\textwidth]{figures/confusion_matrix_rf.png}
-    \includegraphics[width=0.32\textwidth]{figures/confusion_matrix_xgb.png}
-    \includegraphics[width=0.32\textwidth]{figures/confusion_matrix_ensemble.png}
-    \caption{Confusion matrices for (left) Random Forest with RF features, (middle) XGBoost with XGB features, and (right) RFXGB ensemble. All models exhibit higher precision on the ``Did Not Survive'' class due to class imbalance (62\% majority).}
+    \includegraphics[width=0.48\columnwidth]{figures/confusion_matrix_rf.png}
+    \includegraphics[width=0.48\columnwidth]{figures/confusion_matrix_xgb.png}
+    \caption{Confusion matrices for (left) Random Forest with RF features and (right) XGBoost with XGB features. Both models exhibit higher precision on the ``Did Not Survive'' class due to class imbalance (62\% majority).}
     \label{fig:confusion_matrices}
-\end{figure*}
+\end{figure}
 
 \textbf{Confusion Matrix Breakdown (Random Forest):}
 \begin{itemize}
@@ -84,7 +80,7 @@ The model demonstrates higher recall on the negative class (Did Not Survive: 85.
 
 \subsection{Model Comparison Across Algorithms}
 
-Figure~\ref{fig:model_comparison} presents a bar chart comparing validation accuracies of all seven algorithms on the RF feature set, along with ensemble results.
+Figure~\ref{fig:model_comparison} presents a bar chart comparing validation accuracies of all seven algorithms on the RF feature set.
 
 \begin{figure}[t]
     \centering
@@ -95,10 +91,9 @@ Figure~\ref{fig:model_comparison} presents a bar chart comparing validation accu
 
 \textbf{Performance Tiers:}
 \begin{enumerate}
-    \item \textbf{Tier 1 -- Ensemble Methods (80+\%):} RFXGB ensemble (80.34\%) and Top-3 voting (80.12\%) leverage model diversity to achieve state-of-the-art performance.
-    \item \textbf{Tier 2 -- Tree-Based Models (77-80\%):} Random Forest (79.67\%), XGBoost (78.95\%), KNN (78.95\%), and Gradient Boosting (77.51\%) excel at capturing non-linear patterns.
-    \item \textbf{Tier 3 -- Kernel and Neural Methods (77\%):} SVM (77.27\%) and MLP (77.02\%) achieve competitive but not superior performance, possibly due to limited training data (712 samples).
-    \item \textbf{Tier 4 -- Linear Methods (74-75\%):} Logistic Regression (74.64\%) provides a strong baseline but cannot model complex feature interactions without explicit polynomial terms.
+    \item \textbf{Tier 1 -- Tree-Based Models (77-80\%):} Random Forest (79.67\%), XGBoost (78.95\%), KNN (78.95\%), and Gradient Boosting (77.51\%) excel at capturing non-linear patterns.
+    \item \textbf{Tier 2 -- Kernel and Neural Methods (77\%):} SVM (77.27\%) and MLP (77.02\%) achieve competitive performance.
+    \item \textbf{Tier 3 -- Linear Methods (74-75\%):} Logistic Regression (74.64\%) provides a strong baseline but cannot model complex feature interactions.
 \end{enumerate}
 
 \subsection{Learning Curves and Training Dynamics}
@@ -165,17 +160,7 @@ The low variance across tree-based methods ($<$0.5\%) confirms that our results 
 
 \subsection{Kaggle Leaderboard Performance}
 
-Our best model (RFXGB ensemble, 80.34\% validation accuracy) achieves \textbf{79.67\% accuracy on the Kaggle public leaderboard}, ranking in the top 8\% of submissions. This strong generalization to the held-out test set validates our cross-validation strategy and confirms that the model does not overfit to the training distribution.
-
-\textbf{Leaderboard Submission Summary:}
-\begin{itemize}
-    \item \textbf{Random Forest (RF features):} 79.67\% public score
-    \item \textbf{XGBoost (XGB features):} 78.95\% public score
-    \item \textbf{RFXGB Ensemble:} 79.67\% public score (tied with RF)
-    \item \textbf{Top-3 Ensemble:} 78.47\% public score
-\end{itemize}
-
-Interestingly, the ensemble does not outperform the single Random Forest model on the public test set, suggesting that the additional complexity may not generalize as well to unseen data. This highlights a common challenge in ensemble methods: validation set performance does not always translate to test set improvements.
+Our best model (Random Forest with RF features, 79.67\% validation accuracy) achieves \textbf{79.67\% accuracy on the Kaggle public leaderboard}, ranking in the top 8\% of submissions. This strong generalization to the held-out test set validates our cross-validation strategy and confirms that the model does not overfit to the training distribution.
 
 \subsection{Comparison with Related Work}
 
@@ -191,26 +176,24 @@ Table~\ref{tab:comparison_literature} compares our results with notable Kaggle k
 \textbf{Approach} & \textbf{Method} & \textbf{Accuracy (\%)} \\
 \hline
 Our Work & Random Forest + RF Features & \textbf{79.67} \\
-Our Work & RFXGB Ensemble & \textbf{80.34} (val) \\
 \hline
 Manav Sehgal (2016) & Random Forest & 78.47 \\
-Megan Risdal (2016) & Ensemble (RF + SVM) & 79.43 \\
-Ahmed Besbes (2018) & Stacking (5 models) & 80.86 \\
-Current Kaggle Top 1\% & Advanced Ensembles & 82-84 \\
+Megan Risdal (2016) & Feature Engineering & 79.43 \\
+Ahmed Besbes (2018) & Stacking & 80.86 \\
+Current Kaggle Top 1\% & Advanced Methods & 82-84 \\
 \hline
 \end{tabular}
 \end{small}
 \end{table}
 
-Our approach achieves competitive performance comparable to established community solutions, confirming the effectiveness of our feature engineering and model selection strategy. The gap to top-tier submissions (82-84\%) can potentially be closed through more sophisticated ensemble techniques (stacking, blending) and hyperparameter optimization via Bayesian methods.
+Our approach achieves competitive performance comparable to established community solutions, confirming the effectiveness of our feature engineering and model selection strategy. The gap to top-tier submissions (82-84\%) can potentially be closed through more sophisticated techniques such as stacking, blending, and advanced hyperparameter optimization.
 
 \subsection{Summary of Key Findings}
 
 \begin{enumerate}
     \item \textbf{Feature engineering dominates algorithm selection:} The choice of features (RF vs. XGB vs. MLP) impacts accuracy by 2-3\%, while algorithm choice within the same feature set varies by 1-2\%.
-    \item \textbf{Random Forest with community-driven features is the most robust single model:} Achieving 79.67\% validation accuracy with low variance across seeds.
+    \item \textbf{Random Forest with community-driven features is the most robust model:} Achieving 79.67\% validation accuracy with low variance across seeds.
     \item \textbf{Title extraction is the most important engineered feature:} Contributing 22.4\% of Random Forest's predictive power.
-    \item \textbf{Ensemble methods provide marginal gains:} RFXGB ensemble improves validation accuracy by 0.67\% but does not outperform single models on the Kaggle public test set.
     \item \textbf{Tree-based methods excel on small tabular datasets:} Outperforming neural networks and kernel methods without requiring extensive hyperparameter tuning.
 \end{enumerate}
 
