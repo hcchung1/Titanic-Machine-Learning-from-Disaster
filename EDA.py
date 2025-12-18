@@ -4,7 +4,7 @@ import seaborn as sns
 def main():
     # Load the training data
     import pandas as pd
-    train_df = pd.read_csv('train.csv')
+    train_df = pd.read_csv('./data/train.csv')
 
     # Set the style for seaborn
     sns.set(style="whitegrid")
