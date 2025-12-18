@@ -8,6 +8,7 @@
 \usepackage[pagenumbers]{cvpr}
 \usepackage{tikz}
 \usetikzlibrary{positioning, shapes.geometric, arrows.meta, calc}
+\usepackage{CJKutf8}
 % \usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
 
 % Import additional packages in the preamble file, before hyperref
@@ -29,40 +30,35 @@
 \def\confYear{2026}
 
 %%%%%%%%% TITLE - PLEASE UPDATE
-\title{Introduction to Machine Learning Final Projects Titanic: Machine Learning from Disaster}
+\title{Introduction to Machine Learning Final Projects\\Titanic: Machine Learning from Disaster}
 
 %%%%%%%%% AUTHORS - PLEASE UPDATE
-\author{First Author\\
-Institution1\\
-Institution1 address\\
-{\tt\small firstauthor@i1.org}
-% For a paper whose authors are all at the same institution,
-% omit the following lines up until the closing ``}''.
-% Additional authors and addresses can be added with ``\and'',
-% just like the second author.
-% To save space, use either the email address or home page, not both
+\author{鍾承翰\\
+112550189\\
+{\small Contributions:}\\
+{\small Code Writing, Report 34\%}
 \and
-Second Author\\
-Institution2\\
-First line of institution2 address\\
-{\tt\small secondauthor@i2.org}
+陳景寬\\
+112550112\\
+{\small Contributions:}\\
+{\small Slides, Video Recording 33\%}
+\and
+林昌岳\\
+113511248\\
+{\small Contributions:}\\
+{\small Slides, Video Recording 33\%}
 }
 
 \begin{document}
+\begin{CJK*}{UTF8}{bsmi}
 \maketitle
 \input{sec/0_abstract}
-\input{sec/1_motivation}
+
 \input{sec/2_intro}
 \input{sec/3_code_description}
 \input{sec/4_results_comparison}
 \input{sec/5_future_prospects}
-\input{sec/6_feedback}
-{
-    \small
-    \bibliographystyle{ieeenat_fullname}
-    \bibliography{main}
-}
-
+\end{CJK*}
 % WARNING: do not forget to delete the supplementary pages from your submission 
 % \input{sec/X_suppl}
 

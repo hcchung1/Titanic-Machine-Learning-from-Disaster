@@ -6,7 +6,7 @@
     \begin{tikzpicture}[
         node distance=1.5cm and 2cm,
         module/.style={rectangle, draw, fill=blue!20, text width=2.5cm, align=center, minimum height=1cm, rounded corners=3pt, font=\footnotesize\bfseries, line width=1pt},
-        data/.style={cylinder, draw, fill=green!20, text width=2cm, align=center, minimum height=0.8cm, shape border rotate=90, font=\footnotesize},
+        data/.style={rectangle, draw, fill=green!20, text width=2.2cm, align=center, minimum height=0.9cm, rounded corners=4pt, font=\footnotesize\bfseries, line width=1.2pt},
         process/.style={rectangle, draw, fill=orange!20, text width=2.3cm, align=center, minimum height=0.8cm, rounded corners=2pt, font=\scriptsize},
         output/.style={rectangle, draw, fill=purple!20, text width=2.2cm, align=center, minimum height=0.8cm, rounded corners=2pt, font=\scriptsize},
         arrow/.style={->, >=stealth, thick},
@@ -35,13 +35,10 @@
     \node[process] (grid) at (-2, -1.5) {GridSearchCV\\{\tiny Hyperparameter}\\{\tiny Tuning}};
     \node[process] (early) at (2, -1.5) {Early Stopping\\{\tiny Mixed Precision}};
     
-    % Layer 5: Ensemble
-    \node[process] (ensemble) at (0, -3) {Ensemble\\{\tiny Top-3 Voting}\\{\tiny RFXGB}};
-    
-    % Layer 6: Outputs
-    \node[output] (submission) at (-2.5, -4.5) {Kaggle\\Submission\\{\tiny predictions.csv}};
-    \node[output] (models) at (0, -4.5) {Trained\\Models\\{\tiny Checkpoints}};
-    \node[output] (viz) at (2.5, -4.5) {Visualizations\\{\tiny Confusion Matrix}\\{\tiny Learning Curves}};
+    % Layer 5: Outputs
+    \node[output] (submission) at (-2.5, -3.5) {Kaggle\\Submission\\{\tiny predictions.csv}};
+    \node[output] (models) at (0, -3.5) {Trained\\Models\\{\tiny Checkpoints}};
+    \node[output] (viz) at (2.5, -3.5) {Visualizations\\{\tiny Confusion Matrix}\\{\tiny Learning Curves}};
     
     % Arrows: Data to modules
     \draw[arrow] (train) -- (utils);
@@ -69,21 +66,18 @@
     \draw[arrow] (classical) -- (grid);
     \draw[arrow] (neural) -- (early);
     
-    % To ensemble
-    \draw[arrow] (grid) -- (ensemble);
-    \draw[arrow] (early) -- (ensemble);
-    
     % Final outputs
-    \draw[arrow] (ensemble) -- (submission);
-    \draw[arrow] (ensemble) -- (models);
-    \draw[arrow] (ensemble) -- (viz);
+    \draw[arrow] (grid) -- (submission);
+    \draw[arrow] (grid) -- (models);
+    \draw[arrow] (early) -- (submission);
+    \draw[arrow] (early) -- (viz);
     
     % Configuration (top right)
     \node[process, fill=yellow!20] (config) at (6, 4) {TrainingConfig\\{\tiny Seeds}\\{\tiny Hyperparams}};
     \draw[dasharrow] (config) -- (main);
     
     % Title
-    \node[font=\Large\bfseries] at (0, 7) {System Architecture Overview};
+    \node[font=\Large\bfseries] at (0, 7.8) {System Architecture Overview};
     
     % Legend (bottom right)
     \node[font=\tiny, text width=3cm, align=left, draw, fill=white, rounded corners] at (6, -3.5) {
