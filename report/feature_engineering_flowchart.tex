@@ -1,0 +1,91 @@
+% Feature Engineering Pipeline Comparison Figure
+% Add this to your main LaTeX document or create as standalone figure
+
+\begin{figure*}[t]
+    \centering
+    \begin{tikzpicture}[
+        node distance=0.8cm and 1.5cm,
+        box/.style={rectangle, draw, fill=blue!10, text width=3.5cm, align=center, minimum height=1cm, rounded corners, font=\small},
+        databox/.style={rectangle, draw, fill=green!10, text width=3.5cm, align=center, minimum height=0.8cm, rounded corners, font=\small},
+        titlebox/.style={rectangle, draw, fill=orange!20, text width=3.5cm, align=center, minimum height=0.7cm, rounded corners, font=\small\bfseries},
+        arrow/.style={->, >=stealth, thick}
+    ]
+    
+    % Raw Data (top)
+    \node[databox] (raw) at (0, 0) {Raw Titanic Data\\891 samples, 11 features};
+    
+    % Three pipelines
+    \node[titlebox, below=of raw, xshift=-5cm] (rf_title) {RF Pipeline};
+    \node[titlebox, below=of raw] (xgb_title) {XGB Pipeline};
+    \node[titlebox, below=of raw, xshift=5cm] (mlp_title) {MLP Pipeline};
+    
+    % RF Pipeline boxes
+    \node[box, below=0.5cm of rf_title] (rf1) {Title Extraction\\Mr, Mrs, Miss, Master, Rare};
+    \node[box, below=0.3cm of rf1] (rf2) {Family Size\\SibSp + Parch};
+    \node[box, below=0.3cm of rf2] (rf3) {Ticket Prefix\\Group identification};
+    \node[box, below=0.3cm of rf3] (rf4) {Cabin Deck\\First letter extraction};
+    \node[box, below=0.3cm of rf4] (rf5) {Age Imputation\\RandomForestRegressor\\(2000 trees)};
+    \node[box, below=0.3cm of rf5] (rf6) {Categorical Encoding\\Label encoding};
+    
+    % XGB Pipeline boxes
+    \node[box, below=0.5cm of xgb_title] (xgb1) {Title Simplification\\Miss, Mrs, Mr, Rare};
+    \node[box, below=0.3cm of xgb1] (xgb2) {Family Features\\Family\_Size, IsAlone};
+    \node[box, below=0.3cm of xgb2] (xgb3) {Frequency Encoding\\Ticket\_freq, Cabin\_freq};
+    \node[box, below=0.3cm of xgb3] (xgb4) {Binning\\AgeBin (5 bins)\\FareBin (quartiles)};
+    \node[box, below=0.3cm of xgb4] (xgb5) {Interaction Terms\\Sex×Pclass\\Pclass×AgeBin};
+    \node[box, below=0.3cm of xgb5] (xgb6) {Label Encoding\\Sex, Embarked, Title2};
+    
+    % MLP Pipeline boxes
+    \node[box, below=0.5cm of mlp_title] (mlp1) {Title Grouping\\+ Royalty, Officer};
+    \node[box, below=0.3cm of mlp1] (mlp2) {Family Features\\FamilySize, IsAlone\\TicketGroup};
+    \node[box, below=0.3cm of mlp2] (mlp3) {Cabin Features\\CabinDeck, HasCabin};
+    \node[box, below=0.3cm of mlp3] (mlp4) {Age Imputation\\Grouped by Title+Pclass};
+    \node[box, below=0.3cm of mlp4] (mlp5) {Binning\\AgeBin, FareBin};
+    \node[box, below=0.3cm of mlp5] (mlp6) {One-Hot Encoding\\drop\_first=True};
+    \node[box, below=0.3cm of mlp6] (mlp7) {StandardScaler\\Feature normalization};
+    
+    % Output nodes
+    \node[databox, below=0.5cm of rf6] (rf_out) {9 features\\float32};
+    \node[databox, below=0.5cm of xgb6] (xgb_out) {14 features\\float32};
+    \node[databox, below=0.5cm of mlp7] (mlp_out) {20+ features\\float32 (scaled)};
+    
+    % Arrows from raw data to pipelines
+    \draw[arrow] (raw.south) -- ++(0, -0.3) -| (rf_title.north);
+    \draw[arrow] (raw.south) -- (xgb_title.north);
+    \draw[arrow] (raw.south) -- ++(0, -0.3) -| (mlp_title.north);
+    
+    % Arrows within pipelines
+    \draw[arrow] (rf_title) -- (rf1);
+    \draw[arrow] (rf1) -- (rf2);
+    \draw[arrow] (rf2) -- (rf3);
+    \draw[arrow] (rf3) -- (rf4);
+    \draw[arrow] (rf4) -- (rf5);
+    \draw[arrow] (rf5) -- (rf6);
+    \draw[arrow] (rf6) -- (rf_out);
+    
+    \draw[arrow] (xgb_title) -- (xgb1);
+    \draw[arrow] (xgb1) -- (xgb2);
+    \draw[arrow] (xgb2) -- (xgb3);
+    \draw[arrow] (xgb3) -- (xgb4);
+    \draw[arrow] (xgb4) -- (xgb5);
+    \draw[arrow] (xgb5) -- (xgb6);
+    \draw[arrow] (xgb6) -- (xgb_out);
+    
+    \draw[arrow] (mlp_title) -- (mlp1);
+    \draw[arrow] (mlp1) -- (mlp2);
+    \draw[arrow] (mlp2) -- (mlp3);
+    \draw[arrow] (mlp3) -- (mlp4);
+    \draw[arrow] (mlp4) -- (mlp5);
+    \draw[arrow] (mlp5) -- (mlp6);
+    \draw[arrow] (mlp6) -- (mlp7);
+    \draw[arrow] (mlp7) -- (mlp_out);
+    
+    % Labels for key differences
+    % \node[font=\tiny, text width=3cm, align=center] at (-5, -11) {Community-driven\\Best practices};
+    % \node[font=\tiny, text width=3cm, align=center] at (0, -11) {Tree-optimized\\Interactions};
+    % \node[font=\tiny, text width=3cm, align=center] at (5, -11.3) {Neural network\\Standardized};
+    
+    \end{tikzpicture}
+    \caption{Comparison of three feature engineering pipelines implemented in this work. The RF pipeline follows community best practices with categorical encoding, the XGB pipeline emphasizes frequency encoding and interaction terms for gradient boosting, and the MLP pipeline uses one-hot encoding with standardization for neural networks. Each pipeline produces different feature spaces optimized for specific model families.}
+    \label{fig:feature_pipelines}
+\end{figure*}

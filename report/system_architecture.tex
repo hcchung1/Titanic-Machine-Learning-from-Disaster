@@ -1,0 +1,101 @@
+% System Architecture Diagram - Simplified and Cleaner Version
+% Add this to your Code Description section
+
+\begin{figure*}[t]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.5cm and 2cm,
+        module/.style={rectangle, draw, fill=blue!20, text width=2.5cm, align=center, minimum height=1cm, rounded corners=3pt, font=\footnotesize\bfseries, line width=1pt},
+        data/.style={cylinder, draw, fill=green!20, text width=2cm, align=center, minimum height=0.8cm, shape border rotate=90, font=\footnotesize},
+        process/.style={rectangle, draw, fill=orange!20, text width=2.3cm, align=center, minimum height=0.8cm, rounded corners=2pt, font=\scriptsize},
+        output/.style={rectangle, draw, fill=purple!20, text width=2.2cm, align=center, minimum height=0.8cm, rounded corners=2pt, font=\scriptsize},
+        arrow/.style={->, >=stealth, thick},
+        dasharrow/.style={->, >=stealth, thick, dashed, gray}
+    ]
+    
+    % Top: Data sources
+    \node[data] (train) at (-3, 6) {train.csv\\{\tiny 891 samples}};
+    \node[data] (test) at (3, 6) {test.csv\\{\tiny 418 samples}};
+    
+    % Layer 1: Core modules
+    \node[module] (utils) at (-3, 4) {utils.py\\Feature Eng.\\Data Prep.};
+    \node[module] (network) at (0, 4) {network.py\\Neural Net\\Architecture};
+    \node[module] (main) at (3, 4) {main.py\\Training\\Orchestration};
+    
+    % Layer 2: Feature pipelines (simplified)
+    \node[process] (rf) at (-4, 2) {RF Pipeline\\{\tiny 9 features}};
+    \node[process] (xgb) at (-1.5, 2) {XGB Pipeline\\{\tiny 14 features}};
+    \node[process] (mlp) at (1, 2) {MLP Pipeline\\{\tiny 20+ features}};
+    
+    % Layer 3: Model training
+    \node[process] (classical) at (-2, 0) {Classical ML\\{\tiny RF, XGB, GB}\\{\tiny LR, SVM, KNN}};
+    \node[process] (neural) at (2, 0) {Neural Network\\{\tiny MLP}\\{\tiny (PyTorch)}};
+    
+    % Layer 4: Tuning
+    \node[process] (grid) at (-2, -1.5) {GridSearchCV\\{\tiny Hyperparameter}\\{\tiny Tuning}};
+    \node[process] (early) at (2, -1.5) {Early Stopping\\{\tiny Mixed Precision}};
+    
+    % Layer 5: Ensemble
+    \node[process] (ensemble) at (0, -3) {Ensemble\\{\tiny Top-3 Voting}\\{\tiny RFXGB}};
+    
+    % Layer 6: Outputs
+    \node[output] (submission) at (-2.5, -4.5) {Kaggle\\Submission\\{\tiny predictions.csv}};
+    \node[output] (models) at (0, -4.5) {Trained\\Models\\{\tiny Checkpoints}};
+    \node[output] (viz) at (2.5, -4.5) {Visualizations\\{\tiny Confusion Matrix}\\{\tiny Learning Curves}};
+    
+    % Arrows: Data to modules
+    \draw[arrow] (train) -- (utils);
+    \draw[arrow] (test) -- (main);
+    
+    % Module connections
+    \draw[arrow] (utils) -- (main);
+    \draw[arrow] (network) -- (main);
+    
+    % Feature engineering to pipelines
+    \draw[arrow] (utils) -- (rf);
+    \draw[arrow] (utils) -- (xgb);
+    \draw[arrow] (utils) -- (mlp);
+    
+    % Pipelines to models
+    \draw[arrow] (rf) -- (classical);
+    \draw[arrow] (xgb) -- (classical);
+    \draw[arrow] (mlp) -- (neural);
+    
+    % Training flow
+    \draw[arrow] (main) -- (classical);
+    \draw[arrow] (main) -- (neural);
+    
+    % Tuning
+    \draw[arrow] (classical) -- (grid);
+    \draw[arrow] (neural) -- (early);
+    
+    % To ensemble
+    \draw[arrow] (grid) -- (ensemble);
+    \draw[arrow] (early) -- (ensemble);
+    
+    % Final outputs
+    \draw[arrow] (ensemble) -- (submission);
+    \draw[arrow] (ensemble) -- (models);
+    \draw[arrow] (ensemble) -- (viz);
+    
+    % Configuration (top right)
+    \node[process, fill=yellow!20] (config) at (6, 4) {TrainingConfig\\{\tiny Seeds}\\{\tiny Hyperparams}};
+    \draw[dasharrow] (config) -- (main);
+    
+    % Title
+    \node[font=\Large\bfseries] at (0, 7) {System Architecture Overview};
+    
+    % Legend (bottom right)
+    \node[font=\tiny, text width=3cm, align=left, draw, fill=white, rounded corners] at (6, -3.5) {
+        \textbf{Legend:}\\[2pt]
+        \textcolor{blue!60}{\rule{0.8em}{0.8em}} Core Modules\\
+        \textcolor{green!60}{\rule{0.8em}{0.8em}} Input Data\\
+        \textcolor{orange!60}{\rule{0.8em}{0.8em}} Processing\\
+        \textcolor{purple!60}{\rule{0.8em}{0.8em}} Outputs\\
+        \textcolor{gray}{- - -} Config Flow
+    };
+    
+    \end{tikzpicture}
+    \caption{System architecture showing data flow from raw CSV files through feature engineering pipelines to model training and final predictions. The modular design separates data preparation (utils.py), neural network definitions (network.py), and training orchestration (main.py).}
+    \label{fig:system_architecture}
+\end{figure*}

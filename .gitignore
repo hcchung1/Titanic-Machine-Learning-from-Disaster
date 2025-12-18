@@ -1,2 +1,8 @@
 __pycache__/
 tmp_show_first.py
+report/main.aux
+report/main.fdb_latexmk
+report/main.fls
+report/main.log
+report/main.out
+report/main.synctex.gz

@@ -1,0 +1,61 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Problem Background}
+
+The sinking of the RMS Titanic on its maiden voyage represents not only a historical tragedy but also a rich data source for understanding survival patterns under extreme circumstances. The Kaggle competition "Titanic: Machine Learning from Disaster" challenges participants to predict passenger survival based on demographic and ticketing information. With 891 training samples and 418 test samples, each described by features including passenger class (Pclass), name, sex, age, number of siblings/spouses aboard (SibSp), number of parents/children aboard (Parch), ticket number, fare, cabin, and port of embarkation (Embarked), the dataset presents a classic binary classification task with realistic complications: missing values, categorical variables, and potential non-linear interactions between features.
+
+The survival rate in the training set is approximately 38\%, indicating moderate class imbalance. Initial exploratory analysis reveals strong predictive signals: women and children had significantly higher survival rates due to the "women and children first" evacuation protocol, first-class passengers enjoyed better access to lifeboats, and fare prices correlated with both passenger class and survival likelihood. However, raw features alone provide insufficient discriminative power—sophisticated feature engineering is required to extract latent information encoded in passenger names (social titles), ticket numbers (group bookings), and cabin assignments (deck locations).
+
+% INSERT FIGURE 1: Survival by Gender and Class
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\columnwidth]{figures/survival_by_sex.png}
+    \includegraphics[width=0.48\columnwidth]{figures/survival_by_pclass.png}
+    \caption{Exploratory analysis of survival patterns: (left) survival rate by gender showing strong bias toward female passengers (74.2\% vs 18.9\%); (right) survival rate by passenger class demonstrating socioeconomic advantage (63.0\% first class vs 24.2\% third class).}
+    \label{fig:survival_patterns}
+\end{figure}
+
+% INSERT FIGURE 2: Age Distribution
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{figures/age_distribution.png}
+    \caption{Age distribution of passengers by survival status. Survivors show a slightly younger mean age (28.3 years) compared to non-survivors (30.6 years), with notable representation of children under 12 among survivors.}
+    \label{fig:age_dist}
+\end{figure}
+
+\subsection{Related Work and Existing Approaches}
+
+The Titanic dataset has been extensively studied within the Kaggle community, with thousands of public kernels demonstrating diverse modeling strategies. Common approaches can be categorized into three paradigms:
+
+\textbf{Traditional Machine Learning Methods:} Many practitioners employ ensemble methods such as Random Forests and Gradient Boosting, which excel at capturing non-linear feature interactions without extensive hyperparameter tuning. These methods typically achieve test accuracies in the range of 77-79\% with careful feature engineering. Support Vector Machines with RBF kernels and K-Nearest Neighbors have also been explored, though they often require feature scaling and are more sensitive to irrelevant features.
+
+\textbf{Deep Learning Approaches:} Despite the relatively small dataset size, neural networks have been applied with varying degrees of success. Simple Multi-Layer Perceptrons (MLPs) with dropout regularization can match traditional methods when combined with proper feature standardization. However, the limited training data makes deep networks prone to overfitting without aggressive regularization or data augmentation techniques.
+
+\textbf{Ensemble and Stacking Strategies:} Advanced solutions often combine multiple base models through voting or stacking meta-learners. By leveraging the complementary strengths of diverse algorithms—for instance, Random Forests' robustness to outliers and XGBoost's gradient-based optimization—ensembles can achieve marginal performance improvements over single models.
+
+A particularly influential community contribution is the feature engineering pipeline documented by \texttt{@elvennote} on Medium\footnote{https://medium.com/@elvennote/kaggle-titanic-machine-learning-from-disaster}, which emphasizes title extraction, family size construction, and Random Forest-based age imputation. This approach, which we refer to as the "RF" feature set in our work, has been widely adopted and serves as one of our three engineering baselines.
+
+\subsection{Our Approach and Contributions}
+
+In this work, we conduct a systematic investigation of feature engineering strategies and model selection for Titanic survival prediction. Our contributions are threefold:
+
+\textbf{1. Comprehensive Feature Engineering Comparison:} We implement and compare three distinct feature engineering pipelines:
+\begin{itemize}
+    \item \textbf{RF (Random Forest-oriented):} Based on community best practices, featuring title simplification (Mr, Mrs, Miss, Master, Rare), family size aggregation, ticket prefix extraction, and cabin deck identification. Missing ages are imputed using a Random Forest regressor trained on available demographic features.
+    \item \textbf{XGB (XGBoost-optimized):} Incorporates frequency encoding for high-cardinality categorical variables (ticket types, cabin assignments), interaction terms (Sex×Pclass, Pclass×AgeBin), and quartile-based fare binning to capture non-linear pricing effects.
+    \item \textbf{MLP (Neural Network-ready):} Employs one-hot encoding for all categorical features with \texttt{drop\_first=True} to avoid multicollinearity, standardized continuous variables via StandardScaler, and carefully designed binning strategies for age and fare to assist gradient-based optimization.
+\end{itemize}
+
+% INSERT FIGURE: Feature Engineering Pipelines
+\input{feature_engineering_flowchart}
+
+\textbf{2. Rigorous Multi-Model Evaluation:} We train and evaluate six classical machine learning algorithms (Random Forest, Gradient Boosting, XGBoost, Logistic Regression, SVM, KNN) and one neural network (MLP) using consistent train-validation splits with stratified sampling. For tree-based methods, we perform grid search over key hyperparameters (number of estimators, learning rate, max depth, subsample ratio). For distance-based methods (SVM, KNN), we incorporate feature scaling within scikit-learn pipelines. All experiments are repeated across multiple random seeds (45, 2025, 777) to assess prediction stability and variance.
+
+\textbf{3. Ensemble Strategies with Seed Selection:} Beyond single-model comparisons, we explore two ensemble configurations: (a) a top-3 soft voting ensemble that combines the best-performing individual models based on validation accuracy, and (b) a specialized RFXGB ensemble that trains Random Forest and XGBoost across different random seeds, selects the best instantiation of each algorithm, and averages their probability predictions. This seed-aware ensemble strategy acknowledges the inherent randomness in training and leverages it to improve robustness.
+
+Our experimental results demonstrate that feature engineering choice has a more pronounced impact on performance than algorithmic selection within reasonable model families. The RF feature set paired with Random Forest classifier achieves the highest single-model validation accuracy of 79.67\%, while the RFXGB ensemble provides additional marginal gains through prediction averaging. Ablation studies reveal that title extraction and family size features contribute most significantly to predictive power, followed by strategic age imputation.
+
+\subsection{Paper Organization}
+
+The remainder of this paper is organized as follows: Section~\ref{sec:code} provides detailed descriptions of our feature engineering pipelines, model architectures, and training procedures. Section~\ref{sec:results} presents comprehensive experimental results, including confusion matrices, learning curves, and cross-model comparisons. Section~\ref{sec:future} discusses limitations of current approaches and outlines promising directions for future work. Section~\ref{sec:feedback} reflects on the learning experience and methodological insights gained throughout the project. Finally, we conclude with a summary of key findings and their implications for applied machine learning practice.
