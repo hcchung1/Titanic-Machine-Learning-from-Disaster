@@ -1,0 +1,371 @@
+\section{Code Description}
+\label{sec:code}
+
+This section provides a detailed technical description of our implementation, covering the project architecture, feature engineering pipelines, model configurations, and training procedures. The complete codebase is organized into modular components to facilitate reproducibility and extensibility.
+
+\subsection{Project Architecture}
+
+The project follows a clean, modular design pattern with clear separation of concerns. Figure~\ref{fig:system_architecture} illustrates the complete system architecture and data flow. The main components are:
+
+% INSERT FIGURE: System Architecture
+\input{system_architecture}
+
+\begin{itemize}
+    \item \textbf{utils.py}: Core utilities including feature engineering functions, data preprocessing, configuration management, and custom PyTorch Dataset classes. Contains three distinct feature engineering pipelines: \texttt{\_engineer\_features\_rf()}, \texttt{\_engineer\_features\_xgb()}, and \texttt{\_engineer\_features\_mlp()}.
+    
+    \item \textbf{network.py}: Neural network architecture definition (TitanicMLP), training loop implementation with mixed precision support, evaluation functions, and inference utilities for test set predictions.
+    
+    \item \textbf{main.py}: Orchestration script that coordinates data loading, model training across multiple seeds, hyperparameter tuning via GridSearchCV, ensemble construction, and Kaggle submission generation.
+\end{itemize}
+
+Global configurations are centralized in \texttt{utils.py} through the \texttt{TrainingConfig} dataclass and module-level constants:
+
+\begin{verbatim}
+@dataclass(frozen=True)
+class TrainingConfig:
+    batch_size: int = 128
+    num_epochs: int = 250
+    learning_rate: float = 1e-3
+    weight_decay: float = 1e-4
+    val_ratio: float = 0.2
+    patience: int = 30
+    seed: int = 45
+    seeds: tuple[int, ...] = (45, 2025, 777)
+\end{verbatim}
+
+This design allows easy experimentation with different hyperparameters and random seeds while maintaining consistency across runs.
+
+\subsection{Feature Engineering Pipelines}
+
+\subsubsection{RF Pipeline: Community Best Practices}
+
+The RF feature engineering pipeline, adapted from Kaggle community solutions~\cite{elvennote2024titanic}, prioritizes interpretability and compatibility with tree-based methods. Key transformations include:
+
+\textbf{Title Extraction and Simplification:} Passenger names follow the format ``Surname, Title. Firstname''. We extract titles using regex pattern matching and apply consolidation rules:
+\begin{small}
+\begin{verbatim}
+# Extract title from name using regex
+titles = name.str.extract(' ([A-Za-z]+)\.', 
+                          expand=False)
+# Consolidate rare titles
+titles = titles.replace({
+    'Mlle': 'Miss', 'Ms': 'Miss', 
+    'Mme': 'Mrs', 'Dr': 'Mr', 
+    'Major': 'Mr', 'Col': 'Mr'
+})
+\end{verbatim}
+\end{small}
+This reduces title cardinality from 17 unique values to 5 meaningful categories (Mr, Mrs, Miss, Master, Rare), capturing social status and age group signals.
+
+\textbf{Ticket Prefix Processing:} Ticket numbers often contain alphanumeric prefixes indicating group bookings or special fare classes. We extract prefixes by removing punctuation and taking the first token:
+\begin{verbatim}
+ticket_prefix = ticket.replace('.', '')
+                      .replace('/', '')
+                      .strip().split(' ')[0]
+\end{verbatim}
+Purely numeric tickets are assigned a special marker "X".
+
+\textbf{Age Imputation via RandomForest:} Missing ages (19.9\% of training data) are imputed using a RandomForestRegressor with 2000 trees, trained on non-missing samples after removing outliers (values beyond 4 standard deviations in Fare or Family\_Size):
+\begin{small}
+\begin{verbatim}
+# Train RF regressor for age imputation
+rf_model = RandomForestRegressor(
+    n_estimators=2000, 
+    random_state=42
+)
+rf_model.fit(age_train[age_features], 
+             age_train['Age'])
+
+# Predict missing ages
+imputed = rf_model.predict(age_null_rows)
+\end{verbatim}
+\end{small}
+This non-parametric approach captures complex interactions between age and other features (Pclass, Sex, Title, Fare) without assuming linearity.
+
+\textbf{Categorical Encoding:} All categorical features (Sex, Embarked, Pclass, Title, Cabin, Ticket\_info) are converted to integer codes via pandas category dtype. This encoding is efficient for tree-based models but may not preserve ordinal relationships.
+
+The final RF feature set consists of 9 features: Age, Embarked, Fare, Pclass, Sex, Family\_Size, Title2, Ticket\_info, and Cabin.
+
+\subsubsection{XGB Pipeline: Gradient Boosting Optimization}
+
+The XGB pipeline extends the RF approach with techniques specifically beneficial for gradient boosting methods:
+
+\textbf{Frequency Encoding:} High-cardinality categorical variables (Ticket\_info, Cabin) are replaced with their occurrence frequencies rather than arbitrary integer codes:
+\begin{small}
+\begin{verbatim}
+# Count occurrences
+ticket_freq = df['Ticket_info'].value_counts()
+
+# Map to frequency encoding
+df['Ticket_info_freq'] = (
+    df['Ticket_info']
+      .map(ticket_freq)
+      .fillna(0)
+)
+\end{verbatim}
+\end{small}
+This encoding preserves information about group sizes and common cabin assignments while reducing dimensionality.
+
+\textbf{Binning for Non-linearity:} Continuous features are discretized to help tree models identify optimal split points:
+\begin{itemize}
+    \item \textbf{FareBin:} Quartile-based binning (\texttt{pd.qcut(q=4)}) creates equal-frequency bins, reducing sensitivity to extreme fare values.
+    \item \textbf{AgeBin:} Equal-width binning into 5 categories captures life stage differences (infant, child, young adult, middle-aged, senior).
+\end{itemize}
+
+\textbf{Interaction Features:} Multiplicative combinations capture non-additive effects:
+\begin{small}
+\begin{verbatim}
+# Create interaction features
+df['Sex_Pclass'] = df['Sex'] * df['Pclass']
+df['Pclass_AgeBin'] = (df['Pclass'] * 
+                       df['AgeBin'])
+\end{verbatim}
+\end{small}
+These interactions allow the model to learn, for example, that young females in first class have exceptionally high survival rates.
+
+\textbf{IsAlone Indicator:} A binary feature flags passengers traveling without family (SibSp + Parch = 0), capturing the survival disadvantage of solo travelers.
+
+The XGB feature set expands to 14 features, balancing expressiveness with the risk of overfitting.
+
+\subsubsection{MLP Pipeline: Neural Network Preparation}
+
+The MLP pipeline optimizes features for gradient-based learning in neural networks:
+
+\textbf{One-Hot Encoding:} Categorical variables are converted to binary indicator vectors with \texttt{drop\_first=True} to avoid perfect multicollinearity:
+\begin{small}
+\begin{verbatim}
+# One-hot encode categorical features
+features = pd.get_dummies(
+    features, 
+    columns=['Embarked', 'Title', 
+             'CabinDeck', 'Pclass'],
+    drop_first=True
+)
+\end{verbatim}
+\end{small}
+This creates a sparse feature representation where each category receives its own learnable weight.
+
+\textbf{Feature Standardization:} All features are z-score normalized using scikit-learn's StandardScaler:
+\begin{small}
+\begin{verbatim}
+# Standardize features
+scaler = StandardScaler()
+train_scaled = scaler.fit_transform(
+    train_features
+)
+test_scaled = scaler.transform(
+    test_features
+)
+\end{verbatim}
+\end{small}
+Standardization ensures that gradient magnitudes are comparable across features, accelerating convergence and improving training stability.
+
+\textbf{Cabin Features:} Two complementary signals are extracted from cabin assignments:
+\begin{itemize}
+    \item \textbf{CabinDeck:} First letter (A-G, T) indicates deck level, correlating with both fare and proximity to lifeboats.
+    \item \textbf{HasCabin:} Binary indicator for whether cabin information is available, as missing cabins may signal lower-fare passengers with less detailed records.
+\end{itemize}
+
+\textbf{TicketGroup:} Count of passengers sharing the same ticket number (capped at 4) captures family/group booking patterns.
+
+The MLP feature set typically expands to 20+ features after one-hot encoding, providing rich representational capacity for the neural network.
+
+% INSERT FIGURE: Feature Engineering Comparison
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{figures/feature_comparison_table.png}
+    \caption{Detailed comparison of the three feature engineering pipelines, highlighting differences in categorical encoding, binning strategies, and output dimensionality.}
+    \label{fig:feature_comparison}
+\end{figure}
+
+% INSERT FIGURE: Missing Value Statistics
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figures/missing_value_stats.png}
+    \caption{Distribution of missing values in the training dataset. Age (177 missing, 19.9\%), Cabin (687 missing, 77.1\%), and Embarked (2 missing, 0.2\%) require imputation strategies.}
+    \label{fig:missing_values}
+\end{figure}
+
+\subsection{Model Implementations}
+
+\subsubsection{Classical Machine Learning Models}
+
+\textbf{Random Forest:} Our best-performing configuration uses 1000 estimators with Gini impurity criterion:
+\begin{verbatim}
+RandomForestClassifier(
+    criterion='gini',
+    n_estimators=1000,
+    min_samples_split=12,
+    min_samples_leaf=1,
+    oob_score=True,
+    random_state=seed,
+    n_jobs=-1
+)
+\end{verbatim}
+The \texttt{min\_samples\_split=12} regularization prevents overfitting on small leaf nodes, while \texttt{oob\_score=True} enables out-of-bag validation.
+
+\textbf{XGBoost:} Configured for binary classification with log-loss objective:
+\begin{verbatim}
+XGBClassifier(
+    n_estimators=600,
+    learning_rate=0.03,
+    max_depth=3,
+    subsample=0.9,
+    colsample_bytree=0.8,
+    reg_lambda=1.0,
+    objective='binary:logistic',
+    early_stopping_rounds=50
+)
+\end{verbatim}
+Shallow trees (\texttt{max\_depth=3}) combined with column/row subsampling reduce overfitting. Early stopping monitors validation performance to prevent excessive iterations.
+
+\textbf{Gradient Boosting:} Hyperparameters are tuned via 3-fold GridSearchCV:
+\begin{verbatim}
+param_grid = {
+    'n_estimators': [300, 500, 800],
+    'learning_rate': [0.01, 0.02, 0.05],
+    'max_depth': [3, 4, 5],
+    'min_samples_split': [2, 4],
+    'min_samples_leaf': [1, 2],
+    'subsample': [0.85, 0.9, 1.0]
+}
+\end{verbatim}
+Grid search evaluates 324 configurations, selecting the best based on cross-validation accuracy.
+
+% INSERT FIGURE: Model Hyperparameters
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/model_hyperparameters.png}
+    \caption{Summary of model architectures and hyperparameter configurations for all seven algorithms. GridSearchCV is applied to Gradient Boosting, SVM, and KNN for automated tuning.}
+    \label{fig:model_hyperparams}
+\end{figure*}
+
+\textbf{Logistic Regression:} Despite its simplicity, logistic regression serves as a strong linear baseline:
+\begin{verbatim}
+LogisticRegression(
+    max_iter=5000,
+    class_weight='balanced',
+    solver='liblinear'
+)
+\end{verbatim}
+Class weighting addresses the 38\%/62\% survival imbalance.
+
+\textbf{Support Vector Machine:} SVM with RBF kernel is wrapped in a pipeline with StandardScaler:
+\begin{verbatim}
+Pipeline([
+    ('scaler', StandardScaler()),
+    ('svc', SVC(kernel='rbf', 
+                class_weight='balanced',
+                probability=True))
+])
+\end{verbatim}
+Hyperparameters C (regularization) and gamma (kernel width) are tuned via GridSearchCV over $\{0.5, 1.0, 2.0, 5.0\} \times \{\text{scale}, 0.05, 0.1\}$.
+
+\textbf{K-Nearest Neighbors:} KNN with Minkowski distance (p-norm generalization):
+\begin{verbatim}
+Pipeline([
+    ('scaler', StandardScaler()),
+    ('knn', KNeighborsClassifier(metric='minkowski'))
+])
+\end{verbatim}
+Grid search explores $k \in \{7, 11, 15, 21\}$, weighting schemes (uniform vs. distance), and $p \in \{1, 2\}$ (Manhattan vs. Euclidean).
+
+\subsubsection{Neural Network Architecture}
+
+The TitanicMLP is a fully connected feedforward network with batch normalization and dropout regularization:
+
+\begin{verbatim}
+class TitanicMLP(nn.Module):
+    def __init__(self, input_dim, 
+                 hidden_dims=(256, 128, 64),
+                 dropout=0.35):
+        super().__init__()
+        layers = []
+        prev_dim = input_dim
+        for hidden in hidden_dims:
+            layers.append(nn.Linear(prev_dim, hidden))
+            layers.append(nn.BatchNorm1d(hidden))
+            layers.append(nn.ReLU(inplace=True))
+            if dropout > 0:
+                layers.append(nn.Dropout(dropout))
+            prev_dim = hidden
+        layers.append(nn.Linear(prev_dim, 2))
+        self.classifier = nn.Sequential(*layers)
+\end{verbatim}
+
+The architecture progressively reduces dimensionality (256 → 128 → 64 → 2) with ReLU activations. Batch normalization stabilizes training by normalizing layer inputs, while 35\% dropout prevents co-adaptation of hidden units.
+
+\textbf{Training Procedure:} The network is trained with AdamW optimizer and ReduceLROnPlateau scheduler:
+\begin{verbatim}
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(
+    model.parameters(),
+    lr=1e-3,
+    weight_decay=1e-4
+)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+    optimizer, mode='max', factor=0.5, patience=6
+)
+\end{verbatim}
+
+Weight decay (L2 regularization) and adaptive learning rate adjustment combat overfitting. Training employs mixed precision (FP16) on CUDA devices for computational efficiency:
+\begin{verbatim}
+scaler = GradScaler(enabled=use_amp)
+with autocast(device_type='cuda', dtype=torch.float16):
+    outputs = model(features)
+    loss = criterion(outputs, labels)
+scaler.scale(loss).backward()
+\end{verbatim}
+
+Gradient clipping (\texttt{max\_norm=1.0}) prevents exploding gradients. Early stopping with patience=30 epochs halts training when validation accuracy plateaus.
+
+% INSERT FIGURE: MLP Architecture
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figures/mlp_architecture.png}
+    \caption{TitanicMLP neural network architecture with three hidden layers (256→128→64) and dropout regularization. Each block consists of Linear→BatchNorm→ReLU→Dropout transformations.}
+    \label{fig:mlp_arch}
+\end{figure}
+
+% INSERT FIGURE: Training Configuration
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figures/training_config.png}
+    \caption{Neural network training configuration summary, including optimization hyperparameters, regularization techniques, and hardware acceleration settings.}
+    \label{fig:training_config}
+\end{figure}
+
+\subsection{Evaluation Protocol}
+
+\textbf{Train-Validation Split:} Stratified sampling with 80/20 split ensures class balance:
+\begin{verbatim}
+X_train, X_val, y_train, y_val = train_test_split(
+    features, labels, 
+    test_size=0.2,
+    random_state=seed,
+    stratify=labels
+)
+\end{verbatim}
+
+\textbf{Performance Metrics:} Primary metric is accuracy (correctly classified passengers / total). We also report precision, recall, and F1-score per class, plus confusion matrices visualizing prediction patterns.
+
+\textbf{Cross-Seed Validation:} All experiments are repeated across three random seeds (45, 2025, 777) to quantify result stability. The best single-seed model and the best cross-seed ensemble are both evaluated.
+
+\subsection{Implementation Details}
+
+\textbf{Software Stack:} Python 3.8+ with PyTorch 1.13, scikit-learn 1.2, XGBoost 2.0, pandas 1.5, and NumPy 1.23.
+
+\textbf{Hardware:} Training is GPU-accelerated on CUDA devices when available, with automatic fallback to CPU. Mixed precision training reduces memory footprint on high-end GPUs.
+
+\textbf{Logging:} Structured logging via \texttt{loguru} captures hyperparameters, training curves, validation metrics, and model checkpoints to facilitate post-hoc analysis.
+
+\textbf{Reproducibility:} All random seeds are explicitly set for NumPy, PyTorch, and CUDA:
+\begin{verbatim}
+def set_global_seed(seed: int):
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+\end{verbatim}
+
+This comprehensive implementation framework enables rigorous experimentation while maintaining code clarity and extensibility.
